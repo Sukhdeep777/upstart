@@ -7,7 +7,7 @@ gantt
     
     section Sprint 1: Pàgina
     Inici Web (GitHub/Vercel)       :s1t1, 2026-05-04, 1d
-    Estructura HTML/CSS i disseny   :s1t2, after s1t1, 4d
+    Estructura HTML/CSS i disseny   :s1t2, 2026-05-05, 4d
 
     section Sprint 2: Informe
     Arquitectura i disseny inicial :s2t1, 2026-05-06, 2d
@@ -24,7 +24,7 @@ gantt
 
     section Sprint 5: Implementar
     Desplegament i xarxa            :s5t1, 2026-05-20, 3d
-    Configuració producció          :s5t2, 2026-05-23, 2d
+    Configuració producció          :s5t2, 2026-05-21, 2d
 
     section Sprint 6: Revisió
     Testeig i bugs                  :s6t1, 2026-05-25, 3d
