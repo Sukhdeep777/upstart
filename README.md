@@ -7,7 +7,7 @@ gantt
 
     section Sprint 1 Pagina
     Inici Web :s1t1, 2026-05-05, 3d
-    Estructura HTML CSS i disseny  :s1t2, after s1t1,5d
+    Estructura HTML CSS i disseny  :s1t2, after s1t1, 5d
 
     section Sprint 2 Informe
     Arquitectura i disseny inicial :s2t1, after s1t2, 5d
