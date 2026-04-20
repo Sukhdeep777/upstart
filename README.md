@@ -1,4 +1,13 @@
-# UPSTART Diagrama Gantt
+# UPSTART
+
+## 1. Títol
+## 2. Integrants del projecte
+## 3. Objectius
+## 4. Explicació del projecte
+## 5. Material del projecte
+## 6. Desenvolupament i desplegament
+## 7. Planificació
+### 7.1. Diagrama de Gantt
 ```mermaid
 gantt
     title Planificació del projecte UPSTART
@@ -24,6 +33,8 @@ gantt
     section SPRINT 6
     SPRINT 6 :crit, s6, 2026-06-15, 12d
 ```
+### 7.2. Detall dels Sprints
+
 # 📅 Planificació del Projecte: Servidor Raspberry Pi i Web
 
 ## 🏃 Sprint 1: Pàgina
@@ -93,3 +104,7 @@ gantt
 
 - [ ] **Tasca 1 (Setmana 4: L-M-X):** Testeig general i depuració de bugs.
 - [ ] **Tasca 2 (Setmana 4: J-V):** Preparació de l'entrega final.
+
+## 8. Webgrafia
+## 9. Annexos
+
