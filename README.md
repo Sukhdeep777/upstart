@@ -15,20 +15,20 @@ gantt
     Especificació JS                   :s2t3, 2026-05-12, 4d
 
     section Sprint 3: Pàgina Detallada
-    Login, DB i Interactivitat JS      :s3t1, 2026-05-11, 2d
+    JavaScript      :s3t1, 2026-05-11, 2d
     Responsive i Comentaris            :s3t2, 2026-05-13, 3d
 
     section Sprint 4: Servidor
-    Configuració inicial RPi           :s4t1, 2026-05-18, 1d
-    Ajustos del servidor               :s4t2, 2026-05-25, 1d
+    RPi           :s4t1, 2026-05-18, 1d
+    SV               :s4t2, 2026-05-25, 1d
 
     section Sprint 5: Implementar
-    Desplegament i proves xarxa        :s5t1, 2026-05-18, 3d
+    Desplegament i proves         :s5t1, 2026-05-18, 3d
     Configuració producció             :crit, s5t2, 2026-05-21, 2d
 
     section Sprint 6: Revisió
-    Testeig general i bugs             :crit, s6t1, 2026-05-25, 3d
-    Preparació entrega                 :crit, s6t2, 2026-05-28, 2d
+    Testeig general             :crit, s6t1, 2026-05-25, 3d
+    Prep. Entrega                 :crit, s6t2, 2026-05-28, 2d
 ```
 # 📅 Planificació del Projecte: Servidor Raspberry Pi i Web
 
