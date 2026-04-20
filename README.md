@@ -6,7 +6,7 @@ gantt
     axisFormat  %d/%m
 
     section Sprint 1: Pàgina
-    Gener web :active, s1t1, 2026-05-05, 1d
+    Gener. Web :active, s1t1, 2026-05-05, 2d
     Estructura HTML, CSS i disseny     :s1t2, after s1t1, 4d
 
     section Sprint 2: Informe
@@ -24,7 +24,7 @@ gantt
 
     section Sprint 5: Implementar
     Desplegament i proves         :s5t1, 2026-05-18, 3d
-    Configuració produc.             :crit, s5t2, 2026-05-21, 2d
+    Config. Produc.             :crit, s5t2, 2026-05-21, 2d
 
     section Sprint 6: Revisió
     Testeig general             :crit, s6t1, 2026-05-25, 3d
