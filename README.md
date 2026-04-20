@@ -6,7 +6,7 @@ gantt
     axisFormat  %d/%m
 
     section Sprint 1 Pagina
-    Inici Web GitHub Vercel        :s1t1, 2026-05-04, 1d
+    Inici Web :s1t1, 2026-05-04, 1d
     Estructura HTML CSS i disseny  :s1t2, after s1t1, 4d
 
     section Sprint 2 Informe
