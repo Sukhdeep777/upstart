@@ -6,29 +6,29 @@ gantt
     axisFormat  %d/%m
 
     section Sprint 1 Pagina
-    Inici Web GitHub Vercel        :active, s1t1, 2026-05-04, 1d
+    Inici Web GitHub Vercel        :s1t1, 2026-05-04, 1d
     Estructura HTML CSS i disseny  :s1t2, after s1t1, 4d
 
     section Sprint 2 Informe
-    Arquitectura i disseny inicial :s2t1, 2026-05-06, 2d
-    Explicacio codi i manual       :s2t2, 2026-05-15, 6d
-    Especificacio JS               :s2t3, 2026-05-19, 4d
+    Arquitectura i disseny inicial :s2t1, after s1t2, 2d
+    Explicacio codi i manual       :s2t2, after s2t1, 6d
+    Especificacio JS               :s2t3, after s2t2, 4d
 
     section Sprint 3 Pagina Detallada
-    Login i Interactivitat JS      :s3t1, 2026-05-11, 2d
-    Responsive i Comentaris        :s3t2, 2026-05-13, 3d
+    Login i Interactivitat JS      :s3t1, after s2t3, 2d
+    Responsive i Comentaris        :s3t2, after s3t1, 3d
 
     section Sprint 4 Servidor
-    Configuracio inicial RPi       :s4t1, 2026-05-18, 1d
-    Ajustos del servidor           :s4t2, 2026-05-25, 1d
+    Configuracio inicial RPi       :s4t1, after s3t2, 1d
+    Ajustos del servidor           :s4t2, after s4t1, 1d
 
     section Sprint 5 Implementar
-    Desplegament i xarxa           :s5t1, 2026-05-20, 3d
-    Configuracio produccio         :crit, s5t2, 2026-05-21, 2d
+    Desplegament i xarxa           :s5t1, after s4t2, 3d
+    Configuracio produccio         :crit, s5t2, after s5t1, 2d
 
     section Sprint 6 Revisio
-    Testeig i bugs                 :crit, s6t1, 2026-05-25, 3d
-    Preparacio entrega             :crit, s6t2, 2026-05-28, 2d
+    Testeig i bugs                 :crit, s6t1, after s5t2, 3d
+    Preparacio entrega             :crit, s6t2, after s6t1, 2d
 ```
 # 📅 Planificació del Projecte: Servidor Raspberry Pi i Web
 
