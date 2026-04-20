@@ -1,13 +1,13 @@
 # UPSTART
 
-## 1. Títol
-## 2. Integrants del projecte
-## 3. Objectius
-## 4. Explicació del projecte
-## 5. Material del projecte
-## 6. Desenvolupament i desplegament
-## 7. Planificació
-### 7.1. Diagrama de Gantt
+## 1. Integrants del projecte
+
+## 2. Objectius
+## 3. Explicació del projecte
+## 4. Material del projecte
+## 5. Desenvolupament i desplegament
+## 6. Planificació
+### 7. Diagrama de Gantt
 ```mermaid
 gantt
     title Planificació del projecte UPSTART
@@ -33,7 +33,6 @@ gantt
     section SPRINT 6
     SPRINT 6 :crit, s6, 2026-06-15, 12d
 ```
-
 ## 8. Webgrafia
 ## 9. Annexos
 
