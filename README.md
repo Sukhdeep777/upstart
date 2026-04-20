@@ -1,7 +1,6 @@
 # UPSTART Diagrama Gantt
 ```mermaid
 gantt
-gantt
     title Planificació del projecte UPSTART
     dateFormat  YYYY-MM-DD
     axisFormat  %d-%m
