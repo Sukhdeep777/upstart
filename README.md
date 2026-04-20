@@ -1,17 +1,35 @@
 # UPSTART Diagrama Gantt
 ```mermaid
 gantt
-    title Planificació del projecte
-    dateFormat YYYY-MM-DD
-    section Fase 1
-    Anàlisi i requisits :a1, 2026-05-01, 4d
-    Disseny inicial     :a2, after a1, 3d
-    section Fase 2
-    Desenvolupament app :b1, 2026-05-08, 10d
-    Proves              :b2, after b1, 3d
-    section Fase 3
-    Desplegament        :c1, 2026-05-22, 4d
-    Memòria i defensa   :c2, 2026-05-27, 5d
+    title Planificació del projecte UPSTART
+    dateFormat  YYYY-MM-DD
+    axisFormat  %d-%m
+    
+    section Sprint 1: Pàgina
+    Inici Web (GitHub/Vercel)       :s1t1, 2026-05-04, 1d
+    Estructura HTML/CSS i disseny   :s1t2, after s1t1, 4d
+
+    section Sprint 2: Informe
+    Arquitectura i disseny inicial :s2t1, 2026-05-06, 2d
+    Explicació codi i manual        :s2t2, 2026-05-15, 7d
+    Especificació JS                :s2t3, 2026-05-19, 4d
+
+    section Sprint 3: Pàgina Detallada
+    Login i Interactivitat JS       :s3t1, 2026-05-11, 2d
+    Responsive i Comentaris         :s3t2, 2026-05-13, 3d
+
+    section Sprint 4: Servidor
+    Configuració inicial RPi        :s4t1, 2026-05-18, 1d
+    Ajustos del servidor            :s4t2, 2026-05-25, 1d
+
+    section Sprint 5: Implementar
+    Desplegament i xarxa            :s5t1, 2026-05-20, 3d
+    Configuració producció          :s5t2, 2026-05-23, 2d
+
+    section Sprint 6: Revisió
+    Testeig i bugs                  :s6t1, 2026-05-25, 3d
+    Preparació entrega              :s6t2, 2026-05-28, 2d
+
 ```
 # 📅 Planificació del Projecte: Servidor Raspberry Pi i Web
 
