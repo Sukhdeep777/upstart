@@ -6,11 +6,11 @@ gantt
     axisFormat  %d/%m
 
     section Sprint 1: Pàgina
-    Generar web :active, s1t1, 2026-05-05, 1d
+    Gener web :active, s1t1, 2026-05-05, 1d
     Estructura HTML, CSS i disseny     :s1t2, after s1t1, 4d
 
     section Sprint 2: Informe
-    Doc. Arq. i Disseny  :s2t1, 2026-05-06, 2d
+    Doc. Arq. i Dis.  :s2t1, 2026-05-06, 2d
     Explicació codi i manual d'estil   :s2t2, 2026-05-08, 7d
     Especificació JS                   :s2t3, 2026-05-12, 4d
 
