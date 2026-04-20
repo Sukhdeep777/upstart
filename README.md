@@ -7,28 +7,28 @@ gantt
 
     section Sprint 1 Pagina
     Inici Web :s1t1, 2026-05-05, 3d
-    Estructura HTML CSS i disseny  :s1t2, after s1t1, 6d
+    Estructura HTML CSS i disseny  :s1t2, after s1t1, 9d
 
     section Sprint 2 Informe
-    Arquitectura i disseny inicial :s2t1, after s1t2, 6d
-    Explicacio codi i manual       :s2t2, after s2t1, 7d
-    Especificacio JS               :s2t3, after s2t2, 7d
+    Arquitectura i disseny inicial :s2t1, after s1t2, 9d
+    Explicacio codi i manual       :s2t2, after s2t1, 9d
+    Especificacio JS               :s2t3, after s2t2, 9d
 
     section Sprint 3 Pagina Detallada
-    Login i Interactivitat JS      :s3t1, after s2t3, 6d
-    Responsive i Comentaris        :s3t2, after s3t1, 6d
+    Login i Interactivitat JS      :s3t1, after s2t3, 9d
+    Responsive i Comentaris        :s3t2, after s3t1, 9d
 
     section Sprint 4 Servidor
-    Configuracio inicial RPi       :s4t1, after s3t2, 6d
-    Ajustos del servidor           :s4t2, after s4t1, 6d
+    Configuracio inicial RPi       :s4t1, after s3t2, 9d
+    Ajustos del servidor           :s4t2, after s4t1, 9d
 
     section Sprint 5 Implementar
-    Desplegament i xarxa           :s5t1, after s4t2, 6d
-    Configuracio produccio         :crit, s5t2, after s5t1, 5d
+    Desplegament i xarxa           :s5t1, after s4t2, 9d
+    Configuracio produccio         :crit, s5t2, after s5t1, 9d
 
     section Sprint 6 Revisio
-    Testeig i bugs                 :crit, s6t1, after s5t2, 6d
-    Preparacio entrega             :crit, s6t2, after s6t1, 5d
+    Testeig i bugs                 :crit, s6t1, after s5t2, 9d
+    Preparacio entrega             :crit, s6t2, after s6t1, 9d
 ```
 # 📅 Planificació del Projecte: Servidor Raspberry Pi i Web
 
