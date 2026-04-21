@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 body{
@@ -13,4 +14,98 @@ body{
 
 .flex{
     display: flex;
+}
+
+/*  HEADER  */
+
+header{
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 5px solid #20b3b3
+}
+
+.logo{
+    width: 90px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img{
+    width: 100%;
+}
+
+h1{
+    color: #20b3b3;
+}
+
+nav{
+    width: 60%;
+}
+
+nav ul{
+    justify-content: space-around;
+    list-style: none;
+}
+
+nav ul li:hover{
+    transform: scale(1.1);
+    transition: all 0.2s;
+}
+
+nav ul a{
+    text-decoration: none;
+    color: #000;
+    padding: 7px;
+}
+
+nav ul a:hover{
+    background: #469696;
+    padding:  7px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.usuario{
+    gap: 40px;
+    color: #20b3b3;
+    margin-left: 10px;
+}
+
+.usuario  a{
+    text-decoration: none;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.lg{
+    border: 2px solid #20b3b3;
+    border-radius: 20px;
+}
+
+.lg a{
+    color:#20b3b3;
+}
+
+
+/* BODY */
+main{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+main div{
+    width: 80%;
+}
+
+.ide1{
+    border: 1px solid #000;
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    border-radius: 20px;
 }
