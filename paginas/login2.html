@@ -18,16 +18,47 @@
             <label for="" class="font-semibold">Edad:</label>
             <input class="bg-gray-300  transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none " type="number" max="99" min="1" placeholder="Escriba su edad (1-99)">
             <label for="" class="font-semibold">Contraseña:</label>
-            <input type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] mb-5 text-xl px-3 py-2 outline-none">
+            <input id="password" type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] mb-5 text-xl px-3 py-2 outline-none">
+            <div id="resultPasswordInvalid">
+            </div>
             <label for="" class="font-semibold">Confirmar Contraseña:</label>
-            <input type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none">        
+            <input id="confirmPassword" type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none">
+            <div id="passwordMatch">
+            </div>        
         </div>
         <div class="flex justify-center">
-            <button class="hover:bg-blue-400 hover:scale-110 transition duration-500 cursor-pointer justify-center bg-[#00c9c9] w-[200px] h-[50px] rounded-xl text-xl ">Crear cuenta</button>
+            <button id="button" class="hover:bg-blue-400 hover:scale-110 transition duration-500 cursor-pointer justify-center bg-[#00c9c9] w-[200px] h-[50px] rounded-xl text-xl ">Crear cuenta</button>
         </div>
         <div class="mb-10">
             <p>Ya tienes una cuenta? <a href="login.html" class="text-blue-600 underline">Log In</a></p>
         </div>
     </div>
+    <script>
+        let password = document.querySelector('#password');
+        let confirmPassword = document.querySelector('#confirmPassword');
+        let button = document.querySelector("#button")
+        let invalidPass = document.querySelector("#resultPasswordInvalid")
+        let passwordMatch = document.querySelector("#passwordMatch")
+        
+        function passwordValidation(){
+            if (password.value.length < 7){
+                invalidPass.innerHTML = (`<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no es valida</p>`)
+            } else {
+                invalidPass.innerHTML = (`<p class="mb-4 text-green-500 bg-green-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña es valida</p>`)
+            }
+
+            if(confirmPassword.value.length > 0 && confirmPassword.value !== password.value){ // especificamos que la norma sea entre la longitud del valor mayor que y entre el valor de la contraseña
+                passwordMatch.innerHTML = (`<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no coincide</p>`)
+            } else {
+                passwordMatch.innerHTML = ""
+            }
+        }
+        // Hacemos que los inputs de las contraseñas tengan el evento de escucha para que los cambios ocurran mientras las normas del if coincidan
+        password.addEventListener("input", passwordValidation)
+        confirmPassword.addEventListener("input", passwordValidation)
+
+
+
+    </script>
 </body>
 </html>
