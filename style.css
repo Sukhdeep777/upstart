@@ -10,6 +10,7 @@ body{
     margin: 0;
     padding: 0;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .flex{
@@ -93,6 +94,7 @@ nav ul a:hover{
 main{
     margin-top: 40px;
     width: 90%;
+    flex: 1;
 }
 
 
@@ -134,6 +136,43 @@ button{
     color: #fff;
     margin-top: 60px;
     cursor: pointer;
-    padding: 40px 100px;
+    padding: 40px 70px;
     border-radius: 30px;
+    font-size: 1.2em;
+}
+
+button:hover{
+    background: #444242;
+    transition: all 0.7s;
+}
+
+
+.rk{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.list  li,ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+}
+
+.list{
+    text-align: center;
+}
+
+h3{
+    border-bottom: 4px solid #20b3b3;
+    padding-bottom: 5px;
+}
+
+/* FOOTER */
+
+footer{
+    background: #469696;
+    width: 100%;
+    padding: 30px;
 }
