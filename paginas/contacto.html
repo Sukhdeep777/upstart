@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-500 h-screen w-100%">
+    <div class="flex justify-center">
+        <div>
+            <p class="text-6xl text-blue-400 mt-8">Contactanos</p>
+            <div class="flex-col items-center w-[600px] h-[auto] rounded-xl gap-8 flex mt-10">
+                <p class="text-xl text-white mt-4">No dudes en contactarnos si tienes alguna pregunta o necesitas ayuda. Por cualquier cosa que necesites, estamos aquí para ayudarte.</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-between mt-10 m-20" >
+        <div class="w-[500px]">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim quo libero, optio explicabo beatae asdasdasdlores aperiam, culpa natus quos sint atque.</p>
+        </div>
+        <div class="flex flex-col gap-3 bg-blue-100 w-[400px] h-[auto] rounded-xl px-10 py-5">
+            <label for="nombre">Nombre</label>
+            <input placeholder="Nombre de usuario" class="bg-blue-300 px-5 py-2 rounded-lg" type="text" id="nombre">
+            <label for="email">Email</label>
+            <input placeholder="Correo electrónico" class="bg-blue-300 px-5 py-2 rounded-lg" type="email" id="email">
+            <label for="mensaje">Mensaje</label>
+            <input placeholder="Tu mensaje" class="bg-blue-300 px-5 py-2 rounded-lg" type="text" id="mensaje">
+            <button class="bg-blue-500 text-white py-2 px-6 rounded">Enviar</button>
+        </div>
+    </div>
+</body>
+</html>
