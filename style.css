@@ -165,6 +165,10 @@ main section{
     color:#000;
 }
 
+.p2{
+    text-align: end;
+}
+
 .ides{
     width: 100%;
     margin-top: 40px;
@@ -187,8 +191,6 @@ main section{
 .w-p-2{
     width: 100%;
     text-align: end;
-    padding-right: 0px;
-    margin-top: 10px;
 }
 
 .ide3{
@@ -196,6 +198,21 @@ main section{
     border: 1px solid #000;
     padding: 60px;
     border-radius: 20px;
+}
+
+button{
+    background: #000;
+    color: #fff;
+    margin-top: 60px;
+    cursor: pointer;
+    padding: 40px 70px;
+    border-radius: 30px;
+    font-size: 1.2em;
+}
+
+button:hover{
+    background: #444242;
+    transition: all 0.7s;
 }
 
 
