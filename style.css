@@ -94,8 +94,13 @@ nav ul a:hover{
 /* BODY */
 main{
     margin-top: 40px;
-    width: 90%;
+    width: 100%;
     flex: 1;
+}
+
+.w-9{
+    margin: 0 auto;
+    width: 90%;
 }
 
 main section{
@@ -191,6 +196,7 @@ main section{
 .w-p-2{
     width: 100%;
     text-align: end;
+    margin-top: 10px;
 }
 
 .ide3{
@@ -237,6 +243,19 @@ button:hover{
 h3{
     border-bottom: 4px solid #20b3b3;
     padding-bottom: 5px;
+}
+
+/* ---- EQUIP */
+
+.equip{
+    background: #20b3b3;
+    padding: 10px 0px;
+    margin-top: 40px;
+}
+
+.container-2{
+    width: 90%;
+    margin: 0 auto;
 }
 
 /* FOOTER */
