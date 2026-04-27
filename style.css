@@ -121,7 +121,6 @@ main section{
     flex-direction: column;
 }
 
-
 .ide1 h2{
     padding-left: 60px;
 }
@@ -185,7 +184,7 @@ button{
     color: #fff;
     margin-top: 60px;
     cursor: pointer;
-    padding: 40px 70px;
+    padding: 30px 50px;
     border-radius: 30px;
     font-size: 1.2em;
 }
@@ -222,7 +221,7 @@ h3{
 /* ---- EQUIP */
 
 .equip{
-    background: #20b3b3;
+    background: #e3e4e6;
     padding: 10px 0px;
     margin-top: 40px;
 }
@@ -230,12 +229,43 @@ h3{
 .container-2{
     width: 90%;
     margin: 0 auto;
+    text-align: center;
+    color: #000;
+}
+
+.tm{
+    gap: 80px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.tm-div{
+    padding: 10px 30px;
+    background: #fff;
+    border-radius: 20px;
+}
+
+.tm-p{
+    width: 100px;
+    text-align: center;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tm-pd{
+    color: #383838;
+    font-size: 14px;
+}
+
+.reverse{
+    cursor: pointer;
 }
 
 /* FOOTER */
 
 footer{
-    background: #469696;
+    background: #20b3b3;
     width: 100%;
     padding: 30px;
     justify-content: space-around;
