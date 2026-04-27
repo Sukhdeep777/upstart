@@ -183,6 +183,7 @@ button{
     background: #000;
     color: #fff;
     margin-top: 60px;
+    margin-bottom: 40px;
     cursor: pointer;
     padding: 30px 50px;
     border-radius: 30px;
@@ -240,9 +241,10 @@ h3{
 }
 
 .tm-div{
-    padding: 10px 30px;
+    padding: 20px 30px;
     background: #fff;
     border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .tm-p{
