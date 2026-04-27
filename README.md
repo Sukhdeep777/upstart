@@ -57,5 +57,6 @@ gantt
 1. Per crear el logo de l'empresa: [Logo UpStart](https://www.design.com/es-es)
 2. Per agafar petits icones: [Icones](https://www.freepik.es/icono/sincronizar_7344967#fromView=search&page=1&position=28&uuid=d238815c-0fc8-48f8-ba84-fb5af87328bd)
 3. Per els avatars dels usuaris: [Avatars](https://www.freepik.es/fotos-vectores-gratis/avatar/5#uuid=132681dc-1ea0-4add-9e4b-0d5214929669)
+4. Esborrar fons: [Remove](https://www.remove.bg/)
 ## 9. Annexos
 

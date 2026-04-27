@@ -29,6 +29,15 @@ body{
     gap: 10px;
 }
 
+.js{
+    text-align: justify;
+}
+
+.ju-c{
+    justify-content: center;
+}
+
+
 /*  HEADER  */
 
 header{
@@ -260,7 +269,7 @@ button a{
     height: 50%;
 }
 
-h3{
+.h3-list{
     border-bottom: 4px solid #20b3b3;
     padding-bottom: 5px;
 }
@@ -324,6 +333,33 @@ h3{
     margin: 0 auto;
     text-align: start;
     color: #000;
+}
+
+.container-3 h2{
+    font-size: 26px;
+}
+
+.pilar{
+    border: 1px solid black;
+    padding: 10px 20px;
+    width: 32%;
+    border-radius: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.pilar p{
+    color: gray;
+}
+
+.pilar h3{
+    font-size: 22px;
+}
+
+
+.img-pila img{
+    width: 300px;
+    object-fit: cover;
 }
 
 /* FOOTER */
