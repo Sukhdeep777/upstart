@@ -121,32 +121,6 @@ main section{
     flex-direction: column;
 }
 
-.etq{
-    margin: 0;
-    margin-left: 60px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    color: #fff;
-    background: rgb(140, 140, 247);
-}
-
-.etq-2{
-    margin: 0;
-    padding: 2px 8px;
-    border-radius: 10px;
-    color: #fff;
-    background: rgb(28, 142, 177);
-    width: fit-content;
-}
-
-.etq-3{
-    margin: 0;
-    padding: 2px 8px;
-    border-radius: 10px;
-    color: #fff;
-    background: rgb(55, 109, 122);
-    width: fit-content;
-}
 
 .ide1 h2{
     padding-left: 60px;
