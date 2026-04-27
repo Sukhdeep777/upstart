@@ -7,12 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
-    <header class="px-2 py-1 flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
-        <div class="flex items-center gap-5">
+    <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
+        <div class="flex items-center">
             <div class="w-[90px] flex items-center">
                 <img src="../imagenes/logo-upstart.png" alt="LOGO UPSTART" class="w-full">
             </div>
-            <h1 class="text-[#20b3b3] text-[32px] font-bold">UPSTART</h1>
+            <h1 class="text-[#20b3b3] text-[32px] font-bold pb-[8px]">UPSTART</h1>
         </div>
         <nav class="w-[60%] font-bold">
             <ul class="flex justify-around list-none m-0 p-0">
@@ -20,19 +20,19 @@
                     <a href="../index.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">INICIO</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="paginas/upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
+                    <a href="upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="paginas/donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
+                    <a href="donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="paginas/contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
+                    <a href="contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
                 </li>
             </ul>
         </nav>
         <div class="ml-[10px]">
             <div class="border-2 border-[#20b3b3] rounded-[20px]">
-                <a href="paginas/login.html" class="no-underline px-[23px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block">Log in</a>
+                <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block">Log in</a>
             </div>
         </div>
     </header>
@@ -53,11 +53,11 @@
             <div>
                 <div class="flex flex-col gap-3 w-[800px] h-[500px] rounded-xl px-10 py-5 bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg ">
                     <label for="nombre">Nombre</label>
-                    <input placeholder="Nombre de usuario" class="bg-gray-300 px-5 py-2 rounded-lg hover:scale-105 transition duration-500" type="text" id="nombre">
+                    <input placeholder="Nombre de usuario" class="bg-gray-300 px-5 py-2 rounded-lg hover:scale-102 transition duration-500" type="text" id="nombre">
                     <label for="email">Email</label>
-                    <input placeholder="Correo electrónico" class="bg-gray-300 px-5 py-2 rounded-lg hover:scale-105 transition duration-500" type="email" id="email">
+                    <input placeholder="Correo electrónico" class="bg-gray-300 px-5 py-2 rounded-lg hover:scale-102 transition duration-500" type="email" id="email">
                     <label for="mensaje">Mensaje</label>
-                    <textarea placeholder="Tu mensaje" rows="4" class="bg-gray-300 px-5 py-2 rounded-lg resize-none hover:scale-105 transition duration-500"></textarea>            
+                    <textarea placeholder="Tu mensaje" rows="4" class="bg-gray-300 px-5 py-2 rounded-lg resize-none hover:scale-102 transition duration-500"></textarea>            
                     <!-- el resize-none es para que el usuario no pueda cambiar el tamaño del textarea y en vez de height se usa rows -->
                     <button class="bg-blue-500 text-white py-2 px-6 rounded hover:scale-105 transition duration-500 cursor-pointer mt-10">Enviar</button>
                 </div>
