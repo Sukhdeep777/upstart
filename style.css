@@ -253,8 +253,18 @@ button a{
 
 .rk{
     display: flex;
-    justify-content: end;
+    align-items: center;
     width: 20%;
+    flex-direction: column;
+}
+
+.img-anuncio{
+    width: 300px;
+    object-fit: cover;
+}
+
+.img-anuncio img{
+    width: 100%;
 }
 
 .list  li,ul{
@@ -346,6 +356,7 @@ button a{
     border-radius: 20px;
     margin: 0 auto;
     margin-top: 20px;
+    margin-bottom: 40px;
 }
 
 .pilar p{
@@ -362,6 +373,17 @@ button a{
     object-fit: cover;
 }
 
+.rm{
+    font-size: 20px;
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    background: #e3e4e6;
+    padding: 10px 40px;
+    border-radius: 20px;
+}
+
+
 /* FOOTER */
 
 footer{
@@ -371,7 +393,7 @@ footer{
     justify-content: space-around;
     align-items: center;
     display: flex;
-    margin-top: 5%;
+    margin-top: 3%;
 }
 
 .f-h3{
