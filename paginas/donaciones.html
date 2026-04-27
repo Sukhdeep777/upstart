@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
+    <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
+        <div class="flex items-center">
+            <div class="w-[90px] flex items-center">
+                <img src="../imagenes/logo-upstart.png" alt="LOGO UPSTART" class="w-full">
+            </div>
+            <h1 class="text-[#20b3b3] text-[32px] font-bold pb-[8px]">UPSTART</h1>
+        </div>
+        <nav class="w-[60%] font-bold">
+            <ul class="flex justify-around list-none m-0 p-0">
+                <li class="hover:scale-110 transition-all duration-200">
+                    <a href="../index.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">INICIO</a>
+                </li>
+                <li class="hover:scale-110 transition-all duration-200">
+                    <a href="upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
+                </li>
+                <li class="hover:scale-110 transition-all duration-200">
+                    <a href="donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
+                </li>
+                <li class="hover:scale-110 transition-all duration-200">
+                    <a href="contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="ml-[10px]">
+            <div class="border-2 border-[#20b3b3] rounded-[20px]">
+                <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block">Log in</a>
+            </div>
+        </div>
+    </header>
+<div class="flex justify-center items-center px-4 py-16">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+        
+        <!-- Cabecera tarjeta -->
+        <div class="bg-[#20b3b3] px-10 py-8">
+            <p class="text-white text-3xl font-bold m-0">💙 Dona ahora</p>
+            <p class="text-white/80 text-sm mt-1 m-0">Tu apoyo hace la diferencia</p>
+        </div>
+
+        <!-- Selector de cantidad rápida -->
+        <div class="px-10 pt-8">
+            <p class="text-gray-500 text-sm font-bold mb-3 m-0">CANTIDAD RÁPIDA</p>
+            <div class="grid grid-cols-4 gap-2 mb-5">
+                <button onclick="setAmount(5)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">5€</button>
+                <button onclick="setAmount(10)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">10€</button>
+                <button onclick="setAmount(25)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">25€</button>
+                <button onclick="setAmount(50)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">50€</button>
+            </div>
+
+            <!-- Input cantidad personalizada -->
+            <label class="text-gray-500 text-sm font-bold" for="cantidad">O INTRODUCE UNA CANTIDAD</label>
+            <div class="flex items-center border-2 border-gray-200 rounded-xl mt-2 mb-5 focus-within:border-[#20b3b3] transition duration-300">
+                <span class="text-gray-400 font-bold pl-4">€</span>
+                <input 
+                    id="cantidad" 
+                    type="number" 
+                    placeholder="0.00"
+                    class="w-full bg-transparent px-3 py-3 outline-none text-gray-700 font-bold"
+                >
+            </div>
+
+            <!-- Mensaje -->
+            <label class="text-gray-500 text-sm font-bold" for="mensaje">MENSAJE (OPCIONAL)</label>
+            <textarea 
+                id="mensaje" 
+                placeholder="Escribe un mensaje de apoyo..." 
+                rows="3"
+                class="w-full border-2 border-gray-200 rounded-xl mt-2 px-4 py-3 outline-none resize-none text-gray-700 focus:border-[#20b3b3] transition duration-300 bg-transparent"
+            ></textarea>
+        </div>
+
+        <!-- Botón donar -->
+        <div class="px-10 py-8">
+            <button class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30">
+                Donar ahora →
+            </button>
+            <p class="text-center text-gray-400 text-xs mt-4 m-0">🔒 Pago 100% seguro y cifrado</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setAmount(val) {
+        document.getElementById('cantidad').value = val;
+    }
+</script>
+</body>
+</html>
