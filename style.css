@@ -17,6 +17,17 @@ body{
     display: flex;
 }
 
+.ag-c{
+    align-items: center;
+}
+
+.ag-e{
+    align-items: end;
+}
+
+.gap{
+    gap: 10px;
+}
 
 /*  HEADER  */
 
@@ -116,13 +127,23 @@ main section{
     width: 100%;
     display: flex;
     align-items: start;
-    padding: 30px 0;
+    padding: 70px 0;
     border-radius: 20px;
     flex-direction: column;
 }
 
+.t-d{
+    gap: 20px;
+}
+
+.val{
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
 .ide1 h2{
     padding-left: 60px;
+    font-size: 32px;
 }
 
 .p1{
@@ -130,12 +151,20 @@ main section{
     text-align: justify;
     padding: 0px 60px;
     margin: 0;
+    font-size: 18px;
 }
 
 .w-p{
     width: 100%;
     text-align: end;
     padding-right: 60px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.p2-1{
+    margin-left: 60px;
+    font-size: 14px;
 }
 
 .p2,a{
@@ -154,29 +183,42 @@ main section{
 }
 
 .ide2{
-    max-width: 40%;
+    max-width: 49%;
     width: 100%;
     border: 1px solid #000;
     padding: 60px;
     border-radius: 20px;
+}
+
+.ide2 h2{
+    font-size: 22px;
 }
 
 .p1-2{
     color: gray;
     margin: 0;
+    font-size: 15px;
 }
 
 .w-p-2{
     width: 100%;
-    text-align: end;
-    margin-top: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.p2-2{
+    font-size: 12px;
 }
 
 .ide3{
-    width: 40%;
+    width: 49%;
     border: 1px solid #000;
     padding: 60px;
     border-radius: 20px;
+}
+
+.ide3 h2{
+    font-size: 22px;
 }
 
 button{
