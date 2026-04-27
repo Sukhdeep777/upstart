@@ -181,7 +181,6 @@ main section{
 
 button{
     background: #000;
-    color: #fff;
     margin-top: 60px;
     margin-bottom: 40px;
     cursor: pointer;
@@ -192,7 +191,12 @@ button{
 
 button:hover{
     background: #444242;
-    transition: all 0.7s;
+    transition: all 0.5s;
+}
+
+button a{
+    text-decoration: none;
+    color: #fff;
 }
 
 
