@@ -24,8 +24,13 @@ Upstart resol la manca de xarxa de contactes i la inseguretat dels nous emprened
 - **Funcionalitats**:Fòrum de discussió, perfils de mentor/emprenedor, protecció de dades de la idea i sistema de recompenses per participació.
 
 ## 4. Material del projecte
+-**Hardware**: Per al maquinari senzillament hem necessitat uns equips i connexió a internet per poder desenvolupar el projecte i una Raspberry per desplegar-lo.
+-**Software**: Hem utilitzat Visual Studio Code (per a tota la part de codi), intel·ligències artificials (per donar suport al codi) i Supabase (per a la creació de la base de dades).
 ## 5. Desenvolupament i desplegament
+- Per desenvolupar la idea, primer de tot hem fet uns prototips senzills per tenir la idea de com seria la nostra pàgina web. Una vegada ja teníem la idea clara, amb HTML i CSS hem construït les bases de la pàgina web, amb tota l'estètica i estructura. Posteriorment, s'ha utilitzat JavaScript per a totes les interaccions. També s'ha fet ús de la IA com a suport per al codi.
+- Una vegada construït tot, per desplegar el projecte s'ha fet mitjançant Vercel i GitHub Pages.
 ## 6. Planificació
+
 ### 7. Diagrama de Gantt
 ```mermaid
 gantt
