@@ -293,15 +293,15 @@
     </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // Configuración
-    const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Establecer conexión con SupaBase
+    const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'; // Guarda la direción de la base de datos en la nube
+    const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'; // La Anon Key és la llave publica para que pueda hablar con SupaBase de forma segura.
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); //Se crea un mensajero, cada vez que se utilitza supabase utilizaremos "_supabase" dandole ordenes atraves de esta variable a Supabase.
 
-    async function gestionarHeader() {
-        const { data: { user } } = await _supabase.auth.getUser();
+    async function gestionarHeader() { //Async lo que hace esperemos que haya una respuesta para poder seguir
+        const { data: { user } } = await _supabase.auth.getUser(); //Aqui preguntamos si hay alguien con la sesión iniciada donde la respuesta se guarda en la variable user
         
-        // Corregido: Buscamos por CLASE ya que en tu HTML usaste class="lg"
+        // Localizamos los elementos HTML (Boton de Login, El contenedor de perfil i la Imagen de avatar)
         const loginContainer = document.querySelector('.lg'); 
         const userProfile = document.getElementById('user-profile');
         const userAvatar = document.getElementById('user-avatar');
@@ -312,7 +312,7 @@
             userProfile.style.display = 'flex';
             
             // Corregido: URL limpia sin espacios para que cargue la imagen
-            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`; //Aqui agarramos una API donde se genera un avatar con las iniciales de los Nombres
         } else {
             // Si no hay: Mostrar login, ocultar perfil
             if(loginContainer) loginContainer.style.display = 'block';
@@ -321,14 +321,16 @@
     }
 
     // Lógica para cerrar sesión
-    document.getElementById('logoutButton').addEventListener('click', async () => {
-        const { error } = await _supabase.auth.signOut();
+    document.getElementById('logoutButton').addEventListener('click', async () => {  //    Se queda escuchando hasta que alguien haga clic en Salir
+        const { error } = await _supabase.auth.signOut(); // Borra la sesión de este navegador, si algo sale mal se guarda en error
         if (error) console.log("Error al salir:", error.message);
         window.location.reload(); 
+        //Si hubo un fallo, lo avisa en la consola y despues recarga la página. Al recargar, el codigo vuelve a empezar y como no encuentra usuario muestra el boton de Login nuevamente
     });
 
+
     // Ejecutar al cargar
-    gestionarHeader();
+    gestionarHeader(); // Llama a la función principal en cuanto se carga el script. Sin esta línea, todo lo anterior estaría definido pero nunca se ejecutaría.
 </script>
 </body>
 </html>
