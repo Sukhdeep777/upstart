@@ -94,8 +94,7 @@
             // Guardar en tabla 'users'
             const { error: dbError } = await _supabase
                 .from('users') 
-                .insert([{ nombre, apellido, edad: parseInt(edad) }])
-
+                .insert([{ nombre, apellido }])
             if (dbError) {
                 alert("Error DB: " + dbError.message);
                 console.error(dbError);
