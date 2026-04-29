@@ -153,39 +153,37 @@
         });
  
         async function validateEmailDomain(email) {
-            // Función asíncrona que verifica si el dominio del email tiene registros MX reales
-            // (registros MX = indican que ese dominio puede recibir correos)
             emailFeedback.innerHTML = `<p class="text-gray-500 text-sm">Verificando dominio...</p>`;
-            // Muestra mensaje de espera mientras se consulta la API
+
             try {
                 const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
-                // Llama a la API gratuita eva.pingutil.com pasando el email como parámetro
-                // encodeURIComponent convierte caracteres especiales del email para que sea una URL válida
-                const json = await res.json();
-                // Convierte la respuesta a un objeto JavaScript
- 
-                // json.data.valid      → true si el dominio existe y tiene registros MX
-                // json.data.disposable → true si es un email temporal/desechable (lo rechazamos)
-                if (json.status === 'success') {
-                    const { valid, disposable } = json.data;
-                    // Desestructura los campos que necesitamos de la respuesta
-                    if (!valid) {
-                        showFeedback(emailFeedback, 'El dominio del email no existe o no puede recibir correos.', false);
-                    } else if (disposable) {
-                        showFeedback(emailFeedback, 'No se permiten emails temporales o desechables.', false);
-                    } else {
-                        showFeedback(emailFeedback, 'Email válido.', true);
-                    }
-                } else {
-                    // Si la API devuelve un estado distinto a 'success', avisamos al usuario
-                    showFeedback(emailFeedback, 'No se pudo verificar el dominio. Asegúrate de que sea correcto.', false);
+
+                if (!res.ok) {
+                    throw new Error("HTTP error");
                 }
+
+                const json = await res.json(); // 👈 NO uses text()
+
+                if (json.status !== 'success') {
+                    showFeedback(emailFeedback, 'No se pudo verificar el dominio.', false);
+                    return;
+                }
+
+                const { valid, disposable } = json.data;
+
+                if (!valid) {
+                    showFeedback(emailFeedback, 'El dominio no existe o no puede recibir correos.', false);
+                } else if (disposable) {
+                    showFeedback(emailFeedback, 'No se permiten emails temporales.', false);
+                } else {
+                    showFeedback(emailFeedback, 'Email válido.', true);
+                }
+
             } catch (err) {
-                // Si hay un error de red al conectar con la API, avisamos sin bloquear
-                showFeedback(emailFeedback, 'No se pudo verificar el dominio (error de red).', false);
+                console.warn(err);
+                showFeedback(emailFeedback, 'Error de conexión con la API.', false);
             }
         }
- 
         button.addEventListener('click', async () => {
             // Evento cuando haces click en el botón (función asíncrona)
             // "asíncrona" significa que puede esperar a que algo termine (por ejemplo una base de datos o una API)
@@ -241,34 +239,32 @@
             button.disabled = true;
             button.textContent = 'Verificando...';
             // Deshabilita el botón y cambia su texto para evitar dobles envíos mientras verifica
+
+            let emailOk = false;
+
             try {
                 const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
-                // Llama de nuevo a la API para confirmar que el dominio es válido
                 const json = await res.json();
-                // Convierte la respuesta a objeto JavaScript
- 
-                if (json.status === 'success') {
-                    const { valid, disposable } = json.data;
-                    // Desestructura los campos de la respuesta
-                    if (!valid) {
-                        alert('El dominio del email no existe o no puede recibir correos. Usa un email real.');
+
+                if (json.status !== 'success') {
+                    console.warn('API falló, se permite continuar');
+                    emailOk = true; // 👈 decisión: no bloquear
+                } else {
+                    const { valid, disposable, mx_records } = json.data;
+
+                    emailOk = valid && !disposable && mx_records && mx_records.length > 0;
+
+                    if (!emailOk) {
+                        alert('Email no válido');
                         button.disabled = false;
                         button.textContent = 'Crear cuenta';
                         return;
-                        // Detiene el registro si el dominio no existe
-                    }
-                    if (disposable) {
-                        alert('No se permiten emails temporales o desechables.');
-                        button.disabled = false;
-                        button.textContent = 'Crear cuenta';
-                        return;
-                        // Detiene el registro si el email es desechable
                     }
                 }
-                // Si la API no responde correctamente dejamos pasar (no bloqueamos al usuario por fallo de la API)
-            } catch (err) {
-                console.warn('Email domain check failed on submit:', err);
-                // Registra el error en consola pero no bloquea el registro
+
+            } catch (error) {
+                console.warn('Error API, se permite continuar');
+                emailOk = true;
             }
  
             // --- REGISTRO EN SUPABASE ---
