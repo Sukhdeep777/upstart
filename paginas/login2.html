@@ -37,9 +37,16 @@
     </div>
     <script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
+        // Guarda la URL del proyecto del supabase
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'
+        // Guarda la clave pública (anon key) para acceder a Supabase
         const { createClient } = supabase;
+        // Toma la función createClient que está dentro del objeto "supabase"
+        // y la guarda en una variable llamada createClient
+        // (esto se llama desestructuración en JavaScript)
+        // Así luego podremos usar createClient() directamente sin escribir supabase.createClient()
         const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Crea el cliente de conexión a Supabase usando la URL y la clave, y lo guarda en la variable _supabase
 
         let password = document.querySelector('#password');
         let confirmPassword = document.querySelector('#confirmPassword');
@@ -63,45 +70,69 @@
 
         password.addEventListener("input", passwordValidation)
         confirmPassword.addEventListener("input", passwordValidation)
+        
         button.addEventListener('click', async () => {
+            // Evento cuando haces click en el botón (función asíncrona)
+            // "asíncrona" significa que puede esperar a que algo termine (por ejemplo una base de datos o una API)
+            // sin bloquear el resto del programa mientras espera
             const nombre = document.querySelector('#nombre').value.trim();
+            // Obtiene nombre sin espacios
             const apellido = document.querySelector('#apellido').value.trim();
+            // Obtiene apellido sin espacios
             const email = document.querySelector('#email').value.trim();
+            // Obtiene email sin espacios
             const edad = parseInt(document.querySelector('#edad').value);
+            // Convierte edad a número entero
             const pass = password.value;
+            // Guarda contraseña en variable para usarla después
 
             // --- VALIDACIONES ESTRICTAS ---
             
             // 1. Edad
             if (edad > 99 || edad < 1) {
+                // Comprueba que la edad esté entre 1 y 99
                 alert("Edad no permitida. Debe ser entre 1 y 99 años.");
+                // Muestra alerta
                 return;
+                // Detiene el proceso
             }
 
             // 2. Formato de correo y dominios oficiales
-            const dominiosProhibidos = ['gsdfa.com', 'test.com', 'inventado.com']; // Puedes añadir los que quieras bloquear
+            const dominiosProhibidos = ['gsdfa.com', 'test.com', 'inventado.com']; 
+            // Lista de dominios bloqueados
             const dominioArr = email.split('@');
+            // Divide email en usuario y dominio
             
             if (dominioArr.length < 2 || dominiosProhibidos.includes(dominioArr[1].toLowerCase())) {
+                // Si no hay dominio válido o está prohibido
                 alert("Este dominio de correo no está permitido.");
+                // Muestra alerta
                 return;
+                // Detiene ejecución
             }
 
             // 3. Confirmación de contraseña
             if (pass !== confirmPassword.value) {
+                // Si las contraseñas no coinciden
                 alert("Las contraseñas no coinciden.");
+                // Muestra alerta
                 return;
+                // Detiene ejecución
             }
 
             // --- REGISTRO EN SUPABASE ---
             const { data, error: authError } = await _supabase.auth.signUp({
+                // Crea usuario en Supabase Auth
                 email: email,
                 password: pass,
             });
 
             if (authError) {
+                // Si hay error en registro
                 alert("Error: " + authError.message);
+                // Muestra alerta
                 return;
+                // Detiene ejecución
             }
 
             if (data.user) {
@@ -116,9 +147,12 @@
                     }]);
 
                 if (dbError) {
+                    // Si hay error al guardar en la base de datos
                     alert("Error al guardar datos: " + dbError.message);
                 } else {
+                    // Si todo sale bien
                     alert("¡Registro exitoso! Por favor, verifica tu bandeja de entrada.");
+                    // Muestra alerta
                 }
             }
         });
