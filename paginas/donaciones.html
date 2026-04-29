@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
     <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
@@ -30,10 +31,16 @@
                 </li>
             </ul>
         </nav>
-        <div class="ml-[10px]">
+        <div class="lg ml-[10px]">
             <div class="border-2 border-[#20b3b3] rounded-[20px]">
                 <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block">Log in</a>
             </div>
+        </div>
+        <div id="user-profile" class="hidden items-center gap-3 ml-[10px]" style="display:none;">
+            <img id="user-avatar" src="" alt="Avatar" class="w-[42px] h-[42px] rounded-full border-2 border-[#20b3b3]">
+            <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
+                Salir
+            </button>
         </div>
     </header>
 <div class="flex justify-center items-center px-4 py-16">
@@ -87,10 +94,40 @@
     </div>
 </div>
 
-<script>
-    function setAmount(val) {
-        document.getElementById('cantidad').value = val;
-    }
-</script>
+    <script>
+        function setAmount(val) {
+            document.getElementById('cantidad').value = val;
+        }
+    </script>
+    <script>
+        const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function gestionarHeader() {
+            const { data: { user } } = await _supabase.auth.getUser();
+
+            const loginContainer = document.querySelector('.lg');
+            const userProfile = document.getElementById('user-profile');
+            const userAvatar = document.getElementById('user-avatar');
+
+            if (user) {
+                if (loginContainer) loginContainer.style.display = 'none';
+                userProfile.style.display = 'flex';
+                userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+            } else {
+                if (loginContainer) loginContainer.style.display = 'block';
+                userProfile.style.display = 'none';
+            }
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', async () => {
+            const { error } = await _supabase.auth.signOut();
+            if (error) console.log("Error al salir:", error.message);
+            window.location.reload();
+        });
+
+        gestionarHeader();
+    </script>
 </body>
 </html>
