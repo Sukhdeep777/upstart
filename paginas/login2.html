@@ -8,34 +8,45 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
 </head>
-<body class="bg-gray-600 bg-gradient-to-br from-gray-400 to-[#20b3b3] flex items-center justify-center h-screen">
+<body class="bg-gray-600 bg-gradient-to-br from-gray-400 to-[#20b3b3] flex items-center justify-center min-h-screen py-10">
     <div class="flex-col items-center w-[600px] h-[auto] bg-gray-100 rounded-xl gap-8 flex">
-        <div class=" w-[500px] text-center"><p class="text-6xl text-blue-400 mt-8 font-bold">Crea tu usuario</p></div>
+        <div class="w-[500px] text-center"><p class="text-6xl text-blue-400 mt-8 font-bold">Crea tu usuario</p></div>
         <div class="flex flex-col">
-            <label for=""class="font-semibold mb-1">Nombre:</label>
-            <input id="nombre" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none " type="text" placeholder="Escriba su nombre, ejemplo: Juan">
-            <label for="" class="font-semibold mb-1">Apellido:</label>
-            <input id="apellido" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none " type="text" placeholder="Escriba su apellido, ejemplo: Garcia">
-            <label for="" class="font-semibold mb-1">Edad:</label>
-            <input id="edad" class="bg-gray-300  transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none " type="number" max="99" min="1" placeholder="Escriba su edad (1-99)">
+            <label class="font-semibold mb-1">Nombre:</label>
+            <input id="nombre" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none" type="text" placeholder="Escriba su nombre, ejemplo: Juan">
+ 
+            <label class="font-semibold mb-1">Apellido:</label>
+            <input id="apellido" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none" type="text" placeholder="Escriba su apellido, ejemplo: Garcia">
+ 
+            <!-- EDAD con validación en tiempo real -->
+            <label class="font-semibold mb-1">Edad:</label>
+            <input id="edad" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-1 px-3 py-2 outline-none" type="number" max="99" min="1" placeholder="Escriba su edad (1-99)">
+            <div id="edadFeedback" class="mb-4"></div>
+ 
+            <!-- EMAIL con validación de dominio real -->
             <label for="email" class="font-semibold mb-1">Email:</label>
-            <input id="email" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none" type="email" placeholder="ejemplo@correo.com">
-            <label for="" class="font-semibold mb-1">Contraseña:</label>
-            <input id="password" type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] mb-5 text-xl px-3 py-2 outline-none">
-            <div id="resultPasswordInvalid">
-            </div>
-            <label for="" class="font-semibold mb-1">Confirmar Contraseña:</label>
-            <input id="confirmPassword" type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-5 px-3 py-2 outline-none">
-            <div id="passwordMatch">
-            </div>        
+            <input id="email" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-1 px-3 py-2 outline-none" type="email" placeholder="ejemplo@correo.com">
+            <div id="emailFeedback" class="mb-4"></div>
+ 
+            <label class="font-semibold mb-1">Contraseña:</label>
+            <input id="password" type="password" placeholder="Crea una contraseña con 7-8 caracteres" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] mb-1 text-xl px-3 py-2 outline-none">
+            <div id="resultPasswordInvalid" class="mb-4"></div>
+ 
+            <label class="font-semibold mb-1">Confirmar Contraseña:</label>
+            <input id="confirmPassword" type="password" placeholder="Repite tu contraseña" class="bg-gray-300 transition duration-500 rounded-lg w-[500px] text-xl mb-1 px-3 py-2 outline-none">
+            <div id="passwordMatch" class="mb-4"></div>
         </div>
+ 
         <div class="flex justify-center">
-            <button id="button" class="hover:bg-blue-400 hover:scale-110 transition duration-500 cursor-pointer justify-center bg-[#00c9c9] w-[200px] h-[50px] rounded-xl text-xl ">Crear cuenta</button>
+            <button id="button" class="hover:bg-blue-400 hover:scale-110 transition duration-500 cursor-pointer justify-center bg-[#00c9c9] w-[200px] h-[50px] rounded-xl text-xl">
+                Crear cuenta
+            </button>
         </div>
         <div class="mb-10">
-            <p>Ya tienes una cuenta? <a href="login.html" class="text-blue-600 underline">Log In</a></p>
+            <p>¿Ya tienes una cuenta? <a href="login.html" class="text-blue-600 underline">Log In</a></p>
         </div>
     </div>
+ 
     <script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
         // Guarda la URL del proyecto del supabase
@@ -48,71 +59,175 @@
         // Así luego podremos usar createClient() directamente sin escribir supabase.createClient()
         const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
         // Crea el cliente de conexión a Supabase usando la URL y la clave, y lo guarda en la variable _supabase
-
-        let password = document.querySelector('#password');
-        let confirmPassword = document.querySelector('#confirmPassword');
-        let button = document.querySelector("#button")
-        let invalidPass = document.querySelector("#resultPasswordInvalid")
-        let passwordMatch = document.querySelector("#passwordMatch")
-
+ 
+        let password         = document.querySelector('#password');
+        let confirmPassword  = document.querySelector('#confirmPassword');
+        let button           = document.querySelector("#button");
+        let invalidPass      = document.querySelector("#resultPasswordInvalid");
+        let passwordMatch    = document.querySelector("#passwordMatch");
+ 
+        const edadInput      = document.querySelector('#edad');
+        // Referencia al campo de edad
+        const emailInput     = document.querySelector('#email');
+        // Referencia al campo de email
+        const edadFeedback   = document.querySelector('#edadFeedback');
+        // Div donde se mostrará el mensaje de validación de la edad
+        const emailFeedback  = document.querySelector('#emailFeedback');
+        // Div donde se mostrará el mensaje de validación del email
+ 
+        // ─── Helper: muestra mensaje de validación verde o rojo ─────────────────
+        function showFeedback(el, msg, ok) {
+            // ok=true → verde (válido), ok=false → rojo (error)
+            const color = ok ? 'text-green-500 bg-green-200' : 'text-red-500 bg-red-200';
+            el.innerHTML = `<p class="${color} flex items-center gap-1 rounded-xl px-3 py-2 w-fit text-sm font-medium">${ok ? '✓' : '✗'} ${msg}</p>`;
+        }
+        function clearFeedback(el) { el.innerHTML = ''; }
+        // Limpia el mensaje de feedback de un elemento
+ 
+        // ─── Validación de edad en tiempo real ───────────────────────────────────
+        edadInput.addEventListener('input', () => {
+            // Se ejecuta cada vez que el usuario escribe en el campo edad
+            const val = parseInt(edadInput.value);
+            // Convierte el valor del input a número entero
+ 
+            if (!edadInput.value) { clearFeedback(edadFeedback); return; }
+            // Si el campo está vacío, limpia el feedback y sale
+ 
+            if (isNaN(val) || val < 1 || val > 99) {
+                // Comprueba que sea un número entre 1 y 99
+                showFeedback(edadFeedback, 'La edad debe estar entre 1 y 99 años.', false);
+            } else {
+                showFeedback(edadFeedback, 'Edad válida.', true);
+            }
+        });
+ 
+        // ─── Validación de contraseña en tiempo real ─────────────────────────────
         function passwordValidation(){
+            if (!password.value) { clearFeedback(invalidPass); clearFeedback(passwordMatch); return; }
+            // Si el campo contraseña está vacío, limpia los feedbacks y sale
+ 
             if (password.value.length < 7){
+                // Comprueba que la contraseña tenga al menos 7 caracteres
                 invalidPass.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no es valida</p>`
             } else {
                 invalidPass.innerHTML = `<p class="mb-4 text-green-500 bg-green-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña es valida</p>`
             }
-            
+ 
             if(confirmPassword.value.length > 0 && confirmPassword.value !== password.value){
+                // Si el campo confirmar contraseña tiene contenido y no coincide con la contraseña
                 passwordMatch.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no coincide</p>`
             } else {
                 passwordMatch.innerHTML = ""
+                // Si el campo confirmar está vacío o coincide, limpia el mensaje
             }
         }
-
+ 
         password.addEventListener("input", passwordValidation)
         confirmPassword.addEventListener("input", passwordValidation)
-        
+ 
+        // ─── Validación de email: formato + dominio real ──────────────────────────
+        let emailTimer = null;
+        // Variable para guardar el temporizador y cancelarlo si el usuario sigue escribiendo
+ 
+        emailInput.addEventListener('input', () => {
+            // Se ejecuta cada vez que el usuario escribe en el campo email
+            clearTimeout(emailTimer);
+            // Cancela el temporizador anterior para no llamar a la API en cada tecla
+            const email = emailInput.value.trim();
+            // Obtiene el email sin espacios
+ 
+            if (!email) { clearFeedback(emailFeedback); return; }
+            // Si el campo está vacío, limpia el feedback y sale
+ 
+            // Verificación rápida de formato antes de llamar a la API
+            const formatOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+            // Expresión regular que comprueba que el email tenga el formato usuario@dominio.extension
+            if (!formatOk) {
+                showFeedback(emailFeedback, 'Formato de email inválido.', false);
+                return;
+                // Si el formato no es válido, muestra error y no llama a la API
+            }
+ 
+            // Espera 600 ms tras el último teclazo para no saturar la API
+            emailTimer = setTimeout(() => validateEmailDomain(email), 600);
+        });
+ 
+        async function validateEmailDomain(email) {
+            // Función asíncrona que verifica si el dominio del email tiene registros MX reales
+            // (registros MX = indican que ese dominio puede recibir correos)
+            emailFeedback.innerHTML = `<p class="text-gray-500 text-sm">Verificando dominio...</p>`;
+            // Muestra mensaje de espera mientras se consulta la API
+            try {
+                const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
+                // Llama a la API gratuita eva.pingutil.com pasando el email como parámetro
+                // encodeURIComponent convierte caracteres especiales del email para que sea una URL válida
+                const json = await res.json();
+                // Convierte la respuesta a un objeto JavaScript
+ 
+                // json.data.valid      → true si el dominio existe y tiene registros MX
+                // json.data.disposable → true si es un email temporal/desechable (lo rechazamos)
+                if (json.status === 'success') {
+                    const { valid, disposable } = json.data;
+                    // Desestructura los campos que necesitamos de la respuesta
+                    if (!valid) {
+                        showFeedback(emailFeedback, 'El dominio del email no existe o no puede recibir correos.', false);
+                    } else if (disposable) {
+                        showFeedback(emailFeedback, 'No se permiten emails temporales o desechables.', false);
+                    } else {
+                        showFeedback(emailFeedback, 'Email válido.', true);
+                    }
+                } else {
+                    // Si la API devuelve un estado distinto a 'success', avisamos al usuario
+                    showFeedback(emailFeedback, 'No se pudo verificar el dominio. Asegúrate de que sea correcto.', false);
+                }
+            } catch (err) {
+                // Si hay un error de red al conectar con la API, avisamos sin bloquear
+                showFeedback(emailFeedback, 'No se pudo verificar el dominio (error de red).', false);
+            }
+        }
+ 
         button.addEventListener('click', async () => {
             // Evento cuando haces click en el botón (función asíncrona)
             // "asíncrona" significa que puede esperar a que algo termine (por ejemplo una base de datos o una API)
             // sin bloquear el resto del programa mientras espera
-            const nombre = document.querySelector('#nombre').value.trim();
+            const nombre   = document.querySelector('#nombre').value.trim();
             // Obtiene nombre sin espacios
             const apellido = document.querySelector('#apellido').value.trim();
             // Obtiene apellido sin espacios
-            const email = document.querySelector('#email').value.trim();
+            const email    = emailInput.value.trim();
             // Obtiene email sin espacios
-            const edad = parseInt(document.querySelector('#edad').value);
+            const edad     = parseInt(edadInput.value);
             // Convierte edad a número entero
-            const pass = password.value;
+            const pass     = password.value;
             // Guarda contraseña en variable para usarla después
-
+ 
             // --- VALIDACIONES ESTRICTAS ---
-            
-            // 1. Edad
-            if (edad > 99 || edad < 1) {
+ 
+            // 1. Campos vacíos
+            if (!nombre || !apellido || !email || !edadInput.value || !pass || !confirmPassword.value) {
+                alert('Por favor, rellena todos los campos.');
+                return;
+                // Detiene el proceso si algún campo está vacío
+            }
+ 
+            // 2. Edad
+            if (isNaN(edad) || edad < 1 || edad > 99) {
                 // Comprueba que la edad esté entre 1 y 99
                 alert("Edad no permitida. Debe ser entre 1 y 99 años.");
                 // Muestra alerta
                 return;
                 // Detiene el proceso
             }
-
-            // 2. Formato de correo y dominios oficiales
-            const dominiosProhibidos = ['gsdfa.com', 'test.com', 'inventado.com']; 
-            // Lista de dominios bloqueados
-            const dominioArr = email.split('@');
-            // Divide email en usuario y dominio
-            
-            if (dominioArr.length < 2 || dominiosProhibidos.includes(dominioArr[1].toLowerCase())) {
-                // Si no hay dominio válido o está prohibido
-                alert("Este dominio de correo no está permitido.");
-                // Muestra alerta
+ 
+            // 3. Contraseña mínima
+            if (pass.length < 7) {
+                // Comprueba que la contraseña tenga al menos 7 caracteres
+                alert('La contraseña debe tener al menos 7 caracteres.');
                 return;
                 // Detiene ejecución
             }
-
-            // 3. Confirmación de contraseña
+ 
+            // 4. Confirmación de contraseña
             if (pass !== confirmPassword.value) {
                 // Si las contraseñas no coinciden
                 alert("Las contraseñas no coinciden.");
@@ -120,44 +235,85 @@
                 return;
                 // Detiene ejecución
             }
-
+ 
+            // 5. Verificación final del dominio del email (antes de enviar a Supabase)
+            // Se vuelve a verificar aquí por si el usuario no esperó al feedback del input
+            button.disabled = true;
+            button.textContent = 'Verificando...';
+            // Deshabilita el botón y cambia su texto para evitar dobles envíos mientras verifica
+            try {
+                const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
+                // Llama de nuevo a la API para confirmar que el dominio es válido
+                const json = await res.json();
+                // Convierte la respuesta a objeto JavaScript
+ 
+                if (json.status === 'success') {
+                    const { valid, disposable } = json.data;
+                    // Desestructura los campos de la respuesta
+                    if (!valid) {
+                        alert('El dominio del email no existe o no puede recibir correos. Usa un email real.');
+                        button.disabled = false;
+                        button.textContent = 'Crear cuenta';
+                        return;
+                        // Detiene el registro si el dominio no existe
+                    }
+                    if (disposable) {
+                        alert('No se permiten emails temporales o desechables.');
+                        button.disabled = false;
+                        button.textContent = 'Crear cuenta';
+                        return;
+                        // Detiene el registro si el email es desechable
+                    }
+                }
+                // Si la API no responde correctamente dejamos pasar (no bloqueamos al usuario por fallo de la API)
+            } catch (err) {
+                console.warn('Email domain check failed on submit:', err);
+                // Registra el error en consola pero no bloquea el registro
+            }
+ 
             // --- REGISTRO EN SUPABASE ---
             const { data, error: authError } = await _supabase.auth.signUp({
                 // Crea usuario en Supabase Auth
                 email: email,
                 password: pass,
             });
-
+ 
             if (authError) {
                 // Si hay error en registro
                 alert("Error: " + authError.message);
                 // Muestra alerta
+                button.disabled = false;
+                button.textContent = 'Crear cuenta';
                 return;
                 // Detiene ejecución
             }
-
+ 
             if (data.user) {
                 // Insertar en la tabla 'users'
                 const { error: dbError } = await _supabase
                     .from('users')
-                    .insert([{ 
-                        id: data.user.id, 
-                        nombre: nombre, 
-                        apellido: apellido, 
-                        email: email
+                    .insert([{
+                        id: data.user.id,
+                        nombre: nombre,
+                        apellido: apellido,
+                        email: email,
                     }]);
-
+ 
                 if (dbError) {
                     alert("Error al guardar datos en la tabla: " + dbError.message);
                 } else {
                     // Mensaje de éxito
                     alert("¡Cuenta creada con éxito!");
-                    
+ 
                     // Redirección al inicio (index.html o tu página principal)
-                    window.location.href = '../index.html'; 
+                    window.location.href = '../index.html';
                 }
             }
+ 
+            button.disabled = false;
+            button.textContent = 'Crear cuenta';
+            // Reactiva el botón al terminar el proceso
         });
-</script>
+    </script>
 </body>
 </html>
