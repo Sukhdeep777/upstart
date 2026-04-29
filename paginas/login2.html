@@ -67,49 +67,49 @@
         button.addEventListener('click', async () => {
             const nombre = document.querySelector('#nombre').value;
             const apellido = document.querySelector('#apellido').value;
-            const edad = document.querySelector('#edad').value;
             const email = document.querySelector('#email').value;
             const pass = password.value;
 
-            // 1. Validaciones básicas
             if (!nombre || !apellido || !email || !pass || pass !== confirmPassword.value) {
-                alert("Revisa que todos los campos estén completos y las contraseñas coincidan.");
+                alert("Revisa que todos los campos estén completos.");
                 return;
             }
 
-            // 2. Crear el usuario en Supabase Auth
-            const { data: authData, error: authError } = await _supabase.auth.signUp({
+            // 1. Crear el usuario en Auth
+            const { data, error: authError } = await _supabase.auth.signUp({
                 email: email,
                 password: pass,
             });
 
+            // Manejo de error de autenticación (ej: email mal formado o ya existe)
             if (authError) {
-                alert("Error al crear cuenta: " + authError.message);
+                alert("Error en Auth: " + authError.message);
                 return;
             }
 
-            // 3. Insertar datos adicionales en tu tabla 'users'
-            // IMPORTANTE: El 'id' debe ser el mismo que el que generó Auth (authData.user.id)
-            const { error: dbError } = await _supabase
-                .from('users')
-                .insert([
-                    { 
-                        id: authData.user.id, 
-                        nombre: nombre, 
-                        apellido: apellido, 
-                        email: email,
-                        created_at: new Date().toISOString()
-                    }
-                ]);
+            // 2. Insertar en la tabla 'users'
+            // Usamos data.user para obtener el ID generado
+            if (data.user) {
+                const { error: dbError } = await _supabase
+                    .from('users')
+                    .insert([
+                        { 
+                            id: data.user.id, 
+                            nombre: nombre, 
+                            apellido: apellido, 
+                            email: email
+                        }
+                    ]);
 
-            if (dbError) {
-                alert("Error al guardar datos: " + dbError.message);
-                console.error(dbError);
-            } else {
-                alert("¡Cuenta creada con éxito! Revisa tu email para confirmar.");
-                window.location.href = "../index.html"; 
+                if (dbError) {
+                    alert("Error en Base de Datos: " + dbError.message);
+                    console.error(dbError);
+                } else {
+                    alert("¡Cuenta creada con éxito!");
+                    window.location.href = "../index.html"; 
+                }
             }
-        });
+});
 </script>
 </body>
 </html>
