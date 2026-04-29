@@ -230,25 +230,6 @@ main section{
     font-size: 22px;
 }
 
-button{
-    background: #000;
-    margin-top: 60px;
-    margin-bottom: 40px;
-    cursor: pointer;
-    padding: 30px 50px;
-    border-radius: 30px;
-    font-size: 1.2em;
-}
-
-button:hover{
-    background: #444242;
-    transition: all 0.5s;
-}
-
-button a{
-    text-decoration: none;
-    color: #fff;
-}
 
 
 .rk{

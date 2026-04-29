@@ -25,8 +25,14 @@
             </ul>
         </nav>
         <div class="usuario">
-            <div class="lg">
-                <p><a href="paginas/login.html">Log in</a></p>
+            <div id="auth-section">
+                <div class="lg">
+                    <p><a href="paginas/login.html">Log in</a></p>
+                </div>
+                <div id="user-profile" style="display: none; align-items: center; gap: 10px;">
+                    <img id="user-avatar" src="" alt="Perfil" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #00c9c9;">
+                    <button id="logoutButton" style="background: none; border: none; color: red; cursor: pointer; text-decoration: underline; font-size: 12px;">Salir</button>
+                </div>                
             </div>
         </div>
     </header>
@@ -285,5 +291,44 @@
             <p><a href="paginas/contacto.html">CONTACTO</a></p>
         </div>
     </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Configuración
+    const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function gestionarHeader() {
+        const { data: { user } } = await _supabase.auth.getUser();
+        
+        // Corregido: Buscamos por CLASE ya que en tu HTML usaste class="lg"
+        const loginContainer = document.querySelector('.lg'); 
+        const userProfile = document.getElementById('user-profile');
+        const userAvatar = document.getElementById('user-avatar');
+
+        if (user) {
+            // Si hay usuario: Ocultar login, mostrar perfil
+            if(loginContainer) loginContainer.style.display = 'none';
+            userProfile.style.display = 'flex';
+            
+            // Corregido: URL limpia sin espacios para que cargue la imagen
+            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+        } else {
+            // Si no hay: Mostrar login, ocultar perfil
+            if(loginContainer) loginContainer.style.display = 'block';
+            userProfile.style.display = 'none';
+        }
+    }
+
+    // Lógica para cerrar sesión
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+        const { error } = await _supabase.auth.signOut();
+        if (error) console.log("Error al salir:", error.message);
+        window.location.reload(); 
+    });
+
+    // Ejecutar al cargar
+    gestionarHeader();
+</script>
 </body>
 </html>
