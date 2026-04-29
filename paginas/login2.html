@@ -63,53 +63,65 @@
 
         password.addEventListener("input", passwordValidation)
         confirmPassword.addEventListener("input", passwordValidation)
-
         button.addEventListener('click', async () => {
-            const nombre = document.querySelector('#nombre').value;
-            const apellido = document.querySelector('#apellido').value;
-            const email = document.querySelector('#email').value;
+            const nombre = document.querySelector('#nombre').value.trim();
+            const apellido = document.querySelector('#apellido').value.trim();
+            const email = document.querySelector('#email').value.trim();
+            const edad = parseInt(document.querySelector('#edad').value);
             const pass = password.value;
 
-            if (!nombre || !apellido || !email || !pass || pass !== confirmPassword.value) {
-                alert("Revisa que todos los campos estén completos.");
+            // --- VALIDACIONES ESTRICTAS ---
+            
+            // 1. Edad
+            if (edad > 99 || edad < 1) {
+                alert("Edad no permitida. Debe ser entre 1 y 99 años.");
                 return;
             }
 
-            // 1. Crear el usuario en Auth
+            // 2. Formato de correo y dominios oficiales
+            const dominiosProhibidos = ['gsdfa.com', 'test.com', 'inventado.com']; // Puedes añadir los que quieras bloquear
+            const dominioArr = email.split('@');
+            
+            if (dominioArr.length < 2 || dominiosProhibidos.includes(dominioArr[1].toLowerCase())) {
+                alert("Este dominio de correo no está permitido.");
+                return;
+            }
+
+            // 3. Confirmación de contraseña
+            if (pass !== confirmPassword.value) {
+                alert("Las contraseñas no coinciden.");
+                return;
+            }
+
+            // --- REGISTRO EN SUPABASE ---
             const { data, error: authError } = await _supabase.auth.signUp({
                 email: email,
                 password: pass,
             });
 
-            // Manejo de error de autenticación (ej: email mal formado o ya existe)
             if (authError) {
-                alert("Error en Auth: " + authError.message);
+                alert("Error: " + authError.message);
                 return;
             }
 
-            // 2. Insertar en la tabla 'users'
-            // Usamos data.user para obtener el ID generado
             if (data.user) {
+                // Insertar en la tabla 'users'
                 const { error: dbError } = await _supabase
                     .from('users')
-                    .insert([
-                        { 
-                            id: data.user.id, 
-                            nombre: nombre, 
-                            apellido: apellido, 
-                            email: email
-                        }
-                    ]);
+                    .insert([{ 
+                        id: data.user.id, 
+                        nombre: nombre, 
+                        apellido: apellido, 
+                        email: email
+                    }]);
 
                 if (dbError) {
-                    alert("Error en Base de Datos: " + dbError.message);
-                    console.error(dbError);
+                    alert("Error al guardar datos: " + dbError.message);
                 } else {
-                    alert("¡Cuenta creada con éxito!");
-                    window.location.href = "../index.html"; 
+                    alert("¡Registro exitoso! Por favor, verifica tu bandeja de entrada.");
                 }
             }
-});
+        });
 </script>
 </body>
 </html>
