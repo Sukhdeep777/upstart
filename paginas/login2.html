@@ -116,9 +116,13 @@
                     }]);
 
                 if (dbError) {
-                    alert("Error al guardar datos: " + dbError.message);
+                    alert("Error al guardar datos en la tabla: " + dbError.message);
                 } else {
-                    alert("¡Registro exitoso! Por favor, verifica tu bandeja de entrada.");
+                    // Mensaje de éxito
+                    alert("¡Cuenta creada con éxito!");
+                    
+                    // Redirección al inicio (index.html o tu página principal)
+                    window.location.href = '../index.html'; 
                 }
             }
         });
