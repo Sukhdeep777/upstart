@@ -36,64 +36,45 @@
         </div>
     </div>
     <script>
-  const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
-    const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'
-    const { createClient } = supabase;
-    const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
+        const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let password = document.querySelector('#password');
-    let confirmPassword = document.querySelector('#confirmPassword');
-    let button = document.querySelector("#button")
-    let invalidPass = document.querySelector("#resultPasswordInvalid")
-    let passwordMatch = document.querySelector("#passwordMatch")
+        let password = document.querySelector('#password');
+        let confirmPassword = document.querySelector('#confirmPassword');
+        let button = document.querySelector("#button")
+        let invalidPass = document.querySelector("#resultPasswordInvalid")
+        let passwordMatch = document.querySelector("#passwordMatch")
 
-    function passwordValidation(){
-        if (password.value.length < 7){
-            invalidPass.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no es valida</p>`
-        } else {
-            invalidPass.innerHTML = `<p class="mb-4 text-green-500 bg-green-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña es valida</p>`
-        }
-        
-        if(confirmPassword.value.length > 0 && confirmPassword.value !== password.value){
-            passwordMatch.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no coincide</p>`
-        } else {
-            passwordMatch.innerHTML = ""
-        }
-    }
-
-    password.addEventListener("input", passwordValidation)
-    confirmPassword.addEventListener("input", passwordValidation)
-
-    button.addEventListener('click', async () => {
-        const nombre = document.querySelector('input[placeholder*="nombre"]').value;
-        const apellido = document.querySelector('input[placeholder*="apellido"]').value;
-        const edad = document.querySelector('input[type="number"]').value;
-        const email = document.querySelector('#email').value;
-        const pass = password.value;
-
-        if (!nombre || !apellido || !email || !pass || pass !== confirmPassword.value) {
-            alert("Revisa que todos los campos estén completos y las contraseñas coincidan.");
-            return;
+        function passwordValidation(){
+            if (password.value.length < 7){
+                invalidPass.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no es valida</p>`
+            } else {
+                invalidPass.innerHTML = `<p class="mb-4 text-green-500 bg-green-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña es valida</p>`
+            }
+            
+            if(confirmPassword.value.length > 0 && confirmPassword.value !== password.value){
+                passwordMatch.innerHTML = `<p class="mb-4 text-red-500 bg-red-200 w-[200px] flex justify-center rounded-xl px-1 py-2">La contraseña no coincide</p>`
+            } else {
+                passwordMatch.innerHTML = ""
+            }
         }
 
-        const { data: authData, error: authError } = await _supabase.auth.signUp({
-            email: email,
-            password: pass,
-        })
+        password.addEventListener("input", passwordValidation)
+        confirmPassword.addEventListener("input", passwordValidation)
 
-        if (authError) {
-            alert("Error Auth: " + authError.message);
-            return;
-        }
+        button.addEventListener('click', async () => {
+            const nombre = document.querySelector('input[placeholder*="nombre"]').value;
+            const apellido = document.querySelector('input[placeholder*="apellido"]').value;
+            const edad = document.querySelector('input[type="number"]').value;
+            const email = document.querySelector('#email').value;
+            const pass = password.value;
 
-        const { error: dbError } = await _supabase
-            .from('users')
-            .insert([{ 
-                id: authData.user.id,
-                nombre, 
-                apellido,
-                email   
-            }])
+            if (!nombre || !apellido || !email || !pass || pass !== confirmPassword.value) {
+                alert("Revisa que todos los campos estén completos y las contraseñas coincidan.");
+                return;
+            }
 
         if (dbError) {
             alert("Error DB: " + dbError.message);
