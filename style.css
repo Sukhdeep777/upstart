@@ -37,6 +37,9 @@ body{
     justify-content: center;
 }
 
+.b{
+    color: black;
+}
 
 /*  HEADER  */
 
@@ -108,6 +111,16 @@ nav ul a:hover{
 
 .lg a{
     color:#20b3b3;
+    
+}
+
+.lg:hover a{
+    color: #fff;   
+    transition: all 0.2s;
+}
+
+.lg:hover{
+    background: #20b3b3; 
 }
 
 
