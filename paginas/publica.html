@@ -58,36 +58,21 @@
                 <!-- TÍTULO -->
                 <div>
                     <label class="text-gray-500 text-sm font-bold block mb-2" for="titulo">TÍTULO DE TU IDEA</label>
-                    <input
-                        id="titulo"
-                        type="text"
-                        maxlength="80"
-                        placeholder="Ej: App para compartir recursos entre vecinos"
-                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 outline-none text-gray-700 focus:border-[#20b3b3] transition duration-300 text-base"
-                    >
+                    <input id="titulo" type="text" maxlength="80" placeholder="Ej: App para compartir recursos entre vecinos" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 outline-none text-gray-700 focus:border-[#20b3b3] transition duration-300 text-base">
                     <p class="text-right text-xs text-gray-400 mt-1"><span id="tituloCount">0</span>/80</p>
                 </div>
 
                 <!-- DESCRIPCIÓN -->
                 <div>
                     <label class="text-gray-500 text-sm font-bold block mb-2" for="descripcion">DESCRIPCIÓN</label>
-                    <textarea
-                        id="descripcion"
-                        rows="5"
-                        maxlength="500"
-                        placeholder="Explica en qué consiste tu idea, qué problema resuelve y cómo..."
-                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 outline-none resize-none text-gray-700 focus:border-[#20b3b3] transition duration-300 text-base"
-                    ></textarea>
+                    <textarea id="descripcion" rows="5" maxlength="500" placeholder="Explica en qué consiste tu idea, qué problema resuelve y cómo..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 outline-none resize-none text-gray-700 focus:border-[#20b3b3] transition duration-300 text-base"></textarea>
                     <p class="text-right text-xs text-gray-400 mt-1"><span id="descCount">0</span>/500</p>
                 </div>
 
                 <!-- IMAGEN -->
                 <div>
                     <label class="text-gray-500 text-sm font-bold block mb-2">IMAGEN DE TU IDEA</label>
-                    <div
-                        id="dropzone"
-                        class="w-full border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#20b3b3] hover:bg-[#20b3b3]/5 transition duration-300"
-                    >
+                    <div id="dropzone" class="w-full border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#20b3b3] hover:bg-[#20b3b3]/5 transition duration-300">
                         <div id="dropzoneContent">
                             <p class="text-4xl mb-2">🖼️</p>
                             <p class="text-gray-400 text-sm">Haz clic para subir una imagen</p>
@@ -120,21 +105,14 @@
                     <label class="text-gray-500 text-sm font-bold block mb-2" for="enlace">ENLACE EXTERNO (OPCIONAL)</label>
                     <div class="flex items-center border-2 border-gray-200 rounded-xl focus-within:border-[#20b3b3] transition duration-300">
                         <span class="text-gray-400 pl-4 text-sm select-none">🔗</span>
-                        <input
-                            id="enlace"
-                            type="url"
-                            placeholder="https://tu-proyecto.com"
-                            class="w-full bg-transparent px-3 py-3 outline-none text-gray-700 text-base"
-                            oninput="validateUrl(this)"
-                        >
+                        <input id="enlace" type="url" placeholder="https://tu-proyecto.com" class="w-full bg-transparent px-3 py-3 outline-none text-gray-700 text-base">
                     </div>
                     <div id="urlFeedback" class="mt-1"></div>
                 </div>
 
                 <!-- BOTÓN PUBLICAR -->
                 <button
-                    class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30 mt-2"
-                >
+                    class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30 mt-2">
                     Publicar idea →
                 </button>
 
