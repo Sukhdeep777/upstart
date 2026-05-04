@@ -109,7 +109,7 @@
                 </div>
 
                 <!-- BOTÓN PUBLICAR -->
-                <button
+                <button id="btnPublicar"
                     class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30 mt-2">
                     Publicar idea →
                 </button>
@@ -117,6 +117,199 @@
             </div>
         </div>
     </div>
+<script>
+    const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // Variables globales
+    let currentUser = null;
+    let tagsArray = [];
+    let selectedFile = null;
+
+    // ==========================================
+    // 1. GESTIONAR HEADER + PROTEGER RUTA
+    // ==========================================
+    async function gestionarHeader() {
+        const { data: { user } } = await _supabase.auth.getUser();
+
+        const loginContainer = document.querySelector('.lg');
+        const userProfile = document.getElementById('user-profile');
+        const userAvatar = document.getElementById('user-avatar');
+
+        if (user) {
+            if (loginContainer) loginContainer.style.display = 'none';
+            userProfile.style.display = 'flex';
+            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+        } else {
+            if (loginContainer) loginContainer.style.display = 'block';
+            userProfile.style.display = 'none';
+        }
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+        const { error } = await _supabase.auth.signOut();
+        if (error) console.log("Error al salir:", error.message);
+        window.location.reload();
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        gestionarHeader();
+
+        const { data: { session } } = await _supabase.auth.getSession();
+
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        currentUser = session.user;
+    });
+
+    // ==========================================
+    // 2. LÓGICA DE LA IMAGEN (Subida y Preview)
+    // ==========================================
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('imagen');
+    const dropzoneContent = document.getElementById('dropzoneContent');
+    const previewImg = document.getElementById('previewImg');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('La imagen pesa más de 5MB. Por favor, elige una más ligera.');
+                fileInput.value = '';
+                return;
+            }
+
+            selectedFile = file;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                previewImg.src = event.target.result;
+                previewImg.classList.remove('hidden');
+                dropzoneContent.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // ==========================================
+    // 3. LÓGICA DE LOS TAGS / ETIQUETAS
+    // ==========================================
+    const tagInput = document.getElementById('tagInput');
+    const tagsContainer = document.getElementById('tagsContainer');
+    const addTagBtn = tagInput.nextElementSibling;
+
+    function addTag() {
+        const tagText = tagInput.value.trim().toLowerCase();
+
+        if (tagText && tagsArray.length < 5 && !tagsArray.includes(tagText)) {
+            tagsArray.push(tagText);
+            renderTags();
+            tagInput.value = '';
+        } else if (tagsArray.length >= 5) {
+            alert('Solo puedes añadir un máximo de 5 tags.');
+        }
+    }
+
+    addTagBtn.addEventListener('click', addTag);
+
+    tagInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTag();
+        }
+    });
+
+    function renderTags() {
+        tagsContainer.innerHTML = '';
+        tagsArray.forEach((tag, index) => {
+            const tagEl = document.createElement('span');
+            tagEl.className = 'bg-[#20b3b3]/20 text-[#20b3b3] px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 mt-2';
+            tagEl.innerHTML = `
+                ${tag}
+                <span class="cursor-pointer text-gray-500 hover:text-red-500" onclick="removeTag(${index})">×</span>
+            `;
+            tagsContainer.appendChild(tagEl);
+        });
+    }
+
+    window.removeTag = (index) => {
+        tagsArray.splice(index, 1);
+        renderTags();
+    };
+
+    // ==========================================
+    // 4. ENVÍO A SUPABASE
+    // ==========================================
+    const btnPublicar = document.getElementById('btnPublicar'); 
+
+    btnPublicar.addEventListener('click', async () => {
+        const titulo = document.getElementById('titulo').value.trim();
+        const descripcion = document.getElementById('descripcion').value.trim();
+        const enlace = document.getElementById('enlace').value.trim();
+
+        if (!titulo || !descripcion) {
+            alert('Por favor, rellena al menos el título y la descripción de tu idea.');
+            return;
+        }
+
+        const textoOriginal = btnPublicar.innerHTML;
+        btnPublicar.innerHTML = 'Publicando... ⏳';
+        btnPublicar.disabled = true;
+        btnPublicar.classList.add('opacity-70', 'cursor-not-allowed');
+
+        try {
+            let imageUrl = null;
+
+            if (selectedFile) {
+                const fileExt = selectedFile.name.split('.').pop();
+                const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
+
+                const { error: uploadError } = await _supabase.storage // ✅ _supabase
+                    .from('ideas_images')
+                    .upload(filePath, selectedFile);
+
+                if (uploadError) throw uploadError;
+
+                const { data: publicUrlData } = _supabase.storage // ✅ _supabase
+                    .from('ideas_images')
+                    .getPublicUrl(filePath);
+
+                imageUrl = publicUrlData.publicUrl;
+            }
+
+            const { error: insertError } = await _supabase // ✅ _supabase
+                .from('ideas')
+                .insert([
+                    {
+                        title: titulo,
+                        description: descripcion,
+                        image_url: imageUrl,
+                        tags: tagsArray,
+                        external_link: enlace || null,
+                        user_id: currentUser.id
+                    }
+                ]);
+
+            if (insertError) throw insertError;
+
+            alert('¡Idea publicada con éxito! 🚀');
+            window.location.href = '../index.html';
+
+        } catch (error) {
+            console.error('Error al publicar:', error);
+            alert('Hubo un error al publicar tu idea. Inténtalo de nuevo.');
+
+            btnPublicar.innerHTML = textoOriginal;
+            btnPublicar.disabled = false;
+            btnPublicar.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+    });
+</script>
 </body>
 </html>
