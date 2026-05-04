@@ -402,7 +402,10 @@ main section{
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    width: 20%;
+    width: 24%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
 }
 
 .pg-t{
@@ -411,27 +414,31 @@ main section{
     font-size: 32px;
 }
 
-.pg-l {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+
+.pg-l{
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .pg-l p{
     margin-left: 20px;
 }
 
-
-.pg-l ul{
-    list-style: disc;
-    padding: 0;
-    margin: 0;
-    margin-bottom: 8px;
+.pg-l p{
+    text-align: start;
 }
 
 .pg-l li{
-    margin-left: 40px;
+    margin: 0;
+    margin-left: 20px;
     color: gray;
+    text-align: justify;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.pg-l ul{
+    margin: 0;
 }
 
 .pg-p{
@@ -439,6 +446,7 @@ main section{
     justify-content: end;
     font-size: 24px;
     margin-right: 20px;
+    margin-top: auto;
 }
 
 
@@ -451,7 +459,7 @@ footer{
     justify-content: space-around;
     align-items: center;
     display: flex;
-    margin-top: 3%;
+    margin-top: 2%;
 }
 
 .f-h3{
