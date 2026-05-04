@@ -41,6 +41,18 @@ body{
     color: black;
 }
 
+.bl{
+    color: #20b3b3;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.bet{
+    justify-content: space-between;
+}
+
 /*  HEADER  */
 
 header{
@@ -300,7 +312,7 @@ main section{
 .base{
     background: #e3e4e6;
     padding: 20px 0px;
-    margin-top: 80px;
+    margin-top: 60px;
 }
 
 .container-2{
@@ -358,21 +370,27 @@ main section{
 }
 
 .container-3 h2{
-    font-size: 26px;
+    font-size: 34px;
 }
 
 .pilar{
-    border: 1px solid black;
+    border: 1px solid rgba(32, 179, 179, 0.295);
+    box-shadow: 0px 34px 100px -16px rgba(0,0,0,0.1);
     padding: 10px 20px;
     width: 32%;
     border-radius: 20px;
     margin: 0 auto;
     margin-top: 20px;
-    margin-bottom: 40px;
+    transition: transform 0.3s ease-out;
+}
+
+.pilar:hover {
+  transform: translateY(-10px); /* Movimiento suave al pasar el ratón */
+  border-color: #20b3b3; /* Resalta el borde al hacer hover */
 }
 
 .pilar p{
-    color: gray;
+    color: rgba(0, 0, 0, 0.774)    ;
 }
 
 .pilar h3{
@@ -386,14 +404,13 @@ main section{
 }
 
 .rm{
-    font-size: 20px;
-    text-align: center;
-    width: 70%;
-    margin: 0 auto;
+    font-size: 24px;
+    color: gray;
+    text-align: start;
+    width: 90%;
     background: #fff;
-    padding: 10px 40px;
+    padding: 10px 0px;
     border-radius: 20px;
-    border: 3px solid #20b3b3;
 }
 
 /* PLANES DE PAGA */
@@ -406,6 +423,8 @@ main section{
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    position: relative;
+    overflow: hidden;
 }
 
 .pg-t{
@@ -443,10 +462,50 @@ main section{
 
 .pg-p{
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    align-items: center;
     font-size: 24px;
-    margin-right: 20px;
+    margin: 0px 20px;
     margin-top: auto;
+}
+
+.pg-p button{
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    padding: 10px 22px;
+    border-radius: 12px;
+    background-color: #20b3b3;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(32, 179, 179, 0.2);
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pg-p button:hover{
+    background-color: #1a9292;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(32, 179, 179, 0.3);
+}
+
+.recomendado{  /*Para crear la etiqueta de Recomendado para atraer a los usuarios*/
+background-color: #20b3b3;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px 0;
+  width: 200px; /* Ancho suficiente para cubrir la esquina */
+  
+  position: absolute;
+  top: 25px;    /* Ajusta la altura en la esquina */
+  left: -30px;
+  transform: rotate(-33deg); /* Inclinación de la etiqueta */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 
