@@ -146,7 +146,7 @@
             <p class="text-white/50 text-xs m-0">© 2025 UpStart · Todos los derechos reservados</p>
         </div>
     </footer>
-    <script>
+<script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -174,8 +174,6 @@
             window.location.reload();
         });
 
-        
-
         gestionarHeader();
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -191,6 +189,15 @@
             const { data: { session } } = await _supabase.auth.getSession();
             const currentUser = session ? session.user : null;
 
+            // --- 1. REGISTRAR LA VISITA DE FORMA SEGURA ---
+            const lectorId = currentUser ? currentUser.id : '00000000-0000-0000-0000-000000000000';
+            const { error: errorVisita } = await _supabase.rpc('incrementar_vistas_si_es_ajeno', {
+                idea_id: ideaId,
+                lector_id: lectorId
+            });
+            if (errorVisita) console.error("Error al contar visita:", errorVisita.message);
+
+            // --- 2. CARGAR LOS DATOS DE LA IDEA ---
             const { data: idea, error: errorIdea } = await _supabase
                 .from('ideas')
                 .select('*')
@@ -202,11 +209,7 @@
                 return;
             }
 
-            await _supabase
-            .from('ideas')
-            .update({ views: idea.views + 1 })
-            .eq('id', ideaId);
-
+            // Pintar los datos en el HTML
             document.getElementById('idea-titulo').innerText = idea.title;
             document.getElementById('idea-descripcion').innerText = idea.description;
 
@@ -229,8 +232,10 @@
                 });
             }
 
+            // --- 3. CARGAR COMENTARIOS ---
             await cargarComentarios(ideaId);
 
+            // --- 4. GESTIONAR ENVÍO DE COMENTARIOS ---
             const btnComentar = document.getElementById('btn-comentar');
             btnComentar.addEventListener('click', async () => {
                 if (!currentUser) {
@@ -261,6 +266,7 @@
             });
         });
 
+        // Función auxiliar para pintar los comentarios
         async function cargarComentarios(ideaId) {
             const lista = document.getElementById('lista-comentarios');
 
