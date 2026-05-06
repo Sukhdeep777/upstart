@@ -180,16 +180,53 @@
             }
 
             const userId = session.user.id;
-            const container = document.getElementById('mis-ideas-container');
 
-            const { data: misIdeas, error } = await _supabase
-                .from('ideas')
-                .select('*')
-                .eq('user_id', userId)
-                .order('id', { ascending: false });
+            // Escuchar los radio buttons
+            document.querySelectorAll('input[name="grupo"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    cargarIdeas(radio.value, userId);
+                });
+            });
+
+            // Cargar al inicio con orden cronológico
+            cargarIdeas('1', userId);
+        });
+        
+        async function cargarIdeas(orden, userId) {
+            const container = document.getElementById('mis-ideas-container');
+            container.innerHTML = '<p class="text-black">Cargando... ⏳</p>';
+
+            let misIdeas, error;
+
+            if (orden === '2') {
+                const { data, error: err } = await _supabase
+                    .from('ideas')
+                    .select('*, comentarios(count)')
+                    .eq('user_id', userId);
+
+                if (data) {
+                    data.sort((a, b) => {
+                        const countA = a.comentarios[0]?.count || 0;
+                        const countB = b.comentarios[0]?.count || 0;
+                        return countB - countA;
+                    });
+                }
+
+                misIdeas = data;
+                error = err;
+
+            } else {
+                let query = _supabase.from('ideas').select('*').eq('user_id', userId);
+
+                if (orden === '1') query = query.order('created_at', { ascending: false });
+                if (orden === '3') query = query.order('views', { ascending: false });
+
+                const { data, error: err } = await query;
+                misIdeas = data;
+                error = err;
+            }
 
             if (error) {
-                console.error('Error al cargar ideas:', error);
                 container.innerHTML = '<p class="text-red-500 bg-white p-4 rounded-xl">Error al cargar las ideas.</p>';
                 return;
             }
@@ -204,7 +241,6 @@
                 return;
             }
 
-            // ✅ EL CÓDIGO VA AQUÍ, después del return de arriba
             container.innerHTML = '';
 
             for (let i = 0; i < misIdeas.length; i += 2) {
@@ -245,7 +281,7 @@
 
                 container.appendChild(fila);
             }
-        });
+        }
     </script>
 </body>
 </html>
