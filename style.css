@@ -3,15 +3,18 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+/* Seleccionamos a todos los elementos para que midan lo que pongamos y no mas. Tambien ponemnos que todos los elementos tenga la misma fuente de familia. */
+
 body{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin: 0;
+    width: 100%; /*Ocupamos un 100% de la pantalla*/
+    display: flex; /*Flex*/
+    align-items: center; /*Alineamos la pagine de forma horizontal en el centro pq cambiamos la direcciona  columnna*/
+    margin: 0; /*Quitamos cualquier tipo de margen o padding que pueda haber*/
     padding: 0;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /*Es el tamaño de altura que hacemos que dependiendo del tamaño de la altuira se ajuste*/
 }
+/* Aqui creamos clases para utilizarlos de forma rapida en el HTML (Sobretodo los que se utilizan mas) */
 
 .flex{
     display: flex;
@@ -64,54 +67,54 @@ body{
 /*  HEADER  */
 
 header{
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 5px solid #20b3b3
+    width: 100%; /* Que ocupe toda la pantalla*/
+    justify-content: space-around;  /*Que los elementos esten separados entre si con el mismo espaciado entre ellos*/
+    align-items: center; /*Los alineamos al centro para que los 3 elementos esten a la misma altura*/
+    border-bottom: 5px solid #20b3b3 /* Como si fuese un <hr> pero le ponemos un borde abajo para que se vea una separación entre el header y el main*/
 }
 
-.logo{
+.logo{ /*Seleccionamos al div del logo para indicarle un tamaño y alinearlo con el texto*/
     width: 90px;
     display: flex;
     align-items: center;
 }
 
-.logo img{
+.logo img{ /*Que la imagen ocupe el 100% dentro de ese div*/
     width: 100%;
 }
 
-h1{
+h1{ /*Color principal hacia el titulo o al nombre de la plataforma*/
     color: #20b3b3;
 }
 
-nav{
+nav{ /*Al nav donde esta el menu, ponemos que ocupe el 60% del espacio*/
     width: 60%;
 }
 
-nav ul{
+nav ul{ /*Que no tengo estilo el menu y que tena una separación igual entre si*/
     justify-content: space-around;
     list-style: none;
 }
 
-nav ul li:hover{
+nav ul li:hover{ /*Le ponemos un hover para que haya una transición al pasar el ratón para que se haga mas grande*/
     transform: scale(1.1);
     transition: all 0.2s;
 }
 
-nav ul a{
+nav ul a{ /*Que los enlaces no tengan decoración y haya un padding*/
     text-decoration: none;
     color: #000;
     padding: 7px;
 }
 
-nav ul a:hover{
+nav ul a:hover{  /*En este hover hacemos que cambie el fondo, se le añada un borde y el color de texto*/
     background: #469696;
     padding:  7px;
     border-radius: 10px;
     color: #fff;
 }
 
-.usuario{
+.usuario{ /*Aqui tenemos nuestro DIV de usuario para el Log In o dodne saldra nuestro avatar*/
     gap: 40px;
     color: #20b3b3;
     margin-left: 10px;
@@ -124,15 +127,17 @@ nav ul a:hover{
     font-weight: bold;
 }
 
-.lg{
+.lg{ /*Aqui donde le ponemos un borde y un radio al botón del Log In*/
     border: 2px solid #20b3b3;
     border-radius: 20px;
 }
 
-.lg a{
+.lg a{ /*y un color de texto hacia la etiqueta <a>*/
     color:#20b3b3;
-    
+
 }
+
+/*Aqui pondrmeos una transicion al pasar el ratón con un hover para que cambie el fondo y el color de texto.*/
 
 .lg:hover a{
     color: #fff;   
@@ -143,7 +148,9 @@ nav ul a:hover{
     background: #20b3b3; 
 }
 
+/* En esta parte seleccionamos el id del div para poder salir de la cesión */
 
+    /*Es un texto que cambia para que sea un boton*/
 #logoutButton{
     background: none;
     border: 2px solid #20b3b3;
@@ -155,31 +162,39 @@ nav ul a:hover{
     border-radius: 20px;
     transition: all 0.2s;
 }
-
+    /*Le añadirmeos un hover para que cambie su color y fondo*/
 #logoutButton:hover{
     background: #20b3b3;
     color: #fff;
 }
 
 /* BODY */
+
+    /*Hacemos que el main tenga un margen para diferenciarse del header y que ocupe todo*/
 main{
     margin-top: 40px;
     width: 100%;
-    flex: 1;
+    flex: 1; /*Lo que hace es agarrar todo el espacio vació disponible que hay, puede encoger-se o hacerse grande o no repartir el tamaño*/
 }
+
+    /* Aqui hacemos que haya un contenedor que ocupe el 90% dentro del main para que tenga el mismot amaño de¡l header y todo cuadre. */
 
 .w-9{
     margin: 0 auto;
     width: 90%;
 }
 
+    /* Aqui hacemos que el minimo de tamaño sea de 300px, aunque la pantalla sea mas pequeña no se podra hacer mas pequeña */
+
 main section{
     min-width: 300px;
 }
 
+    /* Hacemos que el primer contenedor donde tenemos una idea ocupe el 80% para dejar un 20% para el Ranking y asi tenemos una jerarquia visual. */
 .container-1{
     width: 80%;
 }
+    /* Aqui creamos cada idea para que este centrado */
 .ide1{
     border: 1px solid #000;
     max-width: 5000px;
@@ -191,20 +206,24 @@ main section{
     flex-direction: column;
 }
 
+    /* Aqui ponemos un gap para que haya separación entre el titulo y las estrellas */
 .t-d{
     gap: 20px;
 }
 
+    /* Aqui es la valoración donde hacemos que se vea en pequeñito y este a la misma alatura que la punta de abajo de la estrella */
 .val{
     font-size: 14px;
     margin-bottom: 0px;
 }
 
+    /* Aqui ponemos un poco de padding izquierda y el tamaño del h2 de la idea principal */
 .ide1 h2{
     padding-left: 60px;
     font-size: 34px;
 }
 
+    /* Le ponemos colors y lo decoramos los textos descriptivos de las ideas */
 .p1{
     color: gray;
     text-align: justify;
@@ -213,6 +232,8 @@ main section{
     font-size: 20px;
 }
 
+
+    /* Aqui ponemos sobre el tamaño del texto o de la etiqueta <p> */
 .w-p{
     width: 100%;
     text-align: end;
@@ -221,25 +242,32 @@ main section{
     justify-content: space-between;
 }
 
+    /* Este texto va dirigido por quien ha publicado la idea haciendo que sea mas pequeño y que tenga el mismo margen izquierdo que el texto descriptivo */
+
 .p2-1{
     margin-left: 60px;
     font-size: 14px;
 }
+
+    /* El texto de ver mas donde tenemos la etiqueta a que se vea en color negro sin margenes que no tenga. */
 
 .p2,a{
     margin: 0;
     color:#000;
 }
 
+    /* Que haya una transición en el parrafo de ver mas para que el usuario sepa que esta sobre de un boton y que clique. */
 .p2 a:hover{
     color: #423f3f;
     transition: all 0.3s ease;
 }
-
+    /* Que este texto siempre este al fondo del div de la idea*/
 .p2{
     text-align: end;
 }
 
+    /* Aqui comenzamos con las ideas de abajo de la jerarquia visual donde tendran el mismo tamaño, pero temas diferentes */
+    /* Cada idea dentro del div esta a una banda y en otra. */
 .ides{
     width: 100%;
     margin-top: 40px;
@@ -247,75 +275,88 @@ main section{
 }
 
 .ide2{
+    /* Ocupa todo el ancho disponible, pero nunca más del 49% del contenedor padre */
     max-width: 49%;
     width: 100%;
+    /* Diseño visual: borde sólido, esquinas redondeadas y espacio interno amplio */
     border: 1px solid #000;
     padding: 60px;
     border-radius: 20px;
 }
 
 .ide2 h2{
+    /*Tamaño de texto del h2 */
     font-size: 22px;
 }
 
 .p1-2{
+    /* Texto descriptivo de la idea de un color gris y una fuenta de 15px */
     color: gray;
     margin: 0;
     font-size: 15px;
 }
 
 .w-p-2{
+    /* Tamaño 100% que ocupe */
     width: 100%;
+    /* Que se separan de un lado a otro ocupando lo maximo posyble y que esten verticalmente centrados */
     justify-content: space-between;
     align-items: center;
 }
 
 .p2-2{
+    /* Tamaño del texto */
     font-size: 12px;
 }
 
 .ide3{
+    /* La siguiente idea con casi el mismo estilo */
     width: 49%;
     border: 1px solid #000;
     padding: 60px;
     border-radius: 20px;
 }
 
-.ide3 h2{
+.ide3 h2{ 
+    /* Tamaño del subtitlo a 22px */
     font-size: 22px;
 }
 
-
-
-.rk{
+.rk{ /*Ranking*/
+    /* Lo alineamos en el centro */
     display: flex;
     align-items: center;
+    /* Que ocupe un 20% del 100% del contenedor padre y que este en columna por los anuncios de abajo */
     width: 20%;
     flex-direction: column;
 }
 
 .img-anuncio{
+    /* Un tamaño al div de la imagen y que la imagen se cubra a este tamaño automaticamente */
     width: 190px;
     object-fit: cover;
 }
 
 .img-anuncio img{
+    /* Poniendole un tamaño completo al contenedor padre (div) */
     width: 100%;
 }
 
 .list  li,.list ul{
+    /* Quitamos el estilo y quitamos margenes como paddings */
     list-style: none;
     margin: 0;
     padding: 0;
+    /* Una altura entre lineas del listado del ranking */
     line-height: 30px;
 }
 
-.list{
+.list{ /*Centramos la lista y que ocupe un 50% del 100% de altura*/
     text-align: center;
     height: 50%;
 }
 
-.h3-list{
+.h3-list{ /*le ponemos un borde debajo del h3*/
     border-bottom: 4px solid #20b3b3;
     padding-bottom: 5px;
 }
@@ -323,43 +364,49 @@ main section{
 /* ---- EQUIP */
 
 .base{
+    /* Diseño de l'apartado de equipo */
     background: #e3e4e6;
     padding: 20px 0px;
     margin-top: 60px;
 }
 
 .container-2{
+    /* Ocupa un 90% de¡l contenedor padre y que este en el centro*/
     width: 90%;
     margin: 0 auto;
     text-align: center;
+    /* El color para cualquier tipo de texto */
     color: #000;
 }
 
 .container-2 h2{
+    /* Margenes y tamaño de texto */
     margin: 0;
     margin-bottom: 10px;
     font-size: 48px;
 }
 
-.tm{
+.tm{ /*Espaciado entre cada tarjeta en el centro con un padding de 10px*/
     gap: 80px;
     justify-content: center;
     padding: 10px;
 }
 
-.tm-div{
+.tm-div{ 
+    /* Altura y ancho de la targeta con su fondo blanco */
     padding: 20px 30px;
     background: #fff;
+    /* Redondeo de la tarjeta con sombra debajo y una transición */
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transition: all 0.3s ease-in-out;
 }
 
-.tm-div:hover{
+.tm-div:hover{ /*Le ponemos un hover para que verticalmente al pasar el ratón se le quiten -5px haciendo efecto como si elstuviese seleccionando y que vaye pa arriba*/
     transform: translateY(-5px);
 }
 
-.tm-p{
+.tm-p{ /*Texto de la tarjeta con su tamaño del div, alineado al centro con margen y que se vea con relleno*/
     width: 100px;
     text-align: center;
     margin-left: 10px;
@@ -367,27 +414,25 @@ main section{
     font-weight: bold;
 }
 
-.tm-pd{
+.tm-pd{ /*Asignamos color y un tamaño al texto descriptivo sobre el rol del usuario*/
     color: #383838;
     font-size: 14px;
 }
 
-.reverse{
-    cursor: pointer;
-}
-
-.sbn{
+.sbn{ /*para la nueva sección para diferenciar le ponemos un margen superior*/
     margin-top: 80px;
 }
 
 .container-3{
+    /* Tamaño 90% del contenedor padre y centrado */
     width: 90%;
     margin: 0 auto;
+    /* El texto que comienze por la izquierda y color negro */
     text-align: start;
     color: #000;
 }
 
-.container-3 h2{
+.container-3 h2{ /*Tamaño del subtitulo*/
     font-size: 34px;
 }
 
@@ -407,7 +452,7 @@ main section{
   border-color: #20b3b3; /* Resalta el borde al hacer hover */
 }
 
-.pilar p{
+.pilar p{ /*Color negro del texto*/
     color: rgba(0, 0, 0, 0.774)    ;
 }
 
@@ -417,6 +462,7 @@ main section{
 
 
 .img-pila img{
+    /* Tamaño a las imagenes para que cubran lo mismo que el div */
     width: 300px;
     object-fit: cover;
 }
@@ -426,7 +472,6 @@ main section{
     color: gray;
     text-align: start;
     width: 90%;
-    background: #fff;
     padding: 10px 0px;
     border-radius: 20px;
 }
@@ -436,39 +481,48 @@ main section{
 .pg-div{
     background: #fff;
     border-radius: 20px;
+    /* Sombra vertical para arriba y abajo */
     box-shadow: 0px 64px 100px -30px rgba(0,0,0,0.1),0px -12px 100px -3px rgba(0,0,0,0.1);
+    /* Tamaño para cada tarjeta */
     width: 24%;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    /* Posicion relativa para el recomendado */
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /*Si sobrepasa algun elemento se esconde*/
 }
 
 .pg-t{
+    /* Texto del plan de pago */
     display: flex;
     justify-content: center;
     font-size: 32px;
 }
 
-
-.pg-l{
+.pg-l{ 
+    /* Listado del plan de paga para que este en el centro y no este junto */
     margin-bottom: 30px;
     margin-top: 30px;
 }
 
 .pg-l p{
+    /* margen de la lista */
     margin-left: 20px;
 }
 
 .pg-l p{
+    /* Que este en el inicio */
     text-align: start;
 }
 
 .pg-l li{
     margin: 0;
+    /* Que haya un poco mas de separación de los elementos en lista */
     margin-left: 20px;
+    /* Color de la lista desordenada */
     color: gray;
+    /*  Justified*/
     text-align: justify;
     margin-right: 20px;
     margin-bottom: 16px;
@@ -489,24 +543,30 @@ main section{
 
 .pg-p button{
     height: 45px;
-    display: inline-flex;
+    display: inline-flex; /*utilizamos este display que es una mezcla de flex y se comporta como si fuese en linea*/
     align-items: center;
     justify-content: center;
-    border: none;
+    /* Sin borde */
+    border: none; 
+    /* Cambie el curso al pasar por encima */
     cursor: pointer;
     padding: 10px 22px;
     border-radius: 12px;
     background-color: #20b3b3;
     color: white;
     font-weight: 600;
+    /* Sombra en la parte vertical zona de abajo */
     box-shadow: 0 4px 10px rgba(32, 179, 179, 0.2);
     font-size: 14px;
+    /* Tranisicion para diferentes elementos uno para el fondo de color y la sombra su tiempo */
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pg-p button:hover{
     background-color: #1a9292;
+    /* para que el boton suba */
     transform: translateY(-2px);
+    /* Se le añade una sombra azul fuerte */
     box-shadow: 0 6px 15px rgba(32, 179, 179, 0.3);
 }
 
@@ -555,7 +615,6 @@ footer {
     font-size: 26px;
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.5px;
 }
 
 .footer-logo span {
@@ -576,8 +635,8 @@ footer {
 .footer-col h4 {
     font-size: 13px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    text-transform: uppercase; /*En mayusculas las letras*/
+    letter-spacing: 1.5px; /*Espaciado entre letras*/
     color: #d4f5f5;
     margin: 0 0 20px;
     padding-bottom: 10px;
@@ -595,7 +654,7 @@ footer {
 }
 
 .footer-col ul li a {
-    text-decoration: none;
+    text-decoration: none; /*Que no haya decoración*/
     color: rgba(255,255,255,0.8);
     font-size: 14px;
     transition: color 0.2s ease, padding-left 0.2s ease;
