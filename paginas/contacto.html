@@ -65,9 +65,9 @@
                     <label for="email" class="text-gray-500" >Email</label>
                     <input placeholder="Correo electrónico" class="bg-white border-2 border-gray-200 px-5 py-2 rounded-lg hover:scale-102 transition duration-500" type="email" id="email">
                     <label for="mensaje" class="text-gray-500">Mensaje</label>
-                    <textarea placeholder="Tu mensaje" rows="4" class="bg-white border-2 border-gray-200 px-5 py-2 rounded-lg resize-none hover:scale-102 transition duration-500"></textarea>            
+                    <textarea id="mensaje" placeholder="Tu mensaje" rows="4" class="bg-white border-2 border-gray-200 px-5 py-2 rounded-lg resize-none hover:scale-102 transition duration-500"></textarea>            
                     <!-- el resize-none es para que el usuario no pueda cambiar el tamaño del textarea y en vez de height se usa rows -->
-                    <button class="bg-[#20b3b3] text-white py-2 px-6 rounded hover:scale-105 transition duration-500 cursor-pointer mt-10">Enviar</button>
+                    <button id="btnEnviar" class="bg-[#20b3b3] text-white py-2 px-6 rounded hover:scale-105 transition duration-500 cursor-pointer mt-10">Enviar</button>
                 </div>
             </div>
         </div>
@@ -93,6 +93,39 @@
                 userProfile.style.display = 'none';
             }
         }
+
+                // Función para enviar el formulario a Supabase
+        document.getElementById('btnEnviar').addEventListener('click', async () => {
+            // 1. Obtener los valores de los inputs
+            const nombreInput = document.getElementById('nombre').value;
+            const emailInput = document.getElementById('email').value;
+            const mensajeInput = document.getElementById('mensaje').value;
+
+            // 2. Validar que no estén vacíos
+            if (!nombreInput || !emailInput || !mensajeInput) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            // 3. Insertar los datos en Supabase
+            const { data, error } = await _supabase
+                .from('contactos')
+                .insert([
+                    { nombre: nombreInput, email: emailInput, mensaje: mensajeInput }
+                ]);
+
+            // 4. Manejar el resultado
+            if (error) {
+                console.error("Error al enviar el mensaje:", error);
+                alert("Hubo un error al enviar tu mensaje. Inténtalo de nuevo.");
+            } else {
+                alert("¡Mensaje enviado con éxito!");
+                // Limpiar el formulario
+                document.getElementById('nombre').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('mensaje').value = '';
+            }
+        });
 
         document.getElementById('logoutButton').addEventListener('click', async () => {
             const { error } = await _supabase.auth.signOut();
