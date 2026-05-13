@@ -335,6 +335,7 @@ main section{
     /* Un tamaño al div de la imagen y que la imagen se cubra a este tamaño automaticamente */
     width: 190px;
     object-fit: cover;
+    margin-top: 50px;
 }
 
 .img-anuncio img{
@@ -354,6 +355,7 @@ main section{
 .list{ /*Centramos la lista y que ocupe un 50% del 100% de altura*/
     text-align: center;
     height: 50%;
+    height: fit-content;
 }
 
 .h3-list{ /*le ponemos un borde debajo del h3*/
