@@ -7,9 +7,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
+    <style>
+        .star-display {
+            font-size: 1rem;
+            color: #d1d5db;
+            line-height: 1;
+        }
+        .star-display.filled {
+            color: #f59e0b;
+        }
+    </style>
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
-    <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
+    <header class="flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
         <div class="flex items-center">
             <div class="w-[90px] flex items-center">
                 <img src="../imagenes/logo-upstart.png" alt="LOGO UPSTART" class="w-full">
@@ -44,6 +54,7 @@
             </button>
         </div>
     </header>
+
     <main class="mt-[40px] w-[100%]">
         <section class="w-[90%] m-auto mb-4 flex justify-between items-center">
             <div class="w-[20%] flex justify-around">
@@ -76,6 +87,7 @@
             </div>
         </section>
     </main>
+
     <footer class="bg-[#20b3b3] w-full mt-16">
         <div class="w-[90%] mx-auto flex items-start gap-10 pt-16 pb-10 border-b border-white/20">
             <div class="w-[380px] text-justify">
@@ -87,52 +99,20 @@
                 </p>
             </div>
             <div class="w-[40%]">
-                <h4 class="text-[13px] font-bold uppercase tracking-widest text-[#d4f5f5] mb-5 pb-2 border-b border-white/20">
-                    Contáctanos
-                </h4>
+                <h4 class="text-[13px] font-bold uppercase tracking-widest text-[#d4f5f5] mb-5 pb-2 border-b border-white/20">Contáctanos</h4>
                 <ul class="list-none p-0 m-0">
-                    <li class="mb-3">
-                        <a href="mailto:hola@upstart.com" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            📩 hola@upstart.com
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="#" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            📱 @UpStart_es
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="#" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            💼 UpStart Plataforma
-                        </a>
-                    </li>
+                    <li class="mb-3"><a href="mailto:hola@upstart.com" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">📩 hola@upstart.com</a></li>
+                    <li class="mb-3"><a href="#" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">📱 @UpStart_es</a></li>
+                    <li class="mb-3"><a href="#" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">💼 UpStart Plataforma</a></li>
                 </ul>
             </div>
             <div class="w-[40%]">
-                <h4 class="text-[13px] font-bold uppercase tracking-widest text-[#d4f5f5] mb-5 pb-2 border-b border-white/20">
-                    Páginas
-                </h4>
+                <h4 class="text-[13px] font-bold uppercase tracking-widest text-[#d4f5f5] mb-5 pb-2 border-b border-white/20">Páginas</h4>
                 <ul class="list-none p-0 m-0">
-                    <li class="mb-3">
-                        <a href="index.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            Inicio
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="paginas/upstart.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            Publica
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="paginas/donaciones.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            Donaciones
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="paginas/contacto.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">
-                            Contacto
-                        </a>
-                    </li>
+                    <li class="mb-3"><a href="index.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">Inicio</a></li>
+                    <li class="mb-3"><a href="paginas/upstart.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">Publica</a></li>
+                    <li class="mb-3"><a href="paginas/donaciones.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">Donaciones</a></li>
+                    <li class="mb-3"><a href="paginas/contacto.html" class="text-white/80 text-sm no-underline transition-all duration-200 hover:text-white hover:pl-1">Contacto</a></li>
                 </ul>
             </div>
         </div>
@@ -140,6 +120,7 @@
             <p class="text-white/50 text-xs m-0">© 2025 UpStart · Todos los derechos reservados</p>
         </div>
     </footer>
+
     <script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
@@ -147,11 +128,9 @@
 
         async function gestionarHeader() {
             const { data: { user } } = await _supabase.auth.getUser();
-
             const loginContainer = document.querySelector('.lg');
             const userProfile = document.getElementById('user-profile');
             const userAvatar = document.getElementById('user-avatar');
-
             if (user) {
                 if (loginContainer) loginContainer.style.display = 'none';
                 userProfile.style.display = 'flex';
@@ -169,159 +148,140 @@
         });
 
         gestionarHeader();
-    </script>
-<script>
-    // Esperamos a que toda la página esté cargada antes de ejecutar nada
-    document.addEventListener('DOMContentLoaded', async () => {
 
-        // Cargamos las ideas al inicio con el orden cronológico (valor "1")
-        cargarIdeas('1');
+        // ── HELPERS ────────────────────────────────────────────────────────────
 
-        // Escuchamos los cambios en los radio buttons de orden
-        // Cada vez que el usuario cambia la selección, recargamos las ideas con el nuevo orden
-        document.querySelectorAll('input[name="grupo"]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                cargarIdeas(radio.value);
+        // Dado un array de valoraciones de UNA idea, devuelve la media entera (1-5) o 0
+        function calcularMedia(valoraciones) {
+            if (!valoraciones || valoraciones.length === 0) return 0;
+            const suma = valoraciones.reduce((acc, v) => acc + v.puntuacion, 0);
+            return Math.round(suma / valoraciones.length);
+        }
+
+        // Genera el HTML de las 5 estrellas en función de la puntuación entera
+        function generarEstrellas(puntuacion) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                const filled = i <= puntuacion ? 'color:#f59e0b;' : 'color:#d1d5db;';
+                html += `<span style="font-size:1rem;line-height:1;${filled}">★</span>`;
+            }
+            return html;
+        }
+
+        // ── CARGA DE IDEAS ────────────────────────────────────────────────────
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            cargarIdeas('1');
+
+            document.querySelectorAll('input[name="grupo"]').forEach(radio => {
+                radio.addEventListener('change', () => cargarIdeas(radio.value));
+            });
+
+            document.querySelector('input[type="text"]').addEventListener('input', (e) => {
+                const textoBusqueda = e.target.value.toLowerCase();
+                document.querySelectorAll('.idea-card').forEach(tarjeta => {
+                    const titulo = tarjeta.querySelector('h2').textContent.toLowerCase();
+                    const descripcion = tarjeta.querySelector('p').textContent.toLowerCase();
+                    tarjeta.style.display = (titulo.includes(textoBusqueda) || descripcion.includes(textoBusqueda)) ? 'block' : 'none';
+                });
             });
         });
 
-        // Escuchamos lo que el usuario escribe en el buscador
-        // 'input' se dispara en cada tecla que pulsa, así la búsqueda es en tiempo real
-        document.querySelector('input[type="text"]').addEventListener('input', (e) => {
-            // Obtenemos el texto escrito, en minúsculas para comparar sin importar mayúsculas
-            const textoBusqueda = e.target.value.toLowerCase();
+        async function cargarIdeas(orden) {
+            const container = document.getElementById('ideas-container');
+            container.innerHTML = '<p class="text-black">Cargando ideas... ⏳</p>';
 
-            // Seleccionamos todas las tarjetas que ya están renderizadas en pantalla
-            const tarjetas = document.querySelectorAll('.idea-card');
-
-            tarjetas.forEach(tarjeta => {
-                // Obtenemos el título y la descripción de cada tarjeta (también en minúsculas)
-                const titulo = tarjeta.querySelector('h2').textContent.toLowerCase();
-                const descripcion = tarjeta.querySelector('p').textContent.toLowerCase();
-
-                // Si el título o la descripción contienen el texto buscado, mostramos la tarjeta
-                // Si no coincide, la ocultamos con display:none
-                if (titulo.includes(textoBusqueda) || descripcion.includes(textoBusqueda)) {
-                    tarjeta.style.display = 'block';
-                } else {
-                    tarjeta.style.display = 'none';
+            // 1. Traer ideas
+            let todasLasIdeas, error;
+            if (orden === '1') {
+                const { data, error: err } = await _supabase
+                    .from('ideas')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                todasLasIdeas = data; error = err;
+            } else {
+                const { data, error: err } = await _supabase.from('ideas').select('*');
+                if (data) {
+                    for (let i = data.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [data[i], data[j]] = [data[j], data[i]];
+                    }
                 }
-            });
-        });
-    });
-
-
-    // Función principal que carga y renderiza todas las ideas
-    // Recibe 'orden': "1" = cronológico, "2" = aleatorio
-    async function cargarIdeas(orden) {
-        const container = document.getElementById('ideas-container');
-
-        // Mostramos un mensaje de carga mientras esperamos la respuesta de Supabase
-        container.innerHTML = '<p class="text-black">Cargando ideas... ⏳</p>';
-
-        let todasLasIdeas, error;
-
-        if (orden === '1') {
-            // ORDEN CRONOLÓGICO: pedimos todas las ideas ordenadas por fecha de creación (más reciente primero)
-            // NO filtramos por user_id, así traemos las ideas de TODOS los usuarios
-            const { data, error: err } = await _supabase
-                .from('ideas')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            todasLasIdeas = data;
-            error = err;
-
-        } else if (orden === '2') {
-            // ORDEN ALEATORIO: traemos todas las ideas sin ordenar
-            // y luego las mezclamos en el frontend con el algoritmo Fisher-Yates
-            const { data, error: err } = await _supabase
-                .from('ideas')
-                .select('*');
-
-            if (data) {
-                // Algoritmo Fisher-Yates: recorre el array desde el final
-                // e intercambia cada elemento con uno aleatorio anterior a él
-                for (let i = data.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [data[i], data[j]] = [data[j], data[i]]; // intercambio
-                }
+                todasLasIdeas = data; error = err;
             }
 
-            todasLasIdeas = data;
-            error = err;
-        }
+            if (error) {
+                container.innerHTML = '<p class="text-red-500 bg-white p-4 rounded-xl">Error al cargar las ideas.</p>';
+                return;
+            }
+            if (!todasLasIdeas || todasLasIdeas.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
+                        <p class="text-gray-500 text-lg">Aún no hay ideas publicadas. ¡Sé el primero!</p>
+                    </div>`;
+                return;
+            }
 
-        // Si Supabase devuelve un error, lo mostramos y paramos aquí
-        if (error) {
-            container.innerHTML = '<p class="text-red-500 bg-white p-4 rounded-xl">Error al cargar las ideas.</p>';
-            return;
-        }
+            // 2. Traer TODAS las valoraciones de golpe (una sola query)
+            const ideaIds = todasLasIdeas.map(i => i.id);
+            const { data: todasVals } = await _supabase
+                .from('valoraciones')
+                .select('idea_id, puntuacion')
+                .in('idea_id', ideaIds);
 
-        // Si no hay ninguna idea publicada todavía, mostramos un mensaje informativo
-        if (!todasLasIdeas || todasLasIdeas.length === 0) {
-            container.innerHTML = `
-                <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
-                    <p class="text-gray-500 text-lg">Aún no hay ideas publicadas. ¡Sé el primero!</p>
-                </div>
-            `;
-            return;
-        }
-
-        // Limpiamos el contenedor antes de pintar las tarjetas nuevas
-        container.innerHTML = '';
-
-        // Recorremos las ideas de 2 en 2 para crear filas de dos columnas
-        for (let i = 0; i < todasLasIdeas.length; i += 2) {
-            // Creamos un div que actuará como fila (contenedor horizontal)
-            const fila = document.createElement('div');
-            fila.className = 'flex gap-6 w-full';
-
-            // Procesamos la idea actual (i) y la siguiente (i+1) para ponerlas en la misma fila
-            [todasLasIdeas[i], todasLasIdeas[i + 1]].forEach(idea => {
-                // Si no existe la idea (número impar al final), saltamos
-                if (!idea) return;
-
-                // Creamos la tarjeta individual para cada idea
-                const card = document.createElement('div');
-
-                // Le añadimos la clase 'idea-card' para poder seleccionarla desde el buscador
-                card.className = 'idea-card bg-white border border-gray-200 rounded-[20px] p-8 shadow-sm hover:shadow-md transition-shadow w-1/2';
-
-                // Rellenamos el HTML interno de la tarjeta con los datos de la idea
-                card.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-[24px] font-bold text-black">${idea.title}</h2>
-                        <div class="flex items-center gap-1">
-                            <div class="flex">
-                                <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                            </div>
-                            <span class="text-black text-sm font-bold ml-1">/5</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-500 font-medium mb-8 line-clamp-2 leading-relaxed">
-                        ${idea.description}
-                    </p>
-                    <div class="flex justify-between items-center font-bold text-sm">
-                        <p class="text-black">Publicado por <span class="text-[#20b3b3]">${idea.user_email ?? 'Anónimo'}</span></p>
-                        <a href="detalle.html?id=${idea.id}" class="text-black underline hover:text-[#20b3b3] transition-colors cursor-pointer">
-                            Ver más
-                        </a>
-                    </div>
-                `;
-
-                // Añadimos la tarjeta a la fila
-                fila.appendChild(card);
+            // 3. Agrupar valoraciones por idea_id en un mapa
+            const valsMap = {};
+            (todasVals || []).forEach(v => {
+                if (!valsMap[v.idea_id]) valsMap[v.idea_id] = [];
+                valsMap[v.idea_id].push(v);
             });
 
-            // Añadimos la fila completa al contenedor principal
-            container.appendChild(fila);
+            // 4. Renderizar tarjetas
+            container.innerHTML = '';
+
+            for (let i = 0; i < todasLasIdeas.length; i += 2) {
+                const fila = document.createElement('div');
+                fila.className = 'flex gap-6 w-full';
+
+                [todasLasIdeas[i], todasLasIdeas[i + 1]].forEach(idea => {
+                    if (!idea) return;
+
+                    const valoraciones = valsMap[idea.id] || [];
+                    const media = calcularMedia(valoraciones);
+                    const numVals = valoraciones.length;
+
+                    const card = document.createElement('div');
+                    card.className = 'idea-card bg-white border border-gray-200 rounded-[20px] p-8 shadow-sm hover:shadow-md transition-shadow w-1/2';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <h2 class="text-[24px] font-bold text-black">${idea.title}</h2>
+                            <div class="flex flex-col items-end gap-1 shrink-0 ml-4">
+                                <div class="flex items-center gap-[2px]">
+                                    ${generarEstrellas(media)}
+                                </div>
+                                <span class="text-xs text-gray-400 font-medium">
+                                    ${numVals > 0 ? `${media}/5 · ${numVals} ${numVals === 1 ? 'valoración' : 'valoraciones'}` : 'Sin valoraciones'}
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-gray-500 font-medium mb-8 line-clamp-2 leading-relaxed">
+                            ${idea.description}
+                        </p>
+                        <div class="flex justify-between items-center font-bold text-sm">
+                            <p class="text-black">Publicado por <span class="text-[#20b3b3]">${idea.user_email ?? 'Anónimo'}</span></p>
+                            <a href="detalle.html?id=${idea.id}" class="text-black underline hover:text-[#20b3b3] transition-colors cursor-pointer">
+                                Ver más
+                            </a>
+                        </div>
+                    `;
+
+                    fila.appendChild(card);
+                });
+
+                container.appendChild(fila);
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>

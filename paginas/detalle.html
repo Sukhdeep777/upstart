@@ -7,6 +7,28 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
+    <style>
+        .star-btn {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #d1d5db;
+            transition: color 0.15s, transform 0.15s;
+            line-height: 1;
+        }
+        .star-btn:hover,
+        .star-btn.hovered,
+        .star-btn.selected {
+            color: #f59e0b;
+            transform: scale(1.2);
+        }
+        .star-readonly {
+            font-size: 1.1rem;
+            color: #d1d5db;
+        }
+        .star-readonly.filled {
+            color: #f59e0b;
+        }
+    </style>
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif] bg-gray-50">
     <header class="flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
@@ -60,7 +82,7 @@
                     <div>
                         <div id="idea-tags" class="flex flex-wrap gap-2 mb-5"></div>
                         <h1 id="idea-titulo" class="text-5xl font-extrabold text-gray-900 mb-6">Cargando...</h1>
-                        <p id="idea-descripcion" class="text-gray-600 text-lg lea"></p>
+                        <p id="idea-descripcion" class="text-gray-600 text-lg leading-relaxed"></p>
                     </div>
                     <div class="mt-8">
                         <a id="idea-enlace" href="#" target="_blank"
@@ -77,6 +99,31 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- SECCIÓN VALORACIÓN -->
+        <div class="bg-white rounded-3xl shadow-lg p-10 mb-8">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900">Valoración</h3>
+
+            <!-- Puntuación global -->
+            <div class="flex items-center gap-4 mb-8 p-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div id="stars-global" class="flex gap-1">
+                    <!-- Estrellas de solo lectura renderizadas por JS -->
+                </div>
+                <div>
+                    <span id="puntuacion-texto" class="text-2xl font-extrabold text-gray-900"></span>
+                    <span id="num-valoraciones" class="text-sm text-gray-400 ml-2"></span>
+                </div>
+            </div>
+
+            <!-- Input de valoración del usuario -->
+            <div id="seccion-valorar">
+                <p class="text-gray-500 text-sm mb-3" id="label-valorar">Inicia sesión para valorar esta idea.</p>
+                <div id="stars-input" class="flex gap-2 mb-4" style="display:none !important;">
+                    <!-- Estrellas interactivas renderizadas por JS -->
+                </div>
+                <p id="ya-valoraste-msg" class="hidden text-sm text-[#20b3b3] font-bold mt-2"></p>
             </div>
         </div>
 
@@ -163,6 +210,126 @@
 
         gestionarHeader();
 
+        // ── ESTRELLAS DE SOLO LECTURA ──────────────────────────────────────────
+        // Renderiza 5 estrellas rellenas/vacías según la puntuación (entera)
+        function renderStarsReadonly(containerId, puntuacion) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = 'star-readonly' + (i <= puntuacion ? ' filled' : '');
+                star.textContent = '★';
+                container.appendChild(star);
+            }
+        }
+
+        // ── SECCIÓN DE VALORACIÓN ──────────────────────────────────────────────
+        async function cargarValoracion(ideaId, currentUser) {
+            // Traer todas las valoraciones de esta idea
+            const { data: vals, error } = await _supabase
+                .from('valoraciones')
+                .select('puntuacion, user_id')
+                .eq('idea_id', ideaId);
+
+            if (error) {
+                console.error('Error cargando valoraciones:', error.message);
+                return;
+            }
+
+            // Calcular media (redondeada al entero más cercano, sin decimales)
+            const total = vals ? vals.length : 0;
+            let media = 0;
+            if (total > 0) {
+                const suma = vals.reduce((acc, v) => acc + v.puntuacion, 0);
+                media = Math.round(suma / total);
+            }
+
+            // Mostrar estrellas globales
+            renderStarsReadonly('stars-global', media);
+            document.getElementById('puntuacion-texto').textContent = total > 0 ? `${media}/5` : 'Sin valoraciones';
+            document.getElementById('num-valoraciones').textContent = total > 0 ? `(${total} ${total === 1 ? 'valoración' : 'valoraciones'})` : '';
+
+            // ── INPUT DE VALORACIÓN ──
+            const starsInput = document.getElementById('stars-input');
+            const labelValorar = document.getElementById('label-valorar');
+            const yaValorasteMSG = document.getElementById('ya-valoraste-msg');
+
+            if (!currentUser) {
+                // No logueado: solo mostramos el aviso
+                labelValorar.textContent = 'Inicia sesión para valorar esta idea.';
+                return;
+            }
+
+            // Buscar si el usuario ya valoró
+            const miValoracion = vals ? vals.find(v => v.user_id === currentUser.id) : null;
+
+            if (miValoracion) {
+                // Ya valoró: mostrar su puntuación y mensaje
+                labelValorar.textContent = 'Tu valoración:';
+                starsInput.style.removeProperty('display');
+                starsInput.style.display = 'flex';
+                renderStarsInteractivas(starsInput, miValoracion.puntuacion, ideaId, currentUser, true);
+                yaValorasteMSG.classList.remove('hidden');
+                yaValorasteMSG.textContent = `Ya has valorado esta idea con ${miValoracion.puntuacion} ★. Puedes cambiarla haciendo clic.`;
+            } else {
+                // Todavía no ha valorado
+                labelValorar.textContent = 'Valora esta idea:';
+                starsInput.style.removeProperty('display');
+                starsInput.style.display = 'flex';
+                renderStarsInteractivas(starsInput, 0, ideaId, currentUser, false);
+            }
+        }
+
+        // Renderiza 5 estrellas interactivas con hover y clic
+        function renderStarsInteractivas(container, seleccionada, ideaId, currentUser, yaValoro) {
+            container.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = 'star-btn' + (i <= seleccionada ? ' selected' : '');
+                star.textContent = '★';
+                star.dataset.valor = i;
+
+                // Hover: iluminar hasta la estrella actual
+                star.addEventListener('mouseenter', () => {
+                    container.querySelectorAll('.star-btn').forEach(s => {
+                        s.classList.toggle('hovered', parseInt(s.dataset.valor) <= i);
+                    });
+                });
+                star.addEventListener('mouseleave', () => {
+                    container.querySelectorAll('.star-btn').forEach(s => s.classList.remove('hovered'));
+                });
+
+                // Clic: guardar o actualizar valoración
+                star.addEventListener('click', async () => {
+                    const puntuacion = i;
+                    await guardarValoracion(ideaId, currentUser, puntuacion, yaValoro);
+                    // Recargar toda la sección de valoración para reflejar cambios
+                    await cargarValoracion(ideaId, currentUser);
+                });
+
+                container.appendChild(star);
+            }
+        }
+
+        async function guardarValoracion(ideaId, currentUser, puntuacion, yaValoro) {
+            if (yaValoro) {
+                // Actualizar valoración existente
+                const { error } = await _supabase
+                    .from('valoraciones')
+                    .update({ puntuacion })
+                    .eq('idea_id', ideaId)
+                    .eq('user_id', currentUser.id);
+                if (error) console.error('Error actualizando valoración:', error.message);
+            } else {
+                // Insertar nueva valoración
+                const { error } = await _supabase
+                    .from('valoraciones')
+                    .insert([{ idea_id: ideaId, user_id: currentUser.id, puntuacion }]);
+                if (error) console.error('Error insertando valoración:', error.message);
+            }
+        }
+
+        // ── INIT ──────────────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const ideaId = params.get('id');
@@ -218,7 +385,11 @@
                 });
             }
 
-            await cargarComentarios(ideaId);
+            // Cargar valoraciones y comentarios en paralelo
+            await Promise.all([
+                cargarValoracion(ideaId, currentUser),
+                cargarComentarios(ideaId)
+            ]);
 
             const btnComentar = document.getElementById('btn-comentar');
             btnComentar.addEventListener('click', async () => {
