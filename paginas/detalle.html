@@ -10,23 +10,21 @@
     <style>
         .star-btn {
             cursor: pointer;
-            font-size: 2rem;
-            color: #d1d5db;
-            transition: color 0.15s, transform 0.15s;
-            line-height: 1;
+            transition: transform 0.15s;
         }
         .star-btn:hover,
         .star-btn.hovered,
         .star-btn.selected {
-            color: #f59e0b;
             transform: scale(1.2);
         }
-        .star-readonly {
-            font-size: 1.1rem;
-            color: #d1d5db;
+        .star-btn img,
+        .star-readonly img {
+            width: 32px;
+            height: 32px;
         }
-        .star-readonly.filled {
-            color: #f59e0b;
+        .star-readonly img {
+            width: 22px;
+            height: 22px;
         }
     </style>
 </head>
@@ -217,8 +215,13 @@
             container.innerHTML = '';
             for (let i = 1; i <= 5; i++) {
                 const star = document.createElement('span');
-                star.className = 'star-readonly' + (i <= puntuacion ? ' filled' : '');
-                star.textContent = '★';
+                star.className = 'star-readonly';
+                // Si i es menor o igual a la puntuación usamos la estrella amarilla (star.png)
+                // Si no, usamos la estrella gris (estrella.png)
+                const imgSrc = i <= puntuacion
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+                star.innerHTML = `<img src="${imgSrc}" alt="estrella">`;
                 container.appendChild(star);
             }
         }
@@ -285,25 +288,39 @@
             container.innerHTML = '';
             for (let i = 1; i <= 5; i++) {
                 const star = document.createElement('span');
-                star.className = 'star-btn' + (i <= seleccionada ? ' selected' : '');
-                star.textContent = '★';
+                star.className = 'star-btn';
                 star.dataset.valor = i;
 
-                // Hover: iluminar hasta la estrella actual
+                // Si la estrella ya está seleccionada mostramos la amarilla, si no la gris
+                const imgSrc = i <= seleccionada
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+                star.innerHTML = `<img src="${imgSrc}" alt="estrella ${i}">`;
+
+                // Cuando el ratón entra: iluminamos hasta esta estrella cambiando el src de la imagen
                 star.addEventListener('mouseenter', () => {
                     container.querySelectorAll('.star-btn').forEach(s => {
-                        s.classList.toggle('hovered', parseInt(s.dataset.valor) <= i);
+                        const img = s.querySelector('img');
+                        img.src = parseInt(s.dataset.valor) <= i
+                            ? '../imagenes/iconos/star.png'
+                            : '../imagenes/iconos/estrella.png';
                     });
                 });
+
+                // Cuando el ratón sale: volvemos al estado guardado (seleccionada)
                 star.addEventListener('mouseleave', () => {
-                    container.querySelectorAll('.star-btn').forEach(s => s.classList.remove('hovered'));
+                    container.querySelectorAll('.star-btn').forEach(s => {
+                        const img = s.querySelector('img');
+                        img.src = parseInt(s.dataset.valor) <= seleccionada
+                            ? '../imagenes/iconos/star.png'
+                            : '../imagenes/iconos/estrella.png';
+                    });
                 });
 
-                // Clic: guardar o actualizar valoración
+                // Al hacer clic guardamos la valoración
                 star.addEventListener('click', async () => {
                     const puntuacion = i;
                     await guardarValoracion(ideaId, currentUser, puntuacion, yaValoro);
-                    // Recargar toda la sección de valoración para reflejar cambios
                     await cargarValoracion(ideaId, currentUser);
                 });
 

@@ -8,13 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
     <style>
-        .star-display {
-            font-size: 1rem;
-            color: #d1d5db;
-            line-height: 1;
-        }
-        .star-display.filled {
-            color: #f59e0b;
+        .star-display img {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -158,12 +155,14 @@
             return Math.round(suma / valoraciones.length);
         }
 
-        // Genera el HTML de las 5 estrellas en función de la puntuación entera
+        // Genera el HTML de las 5 estrellas usando las imágenes star.png (amarilla) y estrella.png (gris)
         function generarEstrellas(puntuacion) {
             let html = '';
             for (let i = 1; i <= 5; i++) {
-                const filled = i <= puntuacion ? 'color:#f59e0b;' : 'color:#d1d5db;';
-                html += `<span style="font-size:1rem;line-height:1;${filled}">★</span>`;
+                const imgSrc = i <= puntuacion
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+                html += `<img src="${imgSrc}" alt="estrella" style="width:20px;height:20px;display:inline-block;">`;
             }
             return html;
         }
