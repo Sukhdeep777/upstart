@@ -185,15 +185,8 @@
                 </div>
                 <div class="list">
                     <h3 class="h3-list">Best Projects</h3>
-                    <ul>
-                        <li>Angel - 100XP</li>
-                        <li>Carlos - 80XP</li>
-                        <li>Maria - 70XP</li>
-                        <li>Cristian - 50XP</li>
-                        <li>Sebastian - 30XP</li>
-                        <li>Hugo - 20XP</li>
-                        <li>Lucia - 10XP</li>
-                        <li>Lisa - 1XP</li>
+                    <ul id="best-projects-list">
+                        <li>Cargando...</li>
                     </ul>
                 </div>
                 <div class="img-anuncio">
@@ -431,6 +424,68 @@
 
     // Ejecutar al cargar
     gestionarHeader(); // Llama a la función principal en cuanto se carga el script. Sin esta línea, todo lo anterior estaría definido pero nunca se ejecutaría.
+
+    async function cargarBestProjects() {
+    // 1. Traemos todas las valoraciones de la base de datos
+    const { data: vals, error } = await _supabase
+        .from('valoraciones')
+        .select('idea_id, puntuacion');
+
+    // Si hay error o no hay valoraciones, salimos
+    if (error || !vals || vals.length === 0) {
+        document.getElementById('best-projects-list').innerHTML =
+            '<li>Sin datos aún</li>';
+        return;
+    }
+
+    // 2. Agrupamos las valoraciones por idea y calculamos la media de cada una
+    // Creamos un objeto donde la clave es el idea_id y el valor es { suma, cantidad }
+    const grupos = {};
+    vals.forEach(v => {
+        if (!grupos[v.idea_id]) {
+            grupos[v.idea_id] = { suma: 0, cantidad: 0 };
+        }
+        grupos[v.idea_id].suma += v.puntuacion;
+        grupos[v.idea_id].cantidad += 1;
+    });
+
+    // 3. Convertimos el objeto en un array y calculamos la media de cada idea
+    // Math.round redondea al entero más cercano, sin decimales
+    const mediasArray = Object.entries(grupos).map(([ideaId, datos]) => ({
+        idea_id: parseInt(ideaId),
+        media: Math.round(datos.suma / datos.cantidad),
+        votos: datos.cantidad
+    }));
+
+    // 4. Ordenamos de mayor a menor media y nos quedamos con el top 8
+    mediasArray.sort((a, b) => b.media - a.media);
+    const top8 = mediasArray.slice(0, 8);
+
+    // 5. Traemos los títulos de esas ideas concretas desde la tabla ideas
+    const ids = top8.map(item => item.idea_id);
+    const { data: ideas } = await _supabase
+        .from('ideas')
+        .select('id, title')
+        .in('id', ids);
+
+    if (!ideas) return;
+
+    // 6. Creamos un mapa de id → título para acceder fácilmente
+    const titulosMap = {};
+    ideas.forEach(idea => {
+        titulosMap[idea.id] = idea.title;
+    });
+
+    // 7. Pintamos la lista en el HTML
+    const lista = document.getElementById('best-projects-list');
+    lista.innerHTML = '';
+    top8.forEach(item => {
+        const titulo = titulosMap[item.idea_id] || 'Idea desconocida';
+        lista.innerHTML += `<li>${titulo} - ${item.media}★</li>`;
+    });
+}
+
+cargarBestProjects();
 </script>
 </body>
 </html>
