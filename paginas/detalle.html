@@ -185,277 +185,186 @@
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        async function gestionarHeader() {
-            const { data: { user } } = await _supabase.auth.getUser();
-            const loginContainer = document.querySelector('.lg');
-            const userProfile = document.getElementById('user-profile');
-            const userAvatar = document.getElementById('user-avatar');
-            if (user) {
-                if (loginContainer) loginContainer.style.display = 'none';
-                userProfile.style.display = 'flex';
-                userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
-            } else {
-                if (loginContainer) loginContainer.style.display = 'block';
-                userProfile.style.display = 'none';
-            }
-        }
+        // (gestionarHeader y logoutButton son iguales que en contacto.html)
 
-        document.getElementById('logoutButton').addEventListener('click', async () => {
-            const { error } = await _supabase.auth.signOut();
-            if (error) console.log("Error al salir:", error.message);
-            window.location.reload();
-        });
-
-        gestionarHeader();
-
-        // ── ESTRELLAS DE SOLO LECTURA ──────────────────────────────────────────
-        // Renderiza 5 estrellas rellenas/vacías según la puntuación (entera)
-        function renderStarsReadonly(containerId, puntuacion) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('span');
-                star.className = 'star-readonly';
-                // Si i es menor o igual a la puntuación usamos la estrella amarilla (star.png)
-                // Si no, usamos la estrella gris (estrella.png)
-                const imgSrc = i <= puntuacion
-                    ? '../imagenes/iconos/star.png'
-                    : '../imagenes/iconos/estrella.png';
-                star.innerHTML = `<img src="${imgSrc}" alt="estrella">`;
-                container.appendChild(star);
-            }
-        }
-
-        // ── SECCIÓN DE VALORACIÓN ──────────────────────────────────────────────
-        async function cargarValoracion(ideaId, currentUser) {
-            // Traer todas las valoraciones de esta idea
-            const { data: vals, error } = await _supabase
-                .from('valoraciones')
-                .select('puntuacion, user_id')
-                .eq('idea_id', ideaId);
-
-            if (error) {
-                console.error('Error cargando valoraciones:', error.message);
-                return;
-            }
-
-            // Calcular media (redondeada al entero más cercano, sin decimales)
-            const total = vals ? vals.length : 0;
-            let media = 0;
-            if (total > 0) {
-                const suma = vals.reduce((acc, v) => acc + v.puntuacion, 0);
-                media = Math.round(suma / total);
-            }
-
-            // Mostrar estrellas globales
-            renderStarsReadonly('stars-global', media);
-            document.getElementById('puntuacion-texto').textContent = total > 0 ? `${media}/5` : 'Sin valoraciones';
-            document.getElementById('num-valoraciones').textContent = total > 0 ? `(${total} ${total === 1 ? 'valoración' : 'valoraciones'})` : '';
-
-            // ── INPUT DE VALORACIÓN ──
-            const starsInput = document.getElementById('stars-input');
-            const labelValorar = document.getElementById('label-valorar');
-            const yaValorasteMSG = document.getElementById('ya-valoraste-msg');
-
-            if (!currentUser) {
-                // No logueado: solo mostramos el aviso
-                labelValorar.textContent = 'Inicia sesión para valorar esta idea.';
-                return;
-            }
-
-            // Buscar si el usuario ya valoró
-            const miValoracion = vals ? vals.find(v => v.user_id === currentUser.id) : null;
-
-            if (miValoracion) {
-                // Ya valoró: mostrar su puntuación y mensaje
-                labelValorar.textContent = 'Tu valoración:';
-                starsInput.style.removeProperty('display');
-                starsInput.style.display = 'flex';
-                renderStarsInteractivas(starsInput, miValoracion.puntuacion, ideaId, currentUser, true);
-                yaValorasteMSG.classList.remove('hidden');
-                yaValorasteMSG.textContent = `Ya has valorado esta idea con ${miValoracion.puntuacion} ★. Puedes cambiarla haciendo clic.`;
-            } else {
-                // Todavía no ha valorado
-                labelValorar.textContent = 'Valora esta idea:';
-                starsInput.style.removeProperty('display');
-                starsInput.style.display = 'flex';
-                renderStarsInteractivas(starsInput, 0, ideaId, currentUser, false);
-            }
-        }
-
-        // Renderiza 5 estrellas interactivas con hover y clic
-        function renderStarsInteractivas(container, seleccionada, ideaId, currentUser, yaValoro) {
-            container.innerHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('span');
-                star.className = 'star-btn';
-                star.dataset.valor = i;
-
-                // Si la estrella ya está seleccionada mostramos la amarilla, si no la gris
-                const imgSrc = i <= seleccionada
-                    ? '../imagenes/iconos/star.png'
-                    : '../imagenes/iconos/estrella.png';
-                star.innerHTML = `<img src="${imgSrc}" alt="estrella ${i}">`;
-
-                // Cuando el ratón entra: iluminamos hasta esta estrella cambiando el src de la imagen
-                star.addEventListener('mouseenter', () => {
-                    container.querySelectorAll('.star-btn').forEach(s => {
-                        const img = s.querySelector('img');
-                        img.src = parseInt(s.dataset.valor) <= i
-                            ? '../imagenes/iconos/star.png'
-                            : '../imagenes/iconos/estrella.png';
-                    });
-                });
-
-                // Cuando el ratón sale: volvemos al estado guardado (seleccionada)
-                star.addEventListener('mouseleave', () => {
-                    container.querySelectorAll('.star-btn').forEach(s => {
-                        const img = s.querySelector('img');
-                        img.src = parseInt(s.dataset.valor) <= seleccionada
-                            ? '../imagenes/iconos/star.png'
-                            : '../imagenes/iconos/estrella.png';
-                    });
-                });
-
-                // Al hacer clic guardamos la valoración
-                star.addEventListener('click', async () => {
-                    const puntuacion = i;
-                    await guardarValoracion(ideaId, currentUser, puntuacion, yaValoro);
-                    await cargarValoracion(ideaId, currentUser);
-                });
-
-                container.appendChild(star);
-            }
-        }
-
-        async function guardarValoracion(ideaId, currentUser, puntuacion, yaValoro) {
-            if (yaValoro) {
-                // Actualizar valoración existente
-                const { error } = await _supabase
-                    .from('valoraciones')
-                    .update({ puntuacion })
-                    .eq('idea_id', ideaId)
-                    .eq('user_id', currentUser.id);
-                if (error) console.error('Error actualizando valoración:', error.message);
-            } else {
-                // Insertar nueva valoración
-                const { error } = await _supabase
-                    .from('valoraciones')
-                    .insert([{ idea_id: ideaId, user_id: currentUser.id, puntuacion }]);
-                if (error) console.error('Error insertando valoración:', error.message);
-            }
-        }
-
-        // ── INIT ──────────────────────────────────────────────────────────────
+        // --- EVENTO: cuando la página ha terminado de cargarse del todo ---
         document.addEventListener('DOMContentLoaded', async () => {
+
+            // Leemos los parámetros de la URL (ej: detalle.html?id=123)
             const params = new URLSearchParams(window.location.search);
+
+            // Obtenemos el valor del parámetro "id"
             const ideaId = params.get('id');
 
+            // Si no hay ID en la URL, algo va mal → volvemos a ideas.html
             if (!ideaId) {
                 alert("No se encontró la idea.");
                 window.location.href = 'ideas.html';
                 return;
             }
 
+            // Comprobamos si hay sesión activa para saber quién está leyendo
             const { data: { session } } = await _supabase.auth.getSession();
+
+            // Si hay sesión, guardamos el usuario; si no, currentUser será null
             const currentUser = session ? session.user : null;
 
+
+            // --- REGISTRAR LA VISITA ---
+            // Si el usuario no ha iniciado sesión, usamos un ID genérico de ceros
+            // para no contar como visita anónima válida en ciertos casos
             const lectorId = currentUser ? currentUser.id : '00000000-0000-0000-0000-000000000000';
+
+            // Llamamos a una función almacenada en Supabase (RPC = Remote Procedure Call)
+            // Esta función suma 1 a las vistas SOLO si el lector no es el autor de la idea
             const { error: errorVisita } = await _supabase.rpc('incrementar_vistas_si_es_ajeno', {
                 idea_id: ideaId,
                 lector_id: lectorId
             });
+
+            // Si hubo error al contar la visita, lo registramos pero no bloqueamos nada
             if (errorVisita) console.error("Error al contar visita:", errorVisita.message);
 
+
+            // --- CARGAR LOS DATOS DE LA IDEA ---
+            // Seleccionamos todos los campos (*) de la tabla "ideas"
+            // donde el id coincide con el que viene en la URL
+            // .single() devuelve un solo objeto en vez de un array
             const { data: idea, error: errorIdea } = await _supabase
                 .from('ideas')
                 .select('*')
                 .eq('id', ideaId)
                 .single();
 
+            // Si hay error o no se encontró la idea, mostramos un mensaje y paramos
             if (errorIdea || !idea) {
                 document.getElementById('idea-titulo').innerText = "Idea no encontrada";
                 return;
             }
 
+            // Ponemos el título y la descripción en los elementos del HTML
             document.getElementById('idea-titulo').innerText = idea.title;
             document.getElementById('idea-descripcion').innerText = idea.description;
 
+            // Si la idea tiene imagen, la mostramos (por defecto está oculta)
             if (idea.image_url) {
                 const img = document.getElementById('idea-imagen');
-                const wrapper = document.getElementById('idea-imagen-wrapper');
                 img.src = idea.image_url;
-                wrapper.classList.remove('hidden');
-                wrapper.classList.add('flex');
+                img.classList.remove('hidden'); // Quitamos la clase que la ocultaba
             }
 
+            // Si tiene enlace externo, lo mostramos
             if (idea.external_link) {
                 const link = document.getElementById('idea-enlace');
                 link.href = idea.external_link;
                 link.classList.remove('hidden');
             }
 
+            // Si tiene etiquetas (tags), las pintamos como "píldoras" de colores
             if (idea.tags && idea.tags.length > 0) {
                 const tagsContainer = document.getElementById('idea-tags');
+
+                // forEach recorre cada tag del array y añade su HTML al contenedor
                 idea.tags.forEach(tag => {
-                    tagsContainer.innerHTML += `<span class="bg-[#20b3b3]/15 text-[#20b3b3] px-4 py-1 rounded-full text-sm font-bold tracking-wide">${tag}</span>`;
+                    tagsContainer.innerHTML += `
+                        <span class="bg-[#20b3b3]/20 text-[#20b3b3] px-3 py-1 rounded-full text-sm font-bold">
+                            ${tag}
+                        </span>`;
                 });
             }
 
-            // Cargar valoraciones y comentarios en paralelo
-            await Promise.all([
-                cargarValoracion(ideaId, currentUser),
-                cargarComentarios(ideaId)
-            ]);
+            // Llamamos a la función que pinta los comentarios
+            await cargarComentarios(ideaId);
 
+
+            // --- ENVIAR COMENTARIO ---
             const btnComentar = document.getElementById('btn-comentar');
+
             btnComentar.addEventListener('click', async () => {
+
+                // Si no hay sesión, no se puede comentar
                 if (!currentUser) {
                     alert("Debes iniciar sesión para comentar.");
                     return;
                 }
+
+                // Leemos el comentario y quitamos espacios al principio y al final (.trim())
                 const texto = document.getElementById('input-comentario').value.trim();
+
+                // Si el campo está vacío, no hacemos nada
                 if (!texto) return;
+
+                // Desactivamos el botón mientras se envía para evitar doble envío
                 btnComentar.innerText = "Enviando...";
                 btnComentar.disabled = true;
+
+                // Insertamos el comentario en la tabla "comentarios"
                 const { error: insertError } = await _supabase
                     .from('comentarios')
                     .insert([{ idea_id: ideaId, user_id: currentUser.id, texto: texto }]);
+
                 if (insertError) {
                     console.error("Error al comentar:", insertError);
                     alert("Error al enviar el comentario.");
                 } else {
+                    // Limpiamos el campo de texto
                     document.getElementById('input-comentario').value = '';
+
+                    // Recargamos la lista de comentarios para que aparezca el nuevo
                     await cargarComentarios(ideaId);
                 }
+
+                // Volvemos a activar el botón
                 btnComentar.innerText = "Enviar";
                 btnComentar.disabled = false;
             });
         });
 
+
+        // --- FUNCIÓN: cargarComentarios ---
+        // Busca en Supabase los comentarios de una idea y los pinta en el HTML
         async function cargarComentarios(ideaId) {
+
+            // Referencia al div donde se mostrarán los comentarios
             const lista = document.getElementById('lista-comentarios');
+
+            // Consultamos la tabla "comentarios" y además traemos datos del usuario
+            // con "*, users(nombre, apellido)" hacemos un JOIN: añade datos de la tabla users
+            // .order('created_at', { ascending: false }) → los más recientes primero
             const { data: comentarios, error } = await _supabase
                 .from('comentarios')
                 .select(`*, users (nombre, apellido)`)
                 .eq('idea_id', ideaId)
                 .order('created_at', { ascending: false });
 
+            // Si hay error, mostramos un mensaje rojo
             if (error) {
                 lista.innerHTML = '<p class="text-red-500">Error cargando comentarios.</p>';
                 return;
             }
+
+            // Si no hay comentarios, invitamos al usuario a ser el primero
             if (comentarios.length === 0) {
-                lista.innerHTML = '<p class="text-gray-400 italic">Sé el primero en comentar.</p>';
+                lista.innerHTML = '<p class="text-gray-500 italic">Sé el primero en comentar.</p>';
                 return;
             }
+
+            // Vaciamos la lista antes de pintarla de nuevo
             lista.innerHTML = '';
+
+            // Recorremos cada comentario y añadimos su tarjeta al HTML
             comentarios.forEach(com => {
-                const nombreAutor = com.users ? `${com.users.nombre} ${com.users.apellido}` : 'Usuario';
+
+                // Si el comentario tiene datos del usuario los usamos; si no, "Usuario"
+                const nombreAutor = com.users
+                    ? `${com.users.nombre} ${com.users.apellido}`
+                    : 'Usuario';
+
+                // Añadimos el HTML de la tarjeta del comentario
                 lista.innerHTML += `
-                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 hover:border-[#20b3b3]/30 transition-colors">
-                        <p class="font-bold text-sm text-[#20b3b3] mb-2">${nombreAutor}</p>
-                        <p class="text-gray-700 leading-relaxed">${com.texto}</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="font-bold text-sm text-[#20b3b3] mb-1">${nombreAutor}</p>
+                        <p class="text-gray-700">${com.texto}</p>
                     </div>
                 `;
             });
