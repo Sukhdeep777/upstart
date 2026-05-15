@@ -118,21 +118,30 @@
         </div>
     </div>
 <script>
+    // Conexión con Supabase (igual que siempre)
     const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Variables globales
+    // ── VARIABLES GLOBALES ────────────────────────────────────────────────────────
+
+    // Guardará el usuario que tiene la sesión activa (se rellena al cargar la página)
     let currentUser = null;
+
+    // Array donde iremos acumulando los tags que el usuario añada, ej: ["tecnología", "app"]
     let tagsArray = [];
+
+    // Guardará el archivo de imagen que el usuario seleccione para subir
     let selectedFile = null;
 
-    // ==========================================
+
+    // ══════════════════════════════════════════════════════════════════════════════
     // 1. GESTIONAR HEADER + PROTEGER RUTA
-    // ==========================================
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    // Misma función de siempre: muestra avatar si hay sesión, "Log in" si no la hay
     async function gestionarHeader() {
         const { data: { user } } = await _supabase.auth.getUser();
-
         const loginContainer = document.querySelector('.lg');
         const userProfile = document.getElementById('user-profile');
         const userAvatar = document.getElementById('user-avatar');
@@ -147,166 +156,279 @@
         }
     }
 
+    // Botón "Salir": cierra sesión y recarga la página
     document.getElementById('logoutButton').addEventListener('click', async () => {
         const { error } = await _supabase.auth.signOut();
         if (error) console.log("Error al salir:", error.message);
         window.location.reload();
     });
 
+    // Cuando el HTML esté completamente cargado, ejecutamos esto:
     document.addEventListener('DOMContentLoaded', async () => {
+
+        // Actualizamos el header (avatar o botón Log in)
         gestionarHeader();
 
+        // Comprobamos si hay sesión activa
         const { data: { session } } = await _supabase.auth.getSession();
 
+        // Si NO hay sesión, esta página es privada → redirigimos al login
         if (!session) {
             window.location.href = 'login.html';
             return;
         }
 
+        // Si hay sesión, guardamos el usuario en la variable global para usarlo después
         currentUser = session.user;
     });
 
-    // ==========================================
-    // 2. LÓGICA DE LA IMAGEN (Subida y Preview)
-    // ==========================================
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('imagen');
-    const dropzoneContent = document.getElementById('dropzoneContent');
-    const previewImg = document.getElementById('previewImg');
 
+    // ══════════════════════════════════════════════════════════════════════════════
+    // 2. LÓGICA DE LA IMAGEN (Subida y Preview)
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    // Referencias a elementos del HTML relacionados con la imagen
+    const dropzone       = document.getElementById('dropzone');        // Zona de clic/arrastre
+    const fileInput      = document.getElementById('imagen');          // Input file oculto
+    const dropzoneContent = document.getElementById('dropzoneContent'); // Texto "haz clic para subir"
+    const previewImg     = document.getElementById('previewImg');      // Imagen de previsualización
+
+    // Cuando el usuario hace clic en la zona de la imagen,
+    // simulamos un clic en el input file oculto para abrir el selector de archivos
     dropzone.addEventListener('click', () => fileInput.click());
 
+    // Cuando el usuario selecciona un archivo en el selector:
     fileInput.addEventListener('change', (e) => {
+
+        // e.target.files es la lista de archivos seleccionados
+        // [0] coge el primero (y único, ya que no es múltiple)
         const file = e.target.files[0];
+
+        // Solo procesamos si realmente hay un archivo
         if (file) {
+
+            // Comprobamos el tamaño: 5 * 1024 * 1024 = 5.242.880 bytes = 5 MB
             if (file.size > 5 * 1024 * 1024) {
                 alert('La imagen pesa más de 5MB. Por favor, elige una más ligera.');
-                fileInput.value = '';
-                return;
+                fileInput.value = ''; // Limpiamos el input para que no quede nada seleccionado
+                return;               // Salimos sin hacer nada más
             }
 
+            // Guardamos el archivo en la variable global para usarlo al publicar
             selectedFile = file;
 
+            // FileReader es una herramienta del navegador para leer archivos locales
             const reader = new FileReader();
+
+            // Esta función se ejecuta cuando FileReader termina de leer el archivo
             reader.onload = (event) => {
+                // event.target.result contiene la imagen convertida a texto base64
+                // (un formato especial que permite incrustar imágenes en el HTML)
                 previewImg.src = event.target.result;
+
+                // Mostramos la imagen de previsualización (quitamos la clase "hidden")
                 previewImg.classList.remove('hidden');
+
+                // Ocultamos el texto "haz clic para subir" ya que ahora hay imagen
                 dropzoneContent.classList.add('hidden');
             };
+
+            // Le decimos al FileReader que lea el archivo como una URL de datos (base64)
             reader.readAsDataURL(file);
         }
     });
 
-    // ==========================================
+
+    // ══════════════════════════════════════════════════════════════════════════════
     // 3. LÓGICA DE LOS TAGS / ETIQUETAS
-    // ==========================================
-    const tagInput = document.getElementById('tagInput');
-    const tagsContainer = document.getElementById('tagsContainer');
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    // Referencias a los elementos de tags en el HTML
+    const tagInput     = document.getElementById('tagInput');      // Input de texto para escribir el tag
+    const tagsContainer = document.getElementById('tagsContainer'); // Div donde se muestran los tags
+
+    // nextElementSibling obtiene el elemento hermano inmediato siguiente en el HTML
+    // En este caso es el botón "+" que está justo después del input de tags
     const addTagBtn = tagInput.nextElementSibling;
 
+    // Función que añade un tag al array y actualiza la pantalla
     function addTag() {
+
+        // Leemos el texto del input, quitamos espacios y lo convertimos a minúsculas
         const tagText = tagInput.value.trim().toLowerCase();
 
+        // Condición para añadir el tag:
+        // - que el texto no esté vacío (tagText tiene valor)
+        // - que no hayamos llegado al máximo de 5 tags
+        // - que ese tag no exista ya en el array (no duplicados)
         if (tagText && tagsArray.length < 5 && !tagsArray.includes(tagText)) {
+
+            // Añadimos el nuevo tag al final del array
             tagsArray.push(tagText);
+
+            // Volvemos a pintar todos los tags en pantalla
             renderTags();
+
+            // Limpiamos el input para que el usuario pueda escribir otro tag
             tagInput.value = '';
+
         } else if (tagsArray.length >= 5) {
+            // Si ya hay 5 tags, avisamos al usuario
             alert('Solo puedes añadir un máximo de 5 tags.');
         }
+        // Si el tag ya existe o está vacío, simplemente no hace nada (sin aviso)
     }
 
+    // El botón "+" llama a addTag cuando se hace clic
     addTagBtn.addEventListener('click', addTag);
 
+    // También se puede añadir un tag pulsando la tecla Enter en el input
     tagInput.addEventListener('keypress', (e) => {
+
+        // e.key contiene el nombre de la tecla presionada
         if (e.key === 'Enter') {
+
+            // preventDefault evita que el Enter haga su comportamiento por defecto
+            // (en un formulario, Enter suele enviar el formulario, aquí no queremos eso)
             e.preventDefault();
+
+            // Llamamos a la función para añadir el tag
             addTag();
         }
     });
 
+    // Función que borra todos los tags del contenedor y los vuelve a dibujar desde el array
     function renderTags() {
-        tagsContainer.innerHTML = '';
+        tagsContainer.innerHTML = ''; // Limpiamos el contenedor
+
+        // Recorremos cada tag del array junto con su posición (índice)
         tagsArray.forEach((tag, index) => {
+
+            // Creamos un elemento <span> para cada tag
             const tagEl = document.createElement('span');
+
+            // Le damos estilos de "píldora" con Tailwind
             tagEl.className = 'bg-[#20b3b3]/20 text-[#20b3b3] px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2 mt-2';
+
+            // El HTML interior: el texto del tag + una "×" para borrarlo
+            // onclick="removeTag(${index})" llama a removeTag con el índice de este tag
             tagEl.innerHTML = `
                 ${tag}
                 <span class="cursor-pointer text-gray-500 hover:text-red-500" onclick="removeTag(${index})">×</span>
             `;
+
+            // Añadimos el span al contenedor de tags
             tagsContainer.appendChild(tagEl);
         });
     }
 
+    // Función para eliminar un tag por su posición en el array
+    // Se define en window para que el onclick del HTML pueda encontrarla
     window.removeTag = (index) => {
+
+        // splice(index, 1) elimina 1 elemento en la posición "index" del array
         tagsArray.splice(index, 1);
+
+        // Volvemos a pintar los tags sin el que acabamos de borrar
         renderTags();
     };
 
-    // ==========================================
-    // 4. ENVÍO A SUPABASE
-    // ==========================================
-    const btnPublicar = document.getElementById('btnPublicar'); 
 
+    // ══════════════════════════════════════════════════════════════════════════════
+    // 4. ENVÍO A SUPABASE (publicar la idea)
+    // ══════════════════════════════════════════════════════════════════════════════
+
+    // Referencia al botón "Publicar idea"
+    const btnPublicar = document.getElementById('btnPublicar');
+
+    // Cuando el usuario hace clic en "Publicar idea →":
     btnPublicar.addEventListener('click', async () => {
-        const titulo = document.getElementById('titulo').value.trim();
-        const descripcion = document.getElementById('descripcion').value.trim();
-        const enlace = document.getElementById('enlace').value.trim();
 
+        // Leemos los campos del formulario (sin espacios al inicio/final)
+        const titulo      = document.getElementById('titulo').value.trim();
+        const descripcion = document.getElementById('descripcion').value.trim();
+        const enlace      = document.getElementById('enlace').value.trim();
+
+        // Validación mínima: título y descripción son obligatorios
         if (!titulo || !descripcion) {
             alert('Por favor, rellena al menos el título y la descripción de tu idea.');
-            return;
+            return; // Salimos sin enviar nada
         }
 
+        // Guardamos el texto original del botón para restaurarlo si hay error
         const textoOriginal = btnPublicar.innerHTML;
-        btnPublicar.innerHTML = 'Publicando... ⏳';
-        btnPublicar.disabled = true;
-        btnPublicar.classList.add('opacity-70', 'cursor-not-allowed');
 
+        // Cambiamos el botón a estado "cargando" para evitar dobles clics
+        btnPublicar.innerHTML   = 'Publicando... ⏳';
+        btnPublicar.disabled    = true;
+        btnPublicar.classList.add('opacity-70', 'cursor-not-allowed'); // Aspecto desactivado
+
+        // try/catch: si algo falla dentro del try, salta al catch en lugar de romper la página
         try {
+
+            // Variable que guardará la URL pública de la imagen (si se sube alguna)
             let imageUrl = null;
 
+            // Solo intentamos subir imagen si el usuario seleccionó una
             if (selectedFile) {
+
+                // Obtenemos la extensión del archivo (ej: "jpg", "png", "webp")
+                // split('.') divide el nombre por los puntos → ["foto", "jpg"]
+                // .pop() coge el último elemento → "jpg"
                 const fileExt = selectedFile.name.split('.').pop();
+
+                // Construimos una ruta única para el archivo en el storage de Supabase
+                // Usamos el ID del usuario + la fecha actual en milisegundos para que no haya duplicados
+                // Ejemplo: "abc123/1716800000000.jpg"
                 const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
 
-                const { error: uploadError } = await _supabase.storage // ✅ _supabase
+                // Subimos el archivo al bucket "ideas_images" de Supabase Storage
+                // .from('ideas_images') → selecciona el bucket (carpeta principal)
+                // .upload(ruta, archivo) → sube el archivo a esa ruta
+                const { error: uploadError } = await _supabase.storage
                     .from('ideas_images')
                     .upload(filePath, selectedFile);
 
+                // Si hubo error al subir, lanzamos el error para que lo capture el catch
                 if (uploadError) throw uploadError;
 
-                const { data: publicUrlData } = _supabase.storage // ✅ _supabase
+                // Si la subida fue bien, obtenemos la URL pública de la imagen
+                // (una URL que cualquiera puede usar para ver la imagen)
+                const { data: publicUrlData } = _supabase.storage
                     .from('ideas_images')
                     .getPublicUrl(filePath);
 
+                // Guardamos la URL para insertarla en la base de datos después
                 imageUrl = publicUrlData.publicUrl;
             }
 
-            const { error: insertError } = await _supabase // ✅ _supabase
+            // Insertamos la idea en la tabla "ideas" de Supabase
+            const { error: insertError } = await _supabase
                 .from('ideas')
-                .insert([
-                    {
-                        title: titulo,
-                        description: descripcion,
-                        image_url: imageUrl,
-                        tags: tagsArray,
-                        external_link: enlace || null,
-                        user_id: currentUser.id
-                    }
-                ]);
+                .insert([{
+                    title:         titulo,          // Título de la idea
+                    description:   descripcion,     // Descripción
+                    image_url:     imageUrl,         // URL de la imagen (o null si no hay)
+                    tags:          tagsArray,        // Array de tags ["tag1", "tag2", ...]
+                    external_link: enlace || null,   // Enlace externo, o null si está vacío
+                    user_id:       currentUser.id    // ID del usuario que publica
+                }]);
 
+            // Si hubo error al insertar, lo lanzamos al catch
             if (insertError) throw insertError;
 
+            // Si todo fue bien, avisamos al usuario y lo mandamos al inicio
             alert('¡Idea publicada con éxito! 🚀');
             window.location.href = '../index.html';
 
         } catch (error) {
+            // Si algo falló en cualquier punto del try, llegamos aquí
             console.error('Error al publicar:', error);
             alert('Hubo un error al publicar tu idea. Inténtalo de nuevo.');
 
+            // Restauramos el botón a su estado original para que el usuario pueda reintentar
             btnPublicar.innerHTML = textoOriginal;
-            btnPublicar.disabled = false;
+            btnPublicar.disabled  = false;
             btnPublicar.classList.remove('opacity-70', 'cursor-not-allowed');
         }
     });

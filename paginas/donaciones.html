@@ -101,33 +101,110 @@
         }
     </script>
     <script>
+        // Dirección de la base de datos en Supabase (como la URL de una página web)
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+
+        // Contraseña pública para poder conectarse a esa base de datos
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+
+        // Creamos la "conexión" con Supabase usando la URL y la KEY
+        // _supabase es el objeto que usaremos para hacer consultas
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
+        // --- FUNCIÓN: gestionarHeader ---
+        // Decide si mostrar el botón "Log in" o el avatar del usuario en el header
         async function gestionarHeader() {
+
+            // Le preguntamos a Supabase: "¿hay algún usuario con sesión iniciada?"
+            // { data: { user } } extrae el usuario directamente de la respuesta
             const { data: { user } } = await _supabase.auth.getUser();
 
+            // Buscamos en el HTML el div que contiene el botón "Log in" (tiene clase "lg")
             const loginContainer = document.querySelector('.lg');
+
+            // Buscamos el div que contiene el avatar y el botón "Salir"
             const userProfile = document.getElementById('user-profile');
+
+            // Buscamos la etiqueta <img> donde se mostrará la foto del usuario
             const userAvatar = document.getElementById('user-avatar');
 
+            // Si existe un usuario con sesión activa...
             if (user) {
+                // Ocultamos el botón "Log in"
                 if (loginContainer) loginContainer.style.display = 'none';
+
+                // Mostramos el div del perfil (avatar + botón Salir)
                 userProfile.style.display = 'flex';
+
+                // Generamos una imagen de avatar automática con las iniciales del email
+                // ui-avatars.com crea una imagen personalizada al vuelo con la URL
                 userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+
             } else {
+                // Si NO hay sesión, mostramos el botón "Log in"
                 if (loginContainer) loginContainer.style.display = 'block';
+
+                // Y ocultamos el perfil
                 userProfile.style.display = 'none';
             }
         }
 
+
+        // --- EVENTO: clic en el botón "Enviar" del formulario de contacto ---
+        document.getElementById('btnEnviar').addEventListener('click', async () => {
+
+            // 1. Leemos el texto que el usuario escribió en cada campo del formulario
+            const nombreInput = document.getElementById('nombre').value;
+            const emailInput = document.getElementById('email').value;
+            const mensajeInput = document.getElementById('mensaje').value;
+
+            // 2. Comprobamos que ningún campo esté vacío
+            // El operador ! significa "si esto NO tiene valor"
+            if (!nombreInput || !emailInput || !mensajeInput) {
+                alert("Por favor, completa todos los campos.");
+                return; // Salimos de la función, no enviamos nada
+            }
+
+            // 3. Insertamos los datos en la tabla "contactos" de Supabase
+            // .from('contactos') → selecciona la tabla
+            // .insert([{...}])   → añade una nueva fila con esos datos
+            const { data, error } = await _supabase
+                .from('contactos')
+                .insert([
+                    { nombre: nombreInput, email: emailInput, mensaje: mensajeInput }
+                ]);
+
+            // 4. Si hubo un error, lo mostramos en consola y avisamos al usuario
+            if (error) {
+                console.error("Error al enviar el mensaje:", error);
+                alert("Hubo un error al enviar tu mensaje. Inténtalo de nuevo.");
+            } else {
+                // Si fue bien, avisamos al usuario con un mensaje de éxito
+                alert("¡Mensaje enviado con éxito!");
+
+                // Limpiamos los campos del formulario dejándolos vacíos
+                document.getElementById('nombre').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('mensaje').value = '';
+            }
+        });
+
+
+        // --- EVENTO: clic en el botón "Salir" ---
         document.getElementById('logoutButton').addEventListener('click', async () => {
+
+            // Le decimos a Supabase que cierre la sesión del usuario actual
             const { error } = await _supabase.auth.signOut();
+
+            // Si hubo un error al cerrar sesión, lo mostramos en consola
             if (error) console.log("Error al salir:", error.message);
+
+            // Recargamos la página para que el header se actualice (sin sesión)
             window.location.reload();
         });
 
+        // Llamamos a la función al cargar la página para que el header esté correcto
         gestionarHeader();
     </script>
 </body>

@@ -28,31 +28,61 @@
         </div>
     </div>
     <script>
-        // 1. CONEXIÓN (Igual que en la otra página)
+        // ── 1. CONEXIÓN CON SUPABASE ──────────────────────────────────────────────────
+
+        // Guardamos la dirección (URL) de nuestra base de datos en Supabase
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
+
+        // Guardamos la clave pública que nos da permiso para usar Supabase
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'
+
+        // Extraemos la función "createClient" del objeto global "supabase"
+        // Esto se llama DESESTRUCTURACIÓN: en vez de escribir supabase.createClient() cada vez,
+        // guardamos esa función en su propia variable para usarla más cómodamente
         const { createClient } = supabase;
+
+        // Creamos la conexión real con Supabase usando la URL y la KEY
+        // _supabase será el objeto que usemos para todo: login, consultas, etc.
         const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 2. FUNCIÓN DE LOGIN
+
+        // ── 2. FUNCIÓN DE LOGIN ───────────────────────────────────────────────────────
+
+        // Buscamos el botón "Iniciar sesión" en el HTML por su id y lo guardamos
         const loginButton = document.querySelector("#loginButton");
 
+        // Añadimos un "escuchador": cuando el usuario haga clic en el botón, se ejecuta esta función
+        // "async" significa que dentro podremos usar "await" para esperar respuestas de Supabase
         loginButton.addEventListener('click', async () => {
+
+            // Leemos lo que el usuario escribió en el campo email
             const email = document.querySelector('#email').value;
+
+            // Leemos lo que el usuario escribió en el campo contraseña
             const pass = document.querySelector('#password').value;
 
-            // Intentar iniciar sesión
+            // Le pedimos a Supabase que intente iniciar sesión con ese email y contraseña
+            // "signInWithPassword" es el método de Supabase para el login clásico (email + pass)
+            // "await" hace que el programa ESPERE aquí hasta tener respuesta de Supabase
+            // El resultado se divide en dos partes: "data" (los datos si fue bien) y "error" (si falló)
             const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: pass,
+                email: email,       // el email que introdujo el usuario
+                password: pass,     // la contraseña que introdujo el usuario
             });
 
+            // Si Supabase devolvió un error (email incorrecto, contraseña incorrecta, etc.)
             if (error) {
+                // Mostramos el mensaje de error en una ventana emergente
+                // error.message es el texto descriptivo del error que nos da Supabase
                 alert("Error al entrar: " + error.message);
+
             } else {
+                // Si no hay error, el login fue exitoso
                 alert("¡Bienvenido de nuevo!");
-                // Redirigir a la página principal de tu app
-                window.location.href = "../index.html"; 
+
+                // Redirigimos al usuario a la página principal de la app
+                // window.location.href cambia la URL actual, como si pulsaras un enlace
+                window.location.href = "../index.html";
             }
         });
     </script>
