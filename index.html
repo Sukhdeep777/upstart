@@ -25,7 +25,7 @@
                 <li><a href="paginas/contacto.html">CONTACTO</a></li>
             </ul>
         </nav>
-        <div class="usuario">
+        <div class="usuario flex">
             <div id="auth-section">
                 <div class="lg">
                     <p><a href="paginas/login.html">Log in</a></p>
@@ -36,6 +36,9 @@
                         Salir
                     </button>
                 </div>            
+            </div>
+            <div class="flex ag-c">
+                <button id="darkToggle" title="Modo nocturno">🌙</button>
             </div>
         </div>
     </header> 
@@ -70,7 +73,7 @@
                     <div class="flex ides">
                         <div class="ide2">
                             <div class="flex ag-c t-d">
-                                <h2>EdTech de Mentoria "Just-in-Time"</h2> 
+                                <h2>EdTech de Mentoria</h2> 
                                 <div class="flex ag-c gap">
                                     <div>
                                         <img src="imagenes/iconos/star.png" alt="Estrellas Valoración">
@@ -184,7 +187,7 @@
                     </ul>
                 </div>
                 <div class="list">
-                    <h3 class="h3-list">Best Projects</h3>
+                    <h3 class="h3-list">Mejores Proyectos</h3>
                     <ul id="best-projects-list">
                         <li>Cargando...</li>
                     </ul>
@@ -478,14 +481,31 @@
 
     // 7. Pintamos la lista en el HTML
     const lista = document.getElementById('best-projects-list');
+    const MAX = 25;
     lista.innerHTML = '';
     top8.forEach(item => {
         const titulo = titulosMap[item.idea_id] || 'Idea desconocida';
-        lista.innerHTML += `<li>${titulo} - ${item.media}★</li>`;
+        const tituloCorto = titulo.length > MAX ? titulo.substring(0, MAX) + '…' : titulo;
+        lista.innerHTML += `<li title="${titulo}">${tituloCorto} - ${item.media}★</li>`;
     });
 }
 
 cargarBestProjects();
+
+    // ── Modo nocturno ──────────────────────────────────────
+    const darkToggle = document.getElementById('darkToggle');
+
+    // Recupera preferencia guardada
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+        darkToggle.textContent = '☀️';
+    }
+
+    darkToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    });
 </script>
 </body>
 </html>

@@ -7,6 +7,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
+    <link rel="stylesheet" href="../modooscuro.css">
+    <style>
+        /* Oculta la barra en Chrome, Safari y Edge */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Oculta la barra en Firefox */
+        html {
+            scrollbar-width: none;
+        }
+    </style>
 </head>
 <body class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
     <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
@@ -42,10 +54,12 @@
             <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
                 Salir
             </button>
+            <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
         </div>
+
     </header>
     <div class="flex justify-center items-center">
-        <div class="mt-5">
+        <div class="mt-1">
             <p class="text-6xl font-bold mt-8 bg-clip-text text-white"> Contáctanos </p>
         </div>
     </div>
@@ -157,6 +171,19 @@
         });
 
         gestionarHeader();
+    const darkToggle = document.getElementById('darkToggle');
+
+    // Recupera preferencia guardada
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+        darkToggle.textContent = '☀️';
+    }
+
+    darkToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    });
     </script>
 </body>
 </html>

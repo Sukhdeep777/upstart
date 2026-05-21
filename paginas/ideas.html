@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
+    <link rel="stylesheet" href="../modooscuro.css">
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
     <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
@@ -42,6 +43,7 @@
             <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
                 Salir
             </button>
+            <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
         </div>
     </header>
     <main class="mt-[40px] w-[100%]">
@@ -145,6 +147,7 @@
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // ── GESTIÓN DEL HEADER (avatar, botón salir) ──────────────────────────────
         async function gestionarHeader() {
             const { data: { user } } = await _supabase.auth.getUser();
 
@@ -155,6 +158,7 @@
             if (user) {
                 if (loginContainer) loginContainer.style.display = 'none';
                 userProfile.style.display = 'flex';
+                // Generamos un avatar automático con las iniciales del email del usuario
                 userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
             } else {
                 if (loginContainer) loginContainer.style.display = 'block';
@@ -162,6 +166,7 @@
             }
         }
 
+        // Cuando el usuario pulsa "Salir", cerramos su sesión y recargamos la página
         document.getElementById('logoutButton').addEventListener('click', async () => {
             const { error } = await _supabase.auth.signOut();
             if (error) console.log("Error al salir:", error.message);
@@ -171,9 +176,13 @@
         gestionarHeader();
     </script>
     <script>
+        // ── ARRANQUE PRINCIPAL ────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', async () => {
+
+            // Comprobamos si el usuario tiene sesión activa
             const { data: { session } } = await _supabase.auth.getSession();
 
+            // Si no está logueado, lo mandamos al login
             if (!session) {
                 window.location.href = 'login.html';
                 return;
@@ -181,17 +190,43 @@
 
             const userId = session.user.id;
 
-            // Escuchar los radio buttons
+            // Cuando el usuario cambia el orden (cronológico, más comentarios, más vistos)
+            // volvemos a cargar las ideas con el nuevo criterio
             document.querySelectorAll('input[name="grupo"]').forEach(radio => {
                 radio.addEventListener('change', () => {
                     cargarIdeas(radio.value, userId);
                 });
             });
 
-            // Cargar al inicio con orden cronológico
+            // Cargamos las ideas por primera vez con el orden cronológico (opción 1)
             cargarIdeas('1', userId);
         });
 
+        // ── CALCULA LA MEDIA DE LAS VALORACIONES ─────────────────────────────────
+        // Recibe un array de objetos { puntuacion: X } y devuelve la media redondeada
+        function calcularMedia(valoraciones) {
+            if (!valoraciones || valoraciones.length === 0) return 0;
+            const suma = valoraciones.reduce((acc, v) => acc + v.puntuacion, 0);
+            return Math.round(suma / valoraciones.length);
+        }
+
+        // ── GENERA EL HTML DE LAS ESTRELLAS ──────────────────────────────────────
+        // puntuacion = número del 1 al 5
+        // Pinta estrellas llenas hasta esa puntuación y vacías el resto
+        function generarEstrellas(puntuacion) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                const imgSrc = i <= puntuacion
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+                html += `<img src="${imgSrc}" alt="estrella" style="width:20px;height:20px;display:inline-block;">`;
+            }
+            return html;
+        }
+
+        // ── CARGA Y PINTA TODAS LAS IDEAS DEL USUARIO ────────────────────────────
+        // orden: '1' = cronológico, '2' = más comentarios, '3' = más vistos
+        // userId: el id del usuario logueado para traer solo SUS ideas
         async function cargarIdeas(orden, userId) {
             const container = document.getElementById('mis-ideas-container');
             container.innerHTML = '<p class="text-black">Cargando... ⏳</p>';
@@ -199,11 +234,13 @@
             let misIdeas, error;
 
             if (orden === '2') {
+                // Para ordenar por comentarios tenemos que traer también el contador de comentarios
                 const { data, error: err } = await _supabase
                     .from('ideas')
                     .select('*, comentarios(count)')
                     .eq('user_id', userId);
 
+                // Ordenamos en el navegador (JavaScript) de mayor a menor nº de comentarios
                 if (data) {
                     data.sort((a, b) => {
                         const countA = a.comentarios[0]?.count || 0;
@@ -216,21 +253,24 @@
                 error = err;
 
             } else {
+                // Para orden cronológico y por visitas, Supabase ordena directamente
                 let query = _supabase.from('ideas').select('*').eq('user_id', userId);
 
-                if (orden === '1') query = query.order('created_at', { ascending: false });
-                if (orden === '3') query = query.order('views', { ascending: false });
+                if (orden === '1') query = query.order('created_at', { ascending: false }); // más reciente primero
+                if (orden === '3') query = query.order('views', { ascending: false });       // más vistos primero
 
                 const { data, error: err } = await query;
                 misIdeas = data;
                 error = err;
             }
 
+            // Si Supabase devuelve un error, lo mostramos y paramos
             if (error) {
                 container.innerHTML = '<p class="text-red-500 bg-white p-4 rounded-xl">Error al cargar las ideas.</p>';
                 return;
             }
 
+            // Si el usuario no tiene ninguna idea publicada, mostramos un mensaje animándole
             if (misIdeas.length === 0) {
                 container.innerHTML = `
                     <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
@@ -241,29 +281,50 @@
                 return;
             }
 
+            // Recogemos los ids de todas las ideas para buscar sus valoraciones de golpe
+            // (más eficiente que hacer una consulta por cada idea)
+            const ideaIds = misIdeas.map(i => i.id);
+            const { data: todasVals } = await _supabase
+                .from('valoraciones')
+                .select('idea_id, puntuacion')
+                .in('idea_id', ideaIds);
+
+            // Agrupamos las valoraciones en un objeto: { idIdea: [val1, val2, ...] }
+            // Así luego podemos buscar las valoraciones de cada idea muy rápido
+            const valsMap = {};
+            (todasVals || []).forEach(v => {
+                if (!valsMap[v.idea_id]) valsMap[v.idea_id] = [];
+                valsMap[v.idea_id].push(v);
+            });
+
+            // Limpiamos el contenedor antes de pintar las nuevas cards
             container.innerHTML = '';
 
+            // Pintamos las ideas de 2 en 2 (una fila con 2 columnas)
             for (let i = 0; i < misIdeas.length; i += 2) {
                 const fila = document.createElement('div');
                 fila.className = 'flex gap-6 w-full';
 
                 [misIdeas[i], misIdeas[i + 1]].forEach(idea => {
-                    if (!idea) return;
+                    if (!idea) return; // Si el total de ideas es impar, el último hueco está vacío
+
+                    // Obtenemos las valoraciones de esta idea concreta y calculamos la media
+                    const valoraciones = valsMap[idea.id] || [];
+                    const media = calcularMedia(valoraciones);
+                    const numVals = valoraciones.length;
 
                     const card = document.createElement('div');
                     card.className = 'bg-white border border-gray-200 rounded-[20px] p-8 shadow-sm hover:shadow-md transition-shadow w-1/2';
                     card.innerHTML = `
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex justify-between items-start mb-4">
                             <h2 class="text-[24px] font-bold text-black">${idea.title}</h2>
-                            <div class="flex items-center gap-1">
-                                <div class="flex">
-                                    <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                    <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                    <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                    <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
-                                    <img src="../imagenes/iconos/star.png" alt="Estrella" style="width:22px;">
+                            <div class="flex flex-col items-end gap-1 shrink-0 ml-4">
+                                <div class="flex items-center gap-[2px]">
+                                    ${generarEstrellas(media)}
                                 </div>
-                                <span class="text-black text-sm font-bold ml-1">/5</span>
+                                <span class="text-xs text-gray-400 font-medium">
+                                    ${numVals > 0 ? `${media}/5 · ${numVals} ${numVals === 1 ? 'valoración' : 'valoraciones'}` : 'Sin valoraciones'}
+                                </span>
                             </div>
                         </div>
                         <p class="text-gray-500 font-medium mb-8 line-clamp-2 leading-relaxed">
@@ -271,9 +332,17 @@
                         </p>
                         <div class="flex justify-between items-center font-bold text-sm">
                             <p class="text-black">Publicado por <span class="text-gray-600">Ti</span></p>
-                            <a href="detalle.html?id=${idea.id}" class="text-black underline hover:text-[#20b3b3] transition-colors cursor-pointer">
-                                Ver mas
-                            </a>
+                            <div class="flex gap-3 items-center">
+                                <a href="detalle.html?id=${idea.id}" class="text-black underline hover:text-[#20b3b3] transition-colors cursor-pointer">
+                                    Ver mas
+                                </a>
+                                <!-- Botón eliminar: al hacer clic llama a eliminarIdea() con el id de esta idea -->
+                                <button 
+                                    onclick="eliminarIdea('${idea.id}')" 
+                                    class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-lg hover:bg-red-700 transition-colors cursor-pointer">
+                                    Eliminar
+                                </button>
+                            </div>
                         </div>
                     `;
                     fila.appendChild(card);
@@ -282,6 +351,61 @@
                 container.appendChild(fila);
             }
         }
+
+        // ── ELIMINAR UNA IDEA DE SUPABASE ─────────────────────────────────────────
+        // ideaId: el id de la idea que queremos borrar
+        async function eliminarIdea(ideaId) {
+
+            // Mostramos un diálogo de confirmación para evitar borrados accidentales
+            const confirmado = confirm('¿Seguro que quieres eliminar esta idea? Esta acción no se puede deshacer.');
+
+            // Si el usuario pulsó "Cancelar", salimos sin hacer nada
+            if (!confirmado) return;
+
+            // OPCIONAL: si tus tablas NO tienen cascade delete activado en Supabase,
+            // descomenta estas dos líneas para borrar primero los datos relacionados
+            // await _supabase.from('comentarios').delete().eq('idea_id', ideaId);
+            // await _supabase.from('valoraciones').delete().eq('idea_id', ideaId);
+
+            // Le decimos a Supabase que borre la fila de 'ideas' cuyo id sea ideaId
+            const { error } = await _supabase
+                .from('ideas')
+                .delete()
+                .eq('id', ideaId);
+
+            // Si hay error (por ejemplo, falta de permisos) lo mostramos y paramos
+            if (error) {
+                alert('Hubo un error al eliminar la idea. Inténtalo de nuevo.');
+                console.error('Error al eliminar:', error.message);
+                return;
+            }
+
+            // Todo fue bien: avisamos al usuario y recargamos la lista
+            alert('Idea eliminada correctamente ✅');
+
+            // Buscamos qué orden tiene seleccionado el usuario en este momento
+            const ordenActual = document.querySelector('input[name="grupo"]:checked').value;
+
+            // Recuperamos la sesión para obtener el userId y recargar solo sus ideas
+            const { data: { session } } = await _supabase.auth.getSession();
+            cargarIdeas(ordenActual, session.user.id);
+        }
+
+        // ── MODO OSCURO ───────────────────────────────────────────────────────────
+        const darkToggle = document.getElementById('darkToggle');
+
+        // Si el usuario ya había activado el modo oscuro antes, lo recuperamos
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+            darkToggle.textContent = '☀️';
+        }
+
+        // Al pulsar el botón alternamos entre modo claro y oscuro
+        darkToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark');
+            darkToggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark); // Guardamos la preferencia para la próxima visita
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,105 @@
+/* Botón modo nocturno */
+#darkToggle {
+    background: none;
+    border: 2px solid #20b3b3;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+#darkToggle:hover {
+    background: #20b3b3;
+    transform: scale(1.1);
+}
+
+/* Variables modo oscuro */
+body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark header {
+    background-color: #1e1e1e;
+    border-bottom-color: #20b3b3;
+    color: #e0e0e0;
+}
+
+body.dark nav ul a {
+    color: #e0e0e0;
+}
+
+body.dark .ide1,
+body.dark .ide2,
+body.dark .ide3 {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark .ide1 h2,
+body.dark .ide2 h2,
+body.dark .ide3 h2 {
+    color: #e0e0e0;
+}
+
+body.dark .p1,
+body.dark .p1-2 {
+    color: #aaa;
+}
+
+body.dark .rk {
+    color: #e0e0e0;
+}
+
+body.dark .base {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark .pg-div {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark footer {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+/* Tarjetas de ideas (páginas Tailwind) */
+body.dark .bg-white {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.dark .border-gray-200 {
+    border-color: #333;
+}
+
+body.dark .text-black {
+    color: #e0e0e0;
+}
+
+body.dark .text-gray-500 {
+    color: #aaa;
+}
+
+body.dark .text-gray-400 {
+    color: #888;
+}
+
+body.dark .text-gray-600 {
+    color: #bbb;
+}
+
+
+body.dark .dark-btn{
+    background-color: #1a1a1a !important;
+    color: white !important;
+}
+

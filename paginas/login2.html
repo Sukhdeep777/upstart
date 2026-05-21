@@ -47,7 +47,7 @@
         </div>
     </div>
  
-    <script>
+ <script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co'
         // Guarda la URL del proyecto del supabase
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei'
@@ -125,7 +125,9 @@
         password.addEventListener("input", passwordValidation)
         confirmPassword.addEventListener("input", passwordValidation)
  
-        // ─── Validación de email: formato + dominio real ──────────────────────────
+        // ─── Validación de email: formato + solo bloquea emails temporales ────────
+        // NOTA: ya no bloqueamos dominios privados (colegios, empresas, etc.)
+        // Solo rechazamos emails con formato incorrecto o que sean desechables/temporales
         let emailTimer = null;
         // Variable para guardar el temporizador y cancelarlo si el usuario sigue escribiendo
  
@@ -154,36 +156,34 @@
  
         async function validateEmailDomain(email) {
             emailFeedback.innerHTML = `<p class="text-gray-500 text-sm">Verificando dominio...</p>`;
-
             try {
                 const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
-
-                if (!res.ok) {
-                    throw new Error("HTTP error");
-                }
-
-                const json = await res.json(); // 👈 NO uses text()
-
+                if (!res.ok) throw new Error("HTTP error");
+                const json = await res.json();
+ 
                 if (json.status !== 'success') {
-                    showFeedback(emailFeedback, 'No se pudo verificar el dominio.', false);
+                    // Si la API falla o no reconoce el dominio, lo aceptamos igualmente
+                    // (dominios privados de colegios o empresas pueden no estar en su base de datos)
+                    showFeedback(emailFeedback, 'Email aceptado.', true);
                     return;
                 }
-
-                const { valid, disposable } = json.data;
-
-                if (!valid) {
-                    showFeedback(emailFeedback, 'El dominio no existe o no puede recibir correos.', false);
-                } else if (disposable) {
+ 
+                const { disposable } = json.data;
+                // Solo miramos si es un email temporal/desechable (mailinator, tempmail, etc.)
+                // Ya NO bloqueamos por valid=false, así funcionan dominios privados
+ 
+                if (disposable) {
                     showFeedback(emailFeedback, 'No se permiten emails temporales.', false);
                 } else {
                     showFeedback(emailFeedback, 'Email válido.', true);
                 }
-
+ 
             } catch (err) {
-                console.warn(err);
-                showFeedback(emailFeedback, 'Error de conexión con la API.', false);
+                // Si hay error de conexión con la API, no bloqueamos al usuario
+                showFeedback(emailFeedback, 'Email aceptado.', true);
             }
         }
+ 
         button.addEventListener('click', async () => {
             // Evento cuando haces click en el botón (función asíncrona)
             // "asíncrona" significa que puede esperar a que algo termine (por ejemplo una base de datos o una API)
@@ -234,36 +234,36 @@
                 // Detiene ejecución
             }
  
-            // 5. Verificación final del dominio del email (antes de enviar a Supabase)
-            // Se vuelve a verificar aquí por si el usuario no esperó al feedback del input
+            // 5. Verificación final del email antes de enviar a Supabase
+            // Solo bloqueamos emails temporales/desechables, no dominios privados
             button.disabled = true;
             button.textContent = 'Verificando...';
             // Deshabilita el botón y cambia su texto para evitar dobles envíos mientras verifica
-
+ 
             let emailOk = false;
-
+ 
             try {
                 const res = await fetch(`https://api.eva.pingutil.com/email?email=${encodeURIComponent(email)}`);
                 const json = await res.json();
-
+ 
                 if (json.status !== 'success') {
-                    console.warn('API falló, se permite continuar');
-                    emailOk = true; // 👈 decisión: no bloquear
+                    // Si la API no responde correctamente, dejamos pasar
+                    // (no penalizamos al usuario por un fallo externo)
+                    emailOk = true;
                 } else {
-                    const { valid, disposable, mx_records } = json.data;
-
-                    emailOk = valid && !disposable && mx_records && mx_records.length > 0;
-
-                    if (!emailOk) {
-                        alert('Email no válido');
+                    const { disposable } = json.data;
+                    // Solo bloqueamos si el email es temporal/desechable
+                    if (disposable) {
+                        alert('No se permiten emails temporales.');
                         button.disabled = false;
                         button.textContent = 'Crear cuenta';
                         return;
                     }
+                    emailOk = true;
                 }
-
+ 
             } catch (error) {
-                console.warn('Error API, se permite continuar');
+                // Si hay error de conexión con la API, no bloqueamos al usuario
                 emailOk = true;
             }
  
@@ -310,6 +310,7 @@
             button.textContent = 'Crear cuenta';
             // Reactiva el botón al terminar el proceso
         });
+
     </script>
 </body>
 </html>

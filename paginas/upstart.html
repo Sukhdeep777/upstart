@@ -7,12 +7,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="../imagenes/icono.png" type="image/x-icon">
+    <link rel="stylesheet" href="../modooscuro.css">
     <style>
         .star-display img {
             width: 20px;
             height: 20px;
             display: inline-block;
         }
+
+        /* Oculta la barra en Chrome, Safari y Edge */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Oculta la barra en Firefox */
+        html {
+            scrollbar-width: none;
+        }
+
     </style>
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
@@ -49,7 +61,9 @@
             <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
                 Salir
             </button>
+            <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
         </div>
+
     </header>
 
     <main class="mt-[40px] w-[100%]">
@@ -69,10 +83,10 @@
             </div>
             <div class="flex w-[20%] justify-around">
                 <div>
-                    <button class="cursor-pointer bg-[#e3e4e6] py-2 px-3 rounded-xl hover:bg-[#20b3b3] hover:text-white duration-150"><a href="ideas.html">Mis ideas</a></button>
+                    <button class="dark-btn cursor-pointer bg-[#e3e4e6] py-2 px-3 rounded-xl hover:bg-[#20b3b3] hover:text-white duration-150"><a href="ideas.html">Mis ideas</a></button>
                 </div>
                 <div>
-                    <button class="cursor-pointer bg-[#e3e4e6] py-2 px-3 rounded-xl hover:bg-[#20b3b3] hover:text-white duration-150"><a href="publica.html">Publicar idea +</a></button>
+                    <button class="dark-btn cursor-pointer bg-[#e3e4e6] py-2 px-3 rounded-xl hover:bg-[#20b3b3] hover:text-white duration-150"><a href="publica.html">Publicar idea +</a></button>
                 </div>
             </div>
         </section>
@@ -121,76 +135,50 @@
     <script>
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
-        // Guardamos la dirección web de la base de datos y la contraseña publica
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        // Arrancamos un motor de Supabase usando los datos de arriba (El enlace y la llave) haciendo un puente entre la web y la base de datos
 
         async function gestionarHeader() {
-        // Creamos una funcion para adaptar el header.El async es una funcion que le dice al ordenador que envia peticiones a internet pero tambien sigue haciendo otras cosas con async i await.
             const { data: { user } } = await _supabase.auth.getUser();
-            // Le preguntamos a supabase si hay algun usuario conectado ahora mismo, guardando su respuesta en la variable "user"
             const loginContainer = document.querySelector('.lg');
             const userProfile = document.getElementById('user-profile');
             const userAvatar = document.getElementById('user-avatar');
-            // Buscamos en nuestro HTML las cajas que nos interesan: el boton de login, el perfil oculto y la foto del avatar.
             if (user) {
-            // Si supabase nos dice que hay un usuario conectado
                 if (loginContainer) loginContainer.style.display = 'none';
-                // Escondemos el boton de Log In
                 userProfile.style.display = 'flex';
-                // Mostramos el menu del perfil del usuario
                 userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
-                // Le asignamos una foto de avatar de iniciales apartir de su correo a través de una api a ui-avatars
             } else {
-            // Si por el contrario no hay nadie conectado
                 if (loginContainer) loginContainer.style.display = 'block';
-                // Mostramos el boton de Log in
                 userProfile.style.display = 'none';
-                // Escondemos el menu del perfil
             }
         }
 
         document.getElementById('logoutButton').addEventListener('click', async () => {
-        // Le ponemos un escuchador de eventos al botón de Salir.Si alguien hace click hace lo siguiente: 
             const { error } = await _supabase.auth.signOut();
-            // le manda una orden a supabase para cerrar sesión
             if (error) console.log("Error al salir:", error.message);
-            // Si algo sale mal para poder cerrar sesión, nos lo dira por consola para poder arreglarlo
             window.location.reload();
-            // Recarga la página haciendo que el menu se actualize y vuelve mostrar el boton de Log in
         });
 
         gestionarHeader();
-        // Ejecutamos la funcion del menú nada mas cargar el codigo para que se pinte correctamente.
 
         // ── HELPERS ────────────────────────────────────────────────────────────
 
+        // Dado un array de valoraciones de UNA idea, devuelve la media entera (1-5) o 0
         function calcularMedia(valoraciones) {
-            // Esta funcione recibe todas las notas de una idea ejemplo: 3,4,5.... para poder calcular la media
             if (!valoraciones || valoraciones.length === 0) return 0;
-            // si nadie ha votado, la nota és un 0 directamente 
             const suma = valoraciones.reduce((acc, v) => acc + v.puntuacion, 0);
-            // Suma todas las notas, reduce lo que hace es modo una calculadora va acumulando los números de la lista.
-            // .reduce agarra el array y lo reduce o lo deja en un valor
             return Math.round(suma / valoraciones.length);
-            // Divide la suma total de las valoraciones entre la cantidad de votos para poder sacar la media y redondearla para que no haya decimales.
         }
 
+        // Genera el HTML de las 5 estrellas usando las imágenes star.png (amarilla) y estrella.png (gris)
         function generarEstrellas(puntuacion) {
-        // Esta funciona recibe la nota media que puede ser un numero entre el 1 - 5 y devuelve el codigo HTML de las 5 estrellas visuales.
             let html = '';
-            // Preparamos una variable de una caja html con el texto vacio
             for (let i = 1; i <= 5; i++) {
-            // Con un for hacemos que se repita exactamente 5 veces
                 const imgSrc = i <= puntuacion
                     ? '../imagenes/iconos/star.png'
                     : '../imagenes/iconos/estrella.png';
-                // Si el numero por el que vamos és menor o igual a la nota usamos la foto de la estrella amarilla i si es superior utilizamos la foto gris.
                 html += `<img src="${imgSrc}" alt="estrella" style="width:20px;height:20px;display:inline-block;">`;
-                // Añadamos esa imagen a nuestra caja de texto
             }
             return html;
-            // Devolvemos la caja de texto que ahora contiene las 5 etiquetas de imagen lista para pintarse
         }
 
         // ── CARGA DE IDEAS ────────────────────────────────────────────────────
@@ -307,6 +295,19 @@
                 container.appendChild(fila);
             }
         }
+    const darkToggle = document.getElementById('darkToggle');
+
+    // Recupera preferencia guardada
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+        darkToggle.textContent = '☀️';
+    }
+
+    darkToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    });
     </script>
 </body>
 </html>
