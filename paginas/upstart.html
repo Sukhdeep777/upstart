@@ -204,11 +204,16 @@
             });
             // Buscamos los dos botones cronologico y aleatorio.Si el usuario cambia su eleccion el .change vuelve a cargar las ideas del botón pero usando el valor del botón nuevo.
             document.querySelector('input[type="text"]').addEventListener('input', (e) => {
+            // Busca la barra del buscador, cada vez que el usuari teclee una letra, input hace esto:
                 const textoBusqueda = e.target.value.toLowerCase();
+                // Guarda lo que se ha escrito y lo pasa a minusculas para que sea facil compararlo
                 document.querySelectorAll('.idea-card').forEach(tarjeta => {
+                // Agarra todas tarjetas de ideas que ya estan dibujadas y las repasa una a una:
                     const titulo = tarjeta.querySelector('h2').textContent.toLowerCase();
                     const descripcion = tarjeta.querySelector('p').textContent.toLowerCase();
+                    // saca el titulo y la descripción de esa tarjeta concreta y los pasa a minúsculas.
                     tarjeta.style.display = (titulo.includes(textoBusqueda) || descripcion.includes(textoBusqueda)) ? 'block' : 'none';
+                    // Si lo que estamos buscando està dentro del titulo o descripcion muestra la tarjeta block si no none
                 });
             });
         });
