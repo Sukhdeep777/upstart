@@ -196,12 +196,13 @@
         // ── CARGA DE IDEAS ────────────────────────────────────────────────────
 
         document.addEventListener('DOMContentLoaded', async () => {
+        // Esperamos a que la página HTML se haya dibujado antes de arrancar con este bloque.
             cargarIdeas('1');
-
+            // Ejecutamos la funcion principal para cargar las ideas por primera vez ( el 1 es el orden cronologico)
             document.querySelectorAll('input[name="grupo"]').forEach(radio => {
                 radio.addEventListener('change', () => cargarIdeas(radio.value));
             });
-
+            // Buscamos los dos botones cronologico y aleatorio.Si el usuario cambia su eleccion el .change vuelve a cargar las ideas del botón pero usando el valor del botón nuevo.
             document.querySelector('input[type="text"]').addEventListener('input', (e) => {
                 const textoBusqueda = e.target.value.toLowerCase();
                 document.querySelectorAll('.idea-card').forEach(tarjeta => {
