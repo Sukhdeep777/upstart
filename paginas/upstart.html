@@ -219,24 +219,31 @@
         });
 
         async function cargarIdeas(orden) {
+        // Esta funcion lo que hace va a Supabase descarga las ideas y lo dibujo en el HTML
             const container = document.getElementById('ideas-container');
             container.innerHTML = '<p class="text-black">Cargando ideas... ⏳</p>';
-
+            // Busca el contenedor vacio donde iran las tarjetas y pone un mensaje de espera
             // 1. Traer ideas
             let todasLasIdeas, error;
             if (orden === '1') {
+            // Si el iusuario ha elegido el orden cronologico
                 const { data, error: err } = await _supabase
                     .from('ideas')
                     .select('*')
                     .order('created_at', { ascending: false });
+                // Pide todas las ideas a la tabla ideas,ordenandolo por fechas de mas nueva a mas vieja 
                 todasLasIdeas = data; error = err;
+                // Guarda los resultados
             } else {
+            // Si el orden ha elegido el orden aleatorio
                 const { data, error: err } = await _supabase.from('ideas').select('*');
+                // Pide todas las ideas de golpe sin ordenar 
                 if (data) {
                     for (let i = data.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [data[i], data[j]] = [data[j], data[i]];
                     }
+                    // Este bloque agarra la lista que nos ha llegado y mezcla las posiciones al azar.
                 }
                 todasLasIdeas = data; error = err;
             }
@@ -245,6 +252,7 @@
                 container.innerHTML = '<p class="text-red-500 bg-white p-4 rounded-xl">Error al cargar las ideas.</p>';
                 return;
             }
+            // Si la connexión fallo, escribe en el div un mensaje en rojo y frena la funcion
             if (!todasLasIdeas || todasLasIdeas.length === 0) {
                 container.innerHTML = `
                     <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
@@ -252,23 +260,25 @@
                     </div>`;
                 return;
             }
+            // Si todo ha salido bien, pero la tabla esta vacia muestra un mensaje avisando que no hay ideas publicadas y frena la funcion
 
-            // 2. Traer TODAS las valoraciones de golpe (una sola query)
             const ideaIds = todasLasIdeas.map(i => i.id);
+            // Extrae los ids de todas las ideas que nos han llegado de la base de datos
             const { data: todasVals } = await _supabase
                 .from('valoraciones')
                 .select('idea_id, puntuacion')
                 .in('idea_id', ideaIds);
+            // Hace un segundo viaje a supabase y se trae todas las valoraciones que pertenecen a las ids que acabamos de extraer y asi es mas rapido que pedirlo de una en una
 
-            // 3. Agrupar valoraciones por idea_id en un mapa
             const valsMap = {};
             (todasVals || []).forEach(v => {
                 if (!valsMap[v.idea_id]) valsMap[v.idea_id] = [];
                 valsMap[v.idea_id].push(v);
             });
+            // Crea un diccionario, ordena el caos de valoraciones agrupandolos asignando a cada idea una lista con sus puntuaciones especificas.
 
-            // 4. Renderizar tarjetas
             container.innerHTML = '';
+            // Borra el texto de Cargando y lo deja limpio para poner las tarjetas.
 
             for (let i = 0; i < todasLasIdeas.length; i += 2) {
                 const fila = document.createElement('div');
