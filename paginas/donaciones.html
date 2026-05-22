@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,9 @@
     <link rel="stylesheet" href="../modooscuro.css">
 
 </head>
-<body class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
+
+<body
+    class="bg-gray-500 h-screen w-100% bg-gradient-to-br from-gray-400 to-[#20b3b3] font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif]">
     <header class=" flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
         <div class="flex items-center">
             <div class="w-[90px] flex items-center">
@@ -21,129 +24,164 @@
         <nav class="w-[60%] font-bold">
             <ul class="flex justify-around list-none m-0 p-0">
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="../index.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">INICIO</a>
+                    <a href="../index.html"
+                        class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">INICIO</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
+                    <a href="upstart.html"
+                        class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
+                    <a href="donaciones.html"
+                        class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
+                    <a href="contacto.html"
+                        class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
                 </li>
             </ul>
         </nav>
         <div class="lg ml-[10px]">
             <div class="border-2 border-[#20b3b3] rounded-[20px] hover:bg-[#20b3b3] transition-all duration-200">
-                <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block hover:text-white">Log in</a>
+                <a href="login.html"
+                    class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block hover:text-white">Log
+                    in</a>
             </div>
         </div>
         <div id="user-profile" class="hidden items-center gap-3 ml-[10px]" style="display:none;">
             <img id="user-avatar" src="" alt="Avatar" class="w-[42px] h-[42px] rounded-full border-2 border-[#20b3b3]">
-            <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
+            <button id="logoutButton"
+                class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
                 Salir
             </button>
             <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
         </div>
     </header>
-<div class="flex justify-center items-center px-4 py-16">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
-        
-        <!-- Cabecera tarjeta -->
-        <div class="bg-[#20b3b3] px-10 py-8">
-            <p class="text-white text-3xl font-bold m-0">💙 Dona ahora</p>
-            <p class="text-white/80 text-sm mt-1 m-0">Tu apoyo hace la diferencia</p>
-        </div>
+    <div class="flex justify-center items-center px-4 py-16">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
 
-        <!-- Selector de cantidad rápida -->
-        <div class="px-10 pt-8">
-            <p class="text-gray-500 text-sm font-bold mb-3 m-0">CANTIDAD RÁPIDA</p>
-            <div class="grid grid-cols-4 gap-2 mb-5">
-                <button onclick="setAmount(5)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">5€</button>
-                <button onclick="setAmount(10)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">10€</button>
-                <button onclick="setAmount(25)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">25€</button>
-                <button onclick="setAmount(50)" class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">50€</button>
+            <!-- Cabecera tarjeta -->
+            <div class="bg-[#20b3b3] px-10 py-8">
+                <p class="text-white text-3xl font-bold m-0">💙 Dona ahora</p>
+                <p class="text-white/80 text-sm mt-1 m-0">Tu apoyo hace la diferencia</p>
             </div>
 
-            <!-- Input cantidad personalizada -->
-            <label class="text-gray-500 text-sm font-bold" for="cantidad">O INTRODUCE UNA CANTIDAD</label>
-            <div class="flex items-center border-2 border-gray-200 rounded-xl mt-2 mb-5 focus-within:border-[#20b3b3] transition duration-300">
-                <span class="text-gray-400 font-bold pl-4">€</span>
-                <input 
-                    id="cantidad" 
-                    type="number" 
-                    placeholder="0.00"
-                    class="w-full bg-transparent px-3 py-3 outline-none text-gray-700 font-bold"
-                >
+            <!-- Selector de cantidad rápida -->
+            <div class="px-10 pt-8">
+                <p class="text-gray-500 text-sm font-bold mb-3 m-0">CANTIDAD RÁPIDA</p>
+                <div class="grid grid-cols-4 gap-2 mb-5">
+                    <button onclick="setAmount(5)"
+                        class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">5€</button>
+                    <button onclick="setAmount(10)"
+                        class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">10€</button>
+                    <button onclick="setAmount(25)"
+                        class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">25€</button>
+                    <button onclick="setAmount(50)"
+                        class=" border-2 border-[#20b3b3] text-[#20b3b3] font-bold py-2 rounded-xl hover:bg-[#20b3b3] hover:text-white transition duration-300 cursor-pointer bg-white">50€</button>
+                </div>
+
+                <!-- Input cantidad personalizada -->
+                <label class="text-gray-500 text-sm font-bold" for="cantidad">O INTRODUCE UNA CANTIDAD</label>
+                <div
+                    class="flex items-center border-2 border-gray-200 rounded-xl mt-2 mb-5 focus-within:border-[#20b3b3] transition duration-300">
+                    <span class="text-gray-400 font-bold pl-4">€</span>
+                    <input id="cantidad" type="number" placeholder="0.00"
+                        class="w-full bg-transparent px-3 py-3 outline-none text-gray-700 font-bold">
+                </div>
+
+                <!-- Mensaje -->
+                <label class="text-gray-500 text-sm font-bold" for="mensaje">MENSAJE (OPCIONAL)</label>
+                <textarea id="mensaje" placeholder="Escribe un mensaje de apoyo..." rows="3"
+                    class="w-full border-2 border-gray-200 rounded-xl mt-2 px-4 py-3 outline-none resize-none text-gray-700 focus:border-[#20b3b3] transition duration-300 bg-transparent"></textarea>
             </div>
 
-            <!-- Mensaje -->
-            <label class="text-gray-500 text-sm font-bold" for="mensaje">MENSAJE (OPCIONAL)</label>
-            <textarea 
-                id="mensaje" 
-                placeholder="Escribe un mensaje de apoyo..." 
-                rows="3"
-                class="w-full border-2 border-gray-200 rounded-xl mt-2 px-4 py-3 outline-none resize-none text-gray-700 focus:border-[#20b3b3] transition duration-300 bg-transparent"
-            ></textarea>
-        </div>
-
-        <!-- Botón donar -->
-        <div class="px-10 py-8">
-            <button class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30">
-                Donar ahora →
-            </button>
-            <p class="text-center text-gray-400 text-xs mt-4 m-0">🔒 Pago 100% seguro y cifrado</p>
+            <!-- Botón donar -->
+            <div class="px-10 py-8">
+                <button
+                    class="w-full bg-[#20b3b3] text-white font-bold py-4 rounded-xl text-lg hover:bg-[#469696] transition duration-500 cursor-pointer hover:scale-[1.02] shadow-lg shadow-[#20b3b3]/30">
+                    Donar ahora →
+                </button>
+                <p class="text-center text-gray-400 text-xs mt-4 m-0">🔒 Pago 100% seguro y cifrado</p>
+            </div>
         </div>
     </div>
-</div>
 
     <script>
+        // Define una función que se ejecuta al hacer clic en ciertos botones de cantidad
         function setAmount(val) {
+            // Busca un elemento HTML con el ID 'cantidad' (un input) y le asigna el valor recibido
             document.getElementById('cantidad').value = val;
         }
     </script>
     <script>
+        // Guarda la URL del servidor de la base de datos Supabase
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+        // Guarda la clave pública necesaria para comunicarse de forma segura con Supabase
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+        // Inicializa el cliente de Supabase usando la URL y la clave anteriores para poder usar sus funciones
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Define una función asíncrona para controlar lo que se muestra en la cabecera (header) según el usuario
         async function gestionarHeader() {
+            // Pide a Supabase los datos del usuario que tiene la sesión iniciada actualmente
             const { data: { user } } = await _supabase.auth.getUser();
+            // Busca en el HTML el contenedor o botón de inicio de sesión (clase .lg)
             const loginContainer = document.querySelector('.lg');
+            // Busca en el HTML el contenedor del perfil del usuario (ID user-profile)
             const userProfile = document.getElementById('user-profile');
+            // Busca en el HTML la etiqueta de imagen donde va la foto del usuario (ID user-avatar)
             const userAvatar = document.getElementById('user-avatar');
 
+            // Comprueba si hay un usuario con la sesión iniciada
             if (user) {
+                // Si el contenedor de login existe, lo oculta (para que no salga "Iniciar Sesión")
                 if (loginContainer) loginContainer.style.display = 'none';
+                // Muestra el contenedor del perfil de usuario usando un diseño flexible (flex)
                 userProfile.style.display = 'flex';
+                // Genera dinámicamente un avatar (imagen) usando el email del usuario y servicios de ui-avatars
                 userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
             } else {
+                // Si NO hay usuario, muestra el contenedor o botón de inicio de sesión
                 if (loginContainer) loginContainer.style.display = 'block';
+                // Oculta el contenedor del perfil de usuario
                 userProfile.style.display = 'none';
             }
         }
 
+        // Añade un detector de eventos al botón de cerrar sesión (ID logoutButton) para cuando hagan "clic"
         document.getElementById('logoutButton').addEventListener('click', async () => {
+            // Llama a la función de Supabase para cerrar la sesión actual
             const { error } = await _supabase.auth.signOut();
+            // Si ocurre un error durante el cierre de sesión, lo muestra en la consola del navegador
             if (error) console.log("Error al salir:", error.message);
+            // Recarga la página web automáticamente para aplicar los cambios visuales de cierre de sesión
             window.location.reload();
         });
 
+        // Ejecuta la función para comprobar el estado del usuario nada más cargar la página
         gestionarHeader();
-    const darkToggle = document.getElementById('darkToggle');
+        
+        // Busca en el HTML el botón encargado de cambiar el tema (ID darkToggle)
+        const darkToggle = document.getElementById('darkToggle');
 
-    // Recupera preferencia guardada
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark');
-        darkToggle.textContent = '☀️';
-    }
+        // Recupera la preferencia del Modo Oscuro guardada en el navegador del usuario
+        if (localStorage.getItem('darkMode') === 'true') {
+            // Si estaba activado, añade la clase CSS 'dark' al cuerpo (body) de la página
+            document.body.classList.add('dark');
+            // Cambia el texto del botón al icono del sol para indicar que puede volver al modo claro
+            darkToggle.textContent = '☀️';
+        }
 
-    darkToggle.addEventListener('click', () => {
-        const isDark = document.body.classList.toggle('dark');
-        darkToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDark);
-    });
+        // Añade un detector de eventos para que reaccione cada vez que se haga clic en el botón de cambiar tema
+        darkToggle.addEventListener('click', () => {
+            // Alterna la clase 'dark' en el body (la quita si está, la pone si no está) y guarda el resultado (true/false)
+            const isDark = document.body.classList.toggle('dark');
+            // Si ahora está en modo oscuro (isDark es true) pone el sol ☀️, si no, pone la luna 🌙
+            darkToggle.textContent = isDark ? '☀️' : '🌙';
+            // Guarda la nueva preferencia (true o false) en la memoria local del navegador del usuario
+            localStorage.setItem('darkMode', isDark);
+        });
     </script>
 </body>
+
 </html>
