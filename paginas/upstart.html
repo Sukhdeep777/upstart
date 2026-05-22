@@ -281,19 +281,21 @@
             // Borra el texto de Cargando y lo deja limpio para poner las tarjetas.
 
             for (let i = 0; i < todasLasIdeas.length; i += 2) {
+            // El bucle principal que va repasando las ideas en 2 en 2 porque queremos poner las ideas en 2 en 2
                 const fila = document.createElement('div');
                 fila.className = 'flex gap-6 w-full';
-
+                // Crea en memoria una caja fila que servirá para agrupar dos tarjetas juntas
                 [todasLasIdeas[i], todasLasIdeas[i + 1]].forEach(idea => {
+                // Agarra la idea actual y la siguiente para ponerlo en parejas
                     if (!idea) return;
-
+                    // Si estamos en la ultima idea y es impar, salta el processo vació.
                     const valoraciones = valsMap[idea.id] || [];
                     const media = calcularMedia(valoraciones);
                     const numVals = valoraciones.length;
-
+                    // Busca las valoraciones de esta idea concreta en el diccionario calcula la media y cuenta cuanta gente ha votado.
                     const card = document.createElement('div');
                     card.className = 'idea-card bg-white border border-gray-200 rounded-[20px] p-8 shadow-sm hover:shadow-md transition-shadow w-1/2';
-
+                    // Crea la caja de la tarjeta y le ponemos los estilos con tailwind
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-4">
                             <h2 class="text-[24px] font-bold text-black">${idea.title}</h2>
@@ -316,11 +318,13 @@
                             </a>
                         </div>
                     `;
-
+                    // Aqui inyectamos todo el codigo HTML por dentro de la tarjeta 
                     fila.appendChild(card);
+                    // Mete la tarjeta ya rellenada dentro de la caja fila
                 });
 
                 container.appendChild(fila);
+                // Agarra la fila completa donde estan las parejas de ideas y las inyecta en la web que esta observando el iusuario.
             }
         }
     </script>
