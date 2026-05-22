@@ -187,134 +187,252 @@
     </footer>
 
     <script>
+        // Guardamos la URL de nuestro proyecto en Supabase (la base de datos en la nube)
         const SUPABASE_URL = 'https://zvjxpexicorduvlsitfx.supabase.co';
+
+        // Guardamos la clave pública que nos permite conectarnos a Supabase
         const SUPABASE_KEY = 'sb_publishable_1D-7xOkRDEmIER0b7CadvA_aOe9sbei';
+
+        // Creamos el "cliente" de Supabase: es como abrir la conexión a la base de datos
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
+        // ── FUNCIÓN: Gestionar qué se ve en el header según si hay sesión o no ──
         async function gestionarHeader() {
+
+            // Le preguntamos a Supabase si hay algún usuario logueado ahora mismo
+            // "{ data: { user } }" extrae directamente el usuario de la respuesta
             const { data: { user } } = await _supabase.auth.getUser();
+
+            // Buscamos en el HTML el contenedor del botón "Log in"
             const loginContainer = document.querySelector('.lg');
+
+            // Buscamos el div que muestra el avatar y el botón "Salir"
             const userProfile = document.getElementById('user-profile');
+
+            // Buscamos la imagen del avatar del usuario
             const userAvatar = document.getElementById('user-avatar');
+
+            // Comprobamos si existe un usuario logueado
             if (user) {
+
+                // Si hay sesión, ocultamos el botón "Log in"
                 if (loginContainer) loginContainer.style.display = 'none';
+
+                // Mostramos el bloque con el avatar y el botón "Salir"
                 userProfile.style.display = 'flex';
+
+                // Generamos automáticamente una imagen de avatar con las iniciales del email
+                // usando el servicio gratuito ui-avatars.com
                 userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`;
+
             } else {
+                // Si NO hay sesión, mostramos el botón "Log in"
                 if (loginContainer) loginContainer.style.display = 'block';
+
+                // Ocultamos el bloque del perfil
                 userProfile.style.display = 'none';
             }
         }
 
+
+        // Escuchamos el clic en el botón "Salir"
         document.getElementById('logoutButton').addEventListener('click', async () => {
+
+            // Le pedimos a Supabase que cierre la sesión del usuario
+            // "error" recibirá información si algo sale mal
             const { error } = await _supabase.auth.signOut();
+
+            // Si hubo un error al cerrar sesión, lo mostramos en la consola
             if (error) console.log("Error al salir:", error.message);
+
+            // Recargamos la página para que todo se actualice visualmente
             window.location.reload();
         });
 
+        // Llamamos a la función para preparar el header nada más cargar el script
         gestionarHeader();
 
-        // ── ESTRELLAS DE SOLO LECTURA ──────────────────────────────────────────
-        // Renderiza 5 estrellas rellenas/vacías según la puntuación (entera)
+
+        // ── FUNCIÓN: Dibujar estrellas de SOLO LECTURA (no se pueden clicar) ──
         function renderStarsReadonly(containerId, puntuacion) {
+
+            // Buscamos el elemento HTML donde vamos a pintar las estrellas por su id
             const container = document.getElementById(containerId);
+
+            // Vaciamos el contenedor por si ya tenía estrellas de antes
             container.innerHTML = '';
+
+            // Creamos un bucle que va del 1 al 5 (las 5 estrellas)
             for (let i = 1; i <= 5; i++) {
+
+                // Creamos un elemento <span> para cada estrella
                 const star = document.createElement('span');
+
+                // Le asignamos la clase CSS para darle estilos de solo lectura
                 star.className = 'star-readonly';
-                // Si i es menor o igual a la puntuación usamos la estrella amarilla (star.png)
-                // Si no, usamos la estrella gris (estrella.png)
+
+                // Si el número de estrella (i) es menor o igual a la puntuación,
+                // usamos la imagen de estrella AMARILLA (rellena)
+                // Si no, usamos la imagen de estrella GRIS (vacía)
                 const imgSrc = i <= puntuacion
                     ? '../imagenes/iconos/star.png'
                     : '../imagenes/iconos/estrella.png';
+
+                // Metemos dentro del span una etiqueta <img> con la imagen elegida
                 star.innerHTML = `<img src="${imgSrc}" alt="estrella">`;
+
+                // Añadimos la estrella al contenedor del HTML
                 container.appendChild(star);
             }
         }
 
-        // ── SECCIÓN DE VALORACIÓN ──────────────────────────────────────────────
-        async function cargarValoracion(ideaId, currentUser) {
-            // Traer todas las valoraciones de esta idea
-            const { data: vals, error } = await _supabase
-                .from('valoraciones')
-                .select('puntuacion, user_id')
-                .eq('idea_id', ideaId);
 
+        // ── FUNCIÓN: Cargar y mostrar las valoraciones de una idea ──
+        async function cargarValoracion(ideaId, currentUser) {
+
+            // Pedimos a Supabase TODAS las valoraciones que tenga esta idea
+            // Solo nos traemos las columnas "puntuacion" y "user_id"
+            const { data: vals, error } = await _supabase
+                .from('valoraciones')          // tabla "valoraciones"
+                .select('puntuacion, user_id') // solo estas dos columnas
+                .eq('idea_id', ideaId);        // donde idea_id sea igual al que buscamos
+
+            // Si algo fue mal, mostramos el error en consola y salimos de la función
             if (error) {
                 console.error('Error cargando valoraciones:', error.message);
                 return;
             }
 
-            // Calcular media (redondeada al entero más cercano, sin decimales)
+            // Contamos cuántas valoraciones hay (si no hay ninguna, ponemos 0)
             const total = vals ? vals.length : 0;
+
+            // Inicializamos la media a 0
             let media = 0;
+
+            // Solo calculamos la media si hay al menos una valoración
             if (total > 0) {
+
+                // Sumamos todas las puntuaciones con reduce
+                // "acc" es el acumulador que va sumando, "v" es cada valoración
                 const suma = vals.reduce((acc, v) => acc + v.puntuacion, 0);
+
+                // Dividimos la suma entre el total y redondeamos al entero más cercano
                 media = Math.round(suma / total);
             }
 
-            // Mostrar estrellas globales
+            // Dibujamos las estrellas globales con la media calculada
             renderStarsReadonly('stars-global', media);
-            document.getElementById('puntuacion-texto').textContent = total > 0 ? `${media}/5` : 'Sin valoraciones';
-            document.getElementById('num-valoraciones').textContent = total > 0 ? `(${total} ${total === 1 ? 'valoración' : 'valoraciones'})` : '';
 
-            // ── INPUT DE VALORACIÓN ──
-            const starsInput = document.getElementById('stars-input');
-            const labelValorar = document.getElementById('label-valorar');
+            // Mostramos el texto de la puntuación (ej: "4/5") o "Sin valoraciones"
+            document.getElementById('puntuacion-texto').textContent =
+                total > 0 ? `${media}/5` : 'Sin valoraciones';
+
+            // Mostramos el número de valoraciones entre paréntesis
+            // Usamos singular o plural según si hay 1 o más
+            document.getElementById('num-valoraciones').textContent =
+                total > 0 ? `(${total} ${total === 1 ? 'valoración' : 'valoraciones'})` : '';
+
+            // Buscamos los elementos HTML del formulario de valoración
+            const starsInput    = document.getElementById('stars-input');
+            const labelValorar  = document.getElementById('label-valorar');
             const yaValorasteMSG = document.getElementById('ya-valoraste-msg');
 
+            // Si no hay usuario logueado, solo mostramos el aviso y salimos
             if (!currentUser) {
-                // No logueado: solo mostramos el aviso
                 labelValorar.textContent = 'Inicia sesión para valorar esta idea.';
                 return;
             }
 
-            // Buscar si el usuario ya valoró
+            // Buscamos si el usuario actual ya tiene una valoración en este array
+            // find() devuelve el objeto si lo encuentra, o undefined si no
             const miValoracion = vals ? vals.find(v => v.user_id === currentUser.id) : null;
 
+            // Si ya valoró...
             if (miValoracion) {
-                // Ya valoró: mostrar su puntuación y mensaje
+
+                // Cambiamos la etiqueta informativa
                 labelValorar.textContent = 'Tu valoración:';
+
+                // Quitamos el display:none para mostrar las estrellas interactivas
                 starsInput.style.removeProperty('display');
                 starsInput.style.display = 'flex';
+
+                // Dibujamos las estrellas mostrando su puntuación ya guardada
+                // El último parámetro "true" indica que ya votó antes
                 renderStarsInteractivas(starsInput, miValoracion.puntuacion, ideaId, currentUser, true);
+
+                // Mostramos el mensaje "Ya has valorado esta idea..."
                 yaValorasteMSG.classList.remove('hidden');
-                yaValorasteMSG.textContent = `Ya has valorado esta idea con ${miValoracion.puntuacion} ★. Puedes cambiarla haciendo clic.`;
+                yaValorasteMSG.textContent =
+                    `Ya has valorado esta idea con ${miValoracion.puntuacion} ★. Puedes cambiarla haciendo clic.`;
+
             } else {
-                // Todavía no ha valorado
+                // Si todavía no ha valorado, mostramos el formulario vacío (puntuación 0)
                 labelValorar.textContent = 'Valora esta idea:';
+
+                // Mostramos las estrellas
                 starsInput.style.removeProperty('display');
                 starsInput.style.display = 'flex';
+
+                // Dibujamos 5 estrellas vacías (seleccionada = 0)
+                // El último parámetro "false" indica que aún no ha votado
                 renderStarsInteractivas(starsInput, 0, ideaId, currentUser, false);
             }
         }
 
-        // Renderiza 5 estrellas interactivas con hover y clic
+
+        // ── FUNCIÓN: Dibujar estrellas INTERACTIVAS (con hover y clic) ──
         function renderStarsInteractivas(container, seleccionada, ideaId, currentUser, yaValoro) {
+
+            // Vaciamos el contenedor por si ya tenía estrellas
             container.innerHTML = '';
+
+            // Bucle para crear las 5 estrellas
             for (let i = 1; i <= 5; i++) {
+
+                // Creamos el span de cada estrella
                 const star = document.createElement('span');
+
+                // Le ponemos la clase para los estilos interactivos
                 star.className = 'star-btn';
+
+                // Guardamos el valor de esta estrella en un atributo personalizado "data-valor"
+                // Esto nos permite leerlo después cuando el usuario haga clic
                 star.dataset.valor = i;
 
-                // Si la estrella ya está seleccionada mostramos la amarilla, si no la gris
+                // Elegimos imagen amarilla o gris según si ya estaba seleccionada
                 const imgSrc = i <= seleccionada
                     ? '../imagenes/iconos/star.png'
                     : '../imagenes/iconos/estrella.png';
+
+                // Insertamos la imagen dentro del span
                 star.innerHTML = `<img src="${imgSrc}" alt="estrella ${i}">`;
 
-                // Cuando el ratón entra: iluminamos hasta esta estrella cambiando el src de la imagen
+
+                // ── EVENTO: cuando el ratón ENTRA en una estrella ──
                 star.addEventListener('mouseenter', () => {
+
+                    // Recorremos TODAS las estrellas del contenedor
                     container.querySelectorAll('.star-btn').forEach(s => {
+
+                        // Obtenemos la imagen de cada estrella
                         const img = s.querySelector('img');
+
+                        // Si el valor de esa estrella es <= a la estrella que estamos sobrevolando,
+                        // la ponemos amarilla; si no, gris
                         img.src = parseInt(s.dataset.valor) <= i
                             ? '../imagenes/iconos/star.png'
                             : '../imagenes/iconos/estrella.png';
                     });
                 });
 
-                // Cuando el ratón sale: volvemos al estado guardado (seleccionada)
+
+                // ── EVENTO: cuando el ratón SALE de una estrella ──
                 star.addEventListener('mouseleave', () => {
+
+                    // Volvemos a pintar las estrellas según la puntuación GUARDADA (seleccionada)
+                    // para que no se queden iluminadas si el usuario no hace clic
                     container.querySelectorAll('.star-btn').forEach(s => {
                         const img = s.querySelector('img');
                         img.src = parseInt(s.dataset.valor) <= seleccionada
@@ -323,150 +441,253 @@
                     });
                 });
 
-                // Al hacer clic guardamos la valoración
+
+                // ── EVENTO: cuando el usuario HACE CLIC en una estrella ──
                 star.addEventListener('click', async () => {
+
+                    // La puntuación elegida es el número de esta estrella
                     const puntuacion = i;
+
+                    // Guardamos la valoración en Supabase
                     await guardarValoracion(ideaId, currentUser, puntuacion, yaValoro);
+
+                    // Volvemos a cargar toda la sección de valoración para mostrar los cambios
                     await cargarValoracion(ideaId, currentUser);
                 });
 
+                // Añadimos la estrella terminada al contenedor
                 container.appendChild(star);
             }
         }
 
+
+        // ── FUNCIÓN: Guardar o actualizar una valoración en la base de datos ──
         async function guardarValoracion(ideaId, currentUser, puntuacion, yaValoro) {
+
+            // Si el usuario ya había valorado antes, actualizamos el registro existente
             if (yaValoro) {
-                // Actualizar valoración existente
+
+                // update() modifica filas existentes
                 const { error } = await _supabase
-                    .from('valoraciones')
-                    .update({ puntuacion })
-                    .eq('idea_id', ideaId)
-                    .eq('user_id', currentUser.id);
+                    .from('valoraciones')           // en la tabla "valoraciones"
+                    .update({ puntuacion })         // actualizamos el campo "puntuacion"
+                    .eq('idea_id', ideaId)          // donde idea_id coincida
+                    .eq('user_id', currentUser.id); // Y TAMBIÉN el user_id (seguridad)
+
+                // Si hay error lo mostramos en consola
                 if (error) console.error('Error actualizando valoración:', error.message);
+
             } else {
-                // Insertar nueva valoración
+                // Si es la primera vez que valora, insertamos un nuevo registro
                 const { error } = await _supabase
                     .from('valoraciones')
                     .insert([{ idea_id: ideaId, user_id: currentUser.id, puntuacion }]);
+                    // insert() recibe un array de objetos con los datos a guardar
+
                 if (error) console.error('Error insertando valoración:', error.message);
             }
         }
 
-        // ── INIT ──────────────────────────────────────────────────────────────
+
+        // ── EVENTO: Se ejecuta cuando el HTML termina de cargarse completamente ──
         document.addEventListener('DOMContentLoaded', async () => {
+
+            // Leemos los parámetros de la URL (ej: ?id=123)
             const params = new URLSearchParams(window.location.search);
+
+            // Obtenemos el valor del parámetro "id"
             const ideaId = params.get('id');
 
+            // Si no hay id en la URL, avisamos y redirigimos
             if (!ideaId) {
                 alert("No se encontró la idea.");
                 window.location.href = 'ideas.html';
-                return;
+                return; // Detenemos la ejecución aquí
             }
 
+            // Pedimos la sesión actual a Supabase para saber si hay usuario logueado
             const { data: { session } } = await _supabase.auth.getSession();
+
+            // Si hay sesión activa guardamos el usuario, si no guardamos null
             const currentUser = session ? session.user : null;
 
-            const lectorId = currentUser ? currentUser.id : '00000000-0000-0000-0000-000000000000';
-            const { error: errorVisita } = await _supabase.rpc('incrementar_vistas_si_es_ajeno', {
-                idea_id: ideaId,
-                lector_id: lectorId
-            });
+            // Si hay usuario usamos su id real; si no, usamos un UUID de "anónimo"
+            // Esto nos permite registrar visitas sin crashear por un null
+            const lectorId = currentUser
+                ? currentUser.id
+                : '00000000-0000-0000-0000-000000000000';
+
+            // Llamamos a una función de Supabase (RPC = función personalizada en la BD)
+            // que solo cuenta la visita si el lector NO es el propio autor de la idea
+            const { error: errorVisita } = await _supabase.rpc(
+                'incrementar_vistas_si_es_ajeno',
+                { idea_id: ideaId, lector_id: lectorId }
+            );
+
+            // Si hay error al contar la visita lo registramos en consola
             if (errorVisita) console.error("Error al contar visita:", errorVisita.message);
 
+            // Pedimos los datos completos de la idea a Supabase
+            // .single() indica que esperamos UN solo resultado
             const { data: idea, error: errorIdea } = await _supabase
                 .from('ideas')
-                .select('*')
-                .eq('id', ideaId)
-                .single();
+                .select('*')        // traemos todas las columnas
+                .eq('id', ideaId)   // donde el id coincida
+                .single();          // solo un resultado
 
+            // Si no encontramos la idea, mostramos error y paramos
             if (errorIdea || !idea) {
                 document.getElementById('idea-titulo').innerText = "Idea no encontrada";
                 return;
             }
 
+            // Rellenamos el título y la descripción en el HTML con los datos reales
             document.getElementById('idea-titulo').innerText = idea.title;
             document.getElementById('idea-descripcion').innerText = idea.description;
 
+            // Si la idea tiene imagen, la mostramos
             if (idea.image_url) {
                 const img = document.getElementById('idea-imagen');
                 const wrapper = document.getElementById('idea-imagen-wrapper');
+
+                // Asignamos la URL de la imagen al atributo src
                 img.src = idea.image_url;
+
+                // Quitamos la clase "hidden" para que el contenedor sea visible
                 wrapper.classList.remove('hidden');
+
+                // Añadimos "flex" para que se muestre con ese display
                 wrapper.classList.add('flex');
             }
 
+            // Si la idea tiene un enlace externo, lo mostramos
             if (idea.external_link) {
                 const link = document.getElementById('idea-enlace');
+
+                // Asignamos la URL al href del botón
                 link.href = idea.external_link;
+
+                // Lo hacemos visible quitando "hidden"
                 link.classList.remove('hidden');
             }
 
+            // Si la idea tiene etiquetas (tags), las dibujamos
             if (idea.tags && idea.tags.length > 0) {
                 const tagsContainer = document.getElementById('idea-tags');
+
+                // Recorremos cada tag y añadimos un span con estilos al contenedor
                 idea.tags.forEach(tag => {
-                    tagsContainer.innerHTML += `<span class="bg-[#20b3b3]/15 text-[#20b3b3] px-4 py-1 rounded-full text-sm font-bold tracking-wide">${tag}</span>`;
+                    tagsContainer.innerHTML +=
+                        `<span class="bg-[#20b3b3]/15 text-[#20b3b3] px-4 py-1 rounded-full text-sm font-bold tracking-wide">${tag}</span>`;
                 });
             }
 
-            // Cargar valoraciones y comentarios en paralelo
+            // Cargamos valoraciones y comentarios al MISMO TIEMPO usando Promise.all
+            // Esto es más eficiente que esperar una y luego la otra
             await Promise.all([
                 cargarValoracion(ideaId, currentUser),
                 cargarComentarios(ideaId, currentUser)
             ]);
 
+            // Buscamos el botón de enviar comentario
             const btnComentar = document.getElementById('btn-comentar');
+
+            // Escuchamos el clic en ese botón
             btnComentar.addEventListener('click', async () => {
+
+                // Si no hay usuario logueado, avisamos y paramos
                 if (!currentUser) {
                     alert("Debes iniciar sesión para comentar.");
                     return;
                 }
+
+                // Leemos el texto del textarea y quitamos espacios al inicio/final
                 const texto = document.getElementById('input-comentario').value.trim();
+
+                // Si está vacío no hacemos nada
                 if (!texto) return;
+
+                // Cambiamos el texto del botón para indicar que está procesando
                 btnComentar.innerText = "Enviando...";
+
+                // Desactivamos el botón para evitar clics dobles
                 btnComentar.disabled = true;
+
+                // Insertamos el comentario en la tabla "comentarios" de Supabase
                 const { error: insertError } = await _supabase
                     .from('comentarios')
                     .insert([{ idea_id: ideaId, user_id: currentUser.id, texto: texto }]);
+
+                // Si hubo error, lo mostramos
                 if (insertError) {
                     console.error("Error al comentar:", insertError);
                     alert("Error al enviar el comentario.");
                 } else {
+                    // Si todo fue bien, limpiamos el textarea
                     document.getElementById('input-comentario').value = '';
+
+                    // Y recargamos la lista de comentarios
                     await cargarComentarios(ideaId, currentUser);
                 }
+
+                // Restauramos el botón a su estado original
                 btnComentar.innerText = "Enviar";
                 btnComentar.disabled = false;
             });
         });
 
+
+        // ── FUNCIÓN: Cargar y mostrar la lista de comentarios ──
         async function cargarComentarios(ideaId, currentUser) {
+
+            // Buscamos el contenedor HTML donde se listan los comentarios
             const lista = document.getElementById('lista-comentarios');
+
+            // Pedimos los comentarios a Supabase
+            // Con "*, users (nombre, apellido)" traemos también el nombre del autor
+            // haciendo un JOIN automático con la tabla "users" por user_id
             const { data: comentarios, error } = await _supabase
                 .from('comentarios')
-                .select(`*, users (nombre, apellido)`)
-                .eq('idea_id', ideaId)
-                .order('created_at', { ascending: false });
+                .select(`*, users (nombre, apellido)`)  // traemos datos del autor
+                .eq('idea_id', ideaId)                  // filtramos por esta idea
+                .order('created_at', { ascending: false }); // más recientes primero
 
+            // Si hubo error mostramos mensaje en rojo
             if (error) {
                 lista.innerHTML = '<p class="text-red-500">Error cargando comentarios.</p>';
                 return;
             }
+
+            // Si no hay comentarios mostramos un mensaje invitando a comentar
             if (comentarios.length === 0) {
                 lista.innerHTML = '<p class="text-gray-400 italic">Sé el primero en comentar.</p>';
                 return;
             }
 
+            // Vaciamos el contenedor antes de rellenarlo
             lista.innerHTML = '';
 
+            // Recorremos cada comentario
             comentarios.forEach(com => {
-                const nombreAutor = com.users ? `${com.users.nombre} ${com.users.apellido}` : 'Usuario';
 
-                // Comprobamos si este comentario es del usuario actual
+                // Montamos el nombre completo del autor
+                // Si no tiene datos de usuario, ponemos "Usuario" por defecto
+                const nombreAutor = com.users
+                    ? `${com.users.nombre} ${com.users.apellido}`
+                    : 'Usuario';
+
+                // Comprobamos si este comentario pertenece al usuario actual
+                // (para mostrarle el botón de borrar solo a él)
                 const esMio = currentUser && com.user_id === currentUser.id;
 
+                // Creamos el div contenedor del comentario
                 const div = document.createElement('div');
+
+                // Le aplicamos las clases de estilo
                 div.className = 'bg-gray-50 p-5 rounded-2xl border border-gray-100 hover:border-[#20b3b3]/30 transition-colors';
 
+                // Rellenamos el HTML interno del comentario
+                // El botón de borrar solo aparece si "esMio" es true (operador ternario)
                 div.innerHTML = `
                     <div class="flex justify-between items-center mb-2">
                         <p class="font-bold text-sm text-[#20b3b3]">${nombreAutor}</p>
@@ -479,46 +700,75 @@
                     <p class="text-gray-700 leading-relaxed">${com.texto}</p>
                 `;
 
-                // Si el botón existe, le añadimos el listener
+                // Si el comentario es del usuario, añadimos el evento de borrar al botón
                 if (esMio) {
                     div.querySelector('.btn-borrar').addEventListener('click', () => {
+                        // Llamamos a la función de borrar pasando los datos necesarios
                         borrarComentario(com.id, ideaId, currentUser);
                     });
                 }
 
+                // Añadimos el div del comentario a la lista
                 lista.appendChild(div);
             });
         }
 
 
+        // ── FUNCIÓN: Borrar un comentario ──
         async function borrarComentario(comentarioId, ideaId, currentUser) {
-        const confirmar = confirm("¿Seguro que quieres borrar este comentario?");
-        if (!confirmar) return;
 
-        const { error } = await _supabase
-            .from('comentarios')
-            .delete()
-            .eq('id', comentarioId)
-            .eq('user_id', currentUser.id); // Seguridad: solo borra los suyos
+            // Pedimos confirmación al usuario con un diálogo del navegador
+            const confirmar = confirm("¿Seguro que quieres borrar este comentario?");
 
-        if (error) {
-            console.error("Error al borrar:", error.message);
-            alert("No se pudo borrar el comentario.");
-        } else {
-            await cargarComentarios(ideaId, currentUser); // Refresca la lista
+            // Si pulsa "Cancelar", salimos sin hacer nada
+            if (!confirmar) return;
+
+            // Borramos el comentario de Supabase
+            const { error } = await _supabase
+                .from('comentarios')
+                .delete()                           // operación de borrado
+                .eq('id', comentarioId)             // donde el id coincida
+                .eq('user_id', currentUser.id);     // Y el user_id sea el del usuario actual
+                // Esta segunda condición es seguridad extra: aunque alguien manipule el JS,
+                // Supabase solo borrará comentarios que pertenezcan al usuario logueado
+
+            // Si hubo error lo mostramos
+            if (error) {
+                console.error("Error al borrar:", error.message);
+                alert("No se pudo borrar el comentario.");
+            } else {
+                // Si se borró bien, recargamos la lista para que desaparezca visualmente
+                await cargarComentarios(ideaId, currentUser);
+            }
         }
-    }
+
+
+        // ── MODO OSCURO ──
+        // Buscamos el botón del modo oscuro
         const darkToggle = document.getElementById('darkToggle');
 
-        // Recupera preferencia guardada
+        // Si el usuario ya había activado el modo oscuro antes (lo guardamos en localStorage),
+        // lo activamos directamente al cargar la página
         if (localStorage.getItem('darkMode') === 'true') {
+
+            // Añadimos la clase "dark" al body para aplicar los estilos oscuros
             document.body.classList.add('dark');
+
+            // Cambiamos el icono a ☀️ para indicar que se puede volver al modo claro
             darkToggle.textContent = '☀️';
         }
 
+        // Escuchamos el clic en el botón de modo oscuro
         darkToggle.addEventListener('click', () => {
+
+            // toggle() añade la clase si no está, o la quita si ya está
+            // Devuelve true si la añadió (ahora está en oscuro) o false si la quitó
             const isDark = document.body.classList.toggle('dark');
+
+            // Actualizamos el icono según el estado actual
             darkToggle.textContent = isDark ? '☀️' : '🌙';
+
+            // Guardamos la preferencia en localStorage para recordarla en la próxima visita
             localStorage.setItem('darkMode', isDark);
         });
     </script>
