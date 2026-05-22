@@ -103,3 +103,21 @@ body.dark .dark-btn{
     color: white !important;
 }
 
+body.dark .ver-dark a{
+    color: white;
+}
+
+body.dark .dark-equipo{
+    color: white;
+}
+
+body.dark .dark-impulsando{
+    color: white;
+}
+
+body.dark .dark-descripcion{
+    color: #aaa;
+}
+body.dark .dark-planes{
+    color: white;
+}
