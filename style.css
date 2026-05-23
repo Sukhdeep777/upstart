@@ -2,7 +2,15 @@
     box-sizing: border-box;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+    /* Oculta la barra en Chrome, Safari y Edge */
+    ::-webkit-scrollbar {
+        display: none;
+    }
 
+/* Oculta la barra en Firefox */
+    html {
+        scrollbar-width: none;
+    }
 /* Seleccionamos a todos los elementos para que midan lo que pongamos y no mas. Tambien ponemnos que todos los elementos tenga la misma fuente de familia. */
 
 body{
@@ -115,7 +123,7 @@ nav ul a:hover{  /*En este hover hacemos que cambie el fondo, se le añada un bo
 }
 
 .usuario{ /*Aqui tenemos nuestro DIV de usuario para el Log In o dodne saldra nuestro avatar*/
-    gap: 40px;
+    gap: 20px;
     color: #20b3b3;
     margin-left: 10px;
 }
