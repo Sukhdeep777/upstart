@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../modooscuro.css">
 
     <style>
+        /* ── Estrellas grandes: valoración global de la IDEA (interactivas o solo lectura) ── */
         .star-btn {
             cursor: pointer;
             transition: transform 0.15s;
@@ -29,6 +30,37 @@
         .star-readonly img {
             width: 22px;
             height: 22px;
+        }
+
+        /* ── Estrellas pequeñas (mini): valoración de COMENTARIOS individuales ──
+           Son más pequeñas que las de la idea para diferenciarlas visualmente.
+           .comment-star-btn  → versión clicable, solo visible al autor de la idea
+           .comment-star-readonly → versión de solo lectura para el resto de visitantes */
+        .comment-star-btn {
+            cursor: pointer;
+            transition: transform 0.12s;
+            display: inline-block;
+        }
+        .comment-star-btn:hover { transform: scale(1.25); }
+        .comment-star-btn img   { width: 18px; height: 18px; display: block; }
+
+        .comment-star-readonly img { width: 16px; height: 16px; display: block; }
+
+        /* ── Badge XP ──
+           Pequeña etiqueta que aparece junto al nombre del comentarista cuando
+           el autor de la idea ya ha valorado su comentario.
+           Muestra "+N XP" con el degradado de color principal de la plataforma. */
+        .xp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #20b3b3, #5dd6d6);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -68,7 +100,6 @@
             </button>
             <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
         </div>
-
     </header>
 
     <div class="w-full max-w-[1400px] mx-auto px-6 pt-10 pb-16">
@@ -134,6 +165,17 @@
         <!-- SECCIÓN COMENTARIOS -->
         <div class="bg-white rounded-3xl shadow-lg p-10">
             <h3 class="text-2xl font-bold mb-6 text-gray-900">Comentarios</h3>
+
+            <!--
+                NUEVO: Aviso para el autor de la idea.
+                Este div está oculto por defecto (clase "hidden").
+                En el JS comprobamos si el usuario logueado es el autor de la idea y,
+                si lo es, quitamos "hidden" para que aparezca este mensaje informativo.
+                Así el autor sabe que puede valorar los comentarios que reciba.
+            -->
+            <div id="info-autor-rating" class="hidden mb-6 p-4 bg-[#20b3b3]/10 border border-[#20b3b3]/30 rounded-2xl text-sm text-[#20b3b3] font-semibold">
+                ⭐ Eres el autor de esta idea. Puedes valorar los comentarios que recibas — ¡las estrellas se convierten en XP para quienes comentan!
+            </div>
 
             <div class="mb-8 flex gap-4 items-start">
                 <textarea id="input-comentario" rows="2"
@@ -240,7 +282,6 @@
         document.getElementById('logoutButton').addEventListener('click', async () => {
 
             // Le pedimos a Supabase que cierre la sesión del usuario
-            // "error" recibirá información si algo sale mal
             const { error } = await _supabase.auth.signOut();
 
             // Si hubo un error al cerrar sesión, lo mostramos en la consola
@@ -255,6 +296,7 @@
 
 
         // ── FUNCIÓN: Dibujar estrellas de SOLO LECTURA (no se pueden clicar) ──
+        // Se usa para mostrar la puntuación global de la idea (la media de todas las valoraciones)
         function renderStarsReadonly(containerId, puntuacion) {
 
             // Buscamos el elemento HTML donde vamos a pintar las estrellas por su id
@@ -334,8 +376,8 @@
                 total > 0 ? `(${total} ${total === 1 ? 'valoración' : 'valoraciones'})` : '';
 
             // Buscamos los elementos HTML del formulario de valoración
-            const starsInput    = document.getElementById('stars-input');
-            const labelValorar  = document.getElementById('label-valorar');
+            const starsInput     = document.getElementById('stars-input');
+            const labelValorar   = document.getElementById('label-valorar');
             const yaValorasteMSG = document.getElementById('ya-valoraste-msg');
 
             // Si no hay usuario logueado, solo mostramos el aviso y salimos
@@ -383,6 +425,7 @@
 
 
         // ── FUNCIÓN: Dibujar estrellas INTERACTIVAS (con hover y clic) ──
+        // Se usa para la valoración global de la idea (las estrellas grandes del recuadro de valoración)
         function renderStarsInteractivas(container, seleccionada, ideaId, currentUser, yaValoro) {
 
             // Vaciamos el contenedor por si ya tenía estrellas
@@ -489,6 +532,120 @@
         }
 
 
+        // ── NUEVA FUNCIÓN: Dibujar mini-estrellas de SOLO LECTURA para un comentario ──
+        // Se usa cuando un visitante (que no es el autor de la idea) ve un comentario
+        // que ya fue puntuado. Las estrellas aparecen junto al nombre del comentarista
+        // y son puramente decorativas: no se pueden clicar.
+        // Recibe el CONTENEDOR (elemento DOM) directamente, no un id como la función anterior,
+        // porque cada comentario tiene su propio div generado dinámicamente.
+        function renderCommentStarsReadonly(container, puntuacion) {
+
+            // Vaciamos el contenedor por si había estrellas de una carga anterior
+            container.innerHTML = '';
+
+            // Bucle de 1 a 5 para dibujar las cinco posiciones de estrella
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+
+                // Usamos la clase CSS "comment-star-readonly" que define un tamaño más pequeño (16px)
+                star.className = 'comment-star-readonly';
+
+                // Amarilla si está dentro de la puntuación, gris si está por encima
+                const imgSrc = i <= puntuacion
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+
+                star.innerHTML = `<img src="${imgSrc}" alt="estrella">`;
+                container.appendChild(star);
+            }
+        }
+
+
+        // ── NUEVA FUNCIÓN: Dibujar mini-estrellas INTERACTIVAS para valorar un comentario ──
+        // Solo se llama cuando el usuario logueado es el AUTOR de la idea.
+        // Cada estrella que el autor clique se guardará en la columna "puntuacion_autor"
+        // de la fila de ese comentario en Supabase.
+        // Ese valor (1-5) equivale directamente a XP que se sumará al ranking de actividad.
+        //
+        // Parámetros:
+        //   container       → div donde se pintan las estrellas (dentro del comentario)
+        //   puntuacionActual → 0 si aún no se valoró, o la puntuación guardada
+        //   comentarioId    → id del comentario en Supabase (para actualizarlo)
+        //   ideaId          → id de la idea (para recargar la lista tras guardar)
+        //   currentUser     → usuario logueado (el autor de la idea)
+        function renderCommentStarsInteractivas(container, puntuacionActual, comentarioId, ideaId, currentUser) {
+
+            // Vaciamos antes de dibujar para evitar duplicados
+            container.innerHTML = '';
+
+            // Bucle de 1 a 5
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+
+                // Clase CSS "comment-star-btn" → cursor pointer + tamaño 18px + animación hover
+                star.className = 'comment-star-btn';
+
+                // Guardamos el número de esta estrella para poder leerlo en los eventos
+                star.dataset.valor = i;
+
+                // Pintamos amarilla si ya existe una puntuación guardada
+                const imgSrc = i <= puntuacionActual
+                    ? '../imagenes/iconos/star.png'
+                    : '../imagenes/iconos/estrella.png';
+
+                star.innerHTML = `<img src="${imgSrc}" alt="estrella ${i}">`;
+
+                // ── HOVER: al pasar el ratón, iluminamos hasta la estrella sobrevolada ──
+                // Esto da feedback visual de qué puntuación daría si hiciese clic ahora
+                star.addEventListener('mouseenter', () => {
+                    container.querySelectorAll('.comment-star-btn').forEach(s => {
+                        s.querySelector('img').src = parseInt(s.dataset.valor) <= i
+                            ? '../imagenes/iconos/star.png' : '../imagenes/iconos/estrella.png';
+                    });
+                });
+
+                // ── MOUSE OUT: al salir sin clicar, volvemos a la puntuación guardada ──
+                // Si el autor aún no puntuó (puntuacionActual = 0), todas vuelven a gris
+                star.addEventListener('mouseleave', () => {
+                    container.querySelectorAll('.comment-star-btn').forEach(s => {
+                        s.querySelector('img').src = parseInt(s.dataset.valor) <= puntuacionActual
+                            ? '../imagenes/iconos/star.png' : '../imagenes/iconos/estrella.png';
+                    });
+                });
+
+                // ── CLIC: guardamos la puntuación y recargamos la lista de comentarios ──
+                // Usamos window._ideaAuthorId porque necesitamos el id del autor para
+                // volver a renderizar correctamente las estrellas de todos los comentarios
+                star.addEventListener('click', async () => {
+                    await guardarPuntuacionComentario(comentarioId, i);
+                    await cargarComentarios(ideaId, currentUser, window._ideaAuthorId);
+                });
+
+                container.appendChild(star);
+            }
+        }
+
+
+        // ── NUEVA FUNCIÓN: Guardar la puntuación de un comentario en Supabase ──
+        // Actualiza el campo "puntuacion_autor" del comentario con la estrella elegida.
+        // Este campo es el que luego se suma para calcular el XP en el ranking de actividad
+        // del index.html.
+        //
+        // Nota: siempre hacemos UPDATE (no INSERT) porque el comentario ya existe;
+        // solo le añadimos o cambiamos la puntuación que el autor le da.
+        async function guardarPuntuacionComentario(comentarioId, puntuacion) {
+
+            // Actualizamos únicamente la columna "puntuacion_autor" del comentario concreto
+            const { error } = await _supabase
+                .from('comentarios')
+                .update({ puntuacion_autor: puntuacion }) // solo cambiamos este campo
+                .eq('id', comentarioId);                  // en la fila con ese id
+
+            // Si Supabase devuelve error (p.ej. sin permisos o id inexistente) lo registramos
+            if (error) console.error('Error guardando puntuación del comentario:', error.message);
+        }
+
+
         // ── EVENTO: Se ejecuta cuando el HTML termina de cargarse completamente ──
         document.addEventListener('DOMContentLoaded', async () => {
 
@@ -541,6 +698,12 @@
                 return;
             }
 
+            // ── NUEVO: Guardamos el user_id del autor de la idea en una variable global ──
+            // La necesitamos en window (accesible globalmente) porque las funciones de
+            // estrellas de comentarios la necesitan al hacer clic para recargar la lista,
+            // y en ese momento ya no tienen acceso a la variable local "idea".
+            window._ideaAuthorId = idea.user_id;
+
             // Rellenamos el título y la descripción en el HTML con los datos reales
             document.getElementById('idea-titulo').innerText = idea.title;
             document.getElementById('idea-descripcion').innerText = idea.description;
@@ -582,11 +745,21 @@
                 });
             }
 
+            // ── NUEVO: Mostrar el aviso al autor de la idea ──
+            // Comparamos el id del usuario logueado con el user_id guardado en la idea.
+            // Si coinciden, quitamos "hidden" del div informativo que le explica
+            // que puede valorar los comentarios que reciba.
+            if (currentUser && currentUser.id === idea.user_id) {
+                document.getElementById('info-autor-rating').classList.remove('hidden');
+            }
+
             // Cargamos valoraciones y comentarios al MISMO TIEMPO usando Promise.all
-            // Esto es más eficiente que esperar una y luego la otra
+            // Esto es más eficiente que esperar una y luego la otra.
+            // NUEVO: ahora pasamos idea.user_id a cargarComentarios para que sepa
+            // quién es el autor y pueda decidir si mostrar estrellas interactivas o no.
             await Promise.all([
                 cargarValoracion(ideaId, currentUser),
-                cargarComentarios(ideaId, currentUser)
+                cargarComentarios(ideaId, currentUser, idea.user_id)
             ]);
 
             // Buscamos el botón de enviar comentario
@@ -614,6 +787,8 @@
                 btnComentar.disabled = true;
 
                 // Insertamos el comentario en la tabla "comentarios" de Supabase
+                // NUEVO: el campo "puntuacion_autor" no se inserta aquí — empieza como NULL
+                // y el autor de la idea lo rellenará después si quiere valorar el comentario
                 const { error: insertError } = await _supabase
                     .from('comentarios')
                     .insert([{ idea_id: ideaId, user_id: currentUser.id, texto: texto }]);
@@ -626,8 +801,8 @@
                     // Si todo fue bien, limpiamos el textarea
                     document.getElementById('input-comentario').value = '';
 
-                    // Y recargamos la lista de comentarios
-                    await cargarComentarios(ideaId, currentUser);
+                    // Y recargamos la lista de comentarios pasando también el id del autor
+                    await cargarComentarios(ideaId, currentUser, idea.user_id);
                 }
 
                 // Restauramos el botón a su estado original
@@ -637,15 +812,23 @@
         });
 
 
-        // ── FUNCIÓN: Cargar y mostrar la lista de comentarios ──
-        async function cargarComentarios(ideaId, currentUser) {
+        // ── FUNCIÓN MODIFICADA: Cargar y mostrar la lista de comentarios ──
+        // Ahora recibe un tercer parámetro "ideaAuthorId" para saber quién es el dueño
+        // de la idea y poder decidir qué tipo de estrellas mostrar en cada comentario:
+        //
+        //   · Si currentUser.id === ideaAuthorId → estrellas interactivas (puede puntuar)
+        //   · Si el comentario ya tiene puntuacion_autor → estrellas de solo lectura + badge XP
+        //   · Si ninguna de las anteriores → sin estrellas (comentario sin valorar y no es el autor)
+        async function cargarComentarios(ideaId, currentUser, ideaAuthorId) {
 
             // Buscamos el contenedor HTML donde se listan los comentarios
             const lista = document.getElementById('lista-comentarios');
 
-            // Pedimos los comentarios a Supabase
+            // Pedimos los comentarios a Supabase.
             // Con "*, users (nombre, apellido)" traemos también el nombre del autor
-            // haciendo un JOIN automático con la tabla "users" por user_id
+            // haciendo un JOIN automático con la tabla "users" por user_id.
+            // NUEVO: "puntuacion_autor" ya viene incluida en el "*" porque es una
+            // columna de la tabla comentarios que añadimos con el ALTER TABLE en Supabase.
             const { data: comentarios, error } = await _supabase
                 .from('comentarios')
                 .select(`*, users (nombre, apellido)`)  // traemos datos del autor
@@ -667,11 +850,14 @@
             // Vaciamos el contenedor antes de rellenarlo
             lista.innerHTML = '';
 
+            // ── NUEVO: Determinamos si el usuario actual es el autor de la idea ──
+            // Lo calculamos una sola vez fuera del bucle para no repetirlo en cada comentario
+            const esAutorIdea = currentUser && currentUser.id === ideaAuthorId;
+
             // Recorremos cada comentario
             comentarios.forEach(com => {
 
-                // Montamos el nombre completo del autor
-                // Si no tiene datos de usuario, ponemos "Usuario" por defecto
+                // Montamos el nombre completo del autor del comentario
                 const nombreAutor = com.users
                     ? `${com.users.nombre} ${com.users.apellido}`
                     : 'Usuario';
@@ -680,31 +866,72 @@
                 // (para mostrarle el botón de borrar solo a él)
                 const esMio = currentUser && com.user_id === currentUser.id;
 
+                // ── NUEVO: Comprobamos si el autor de la idea ya puntuó este comentario ──
+                // puntuacion_autor es NULL cuando aún no se valoró, o un número del 1 al 5
+                const yaPuntuado       = com.puntuacion_autor !== null && com.puntuacion_autor !== undefined;
+                const puntuacionActual = yaPuntuado ? com.puntuacion_autor : 0;
+
                 // Creamos el div contenedor del comentario
                 const div = document.createElement('div');
 
                 // Le aplicamos las clases de estilo
                 div.className = 'bg-gray-50 p-5 rounded-2xl border border-gray-100 hover:border-[#20b3b3]/30 transition-colors';
 
-                // Rellenamos el HTML interno del comentario
-                // El botón de borrar solo aparece si "esMio" es true (operador ternario)
+                // ── NUEVO: El badge "+N XP" solo aparece si el comentario ya fue puntuado ──
+                // Lo incrustamos condicionalmente dentro del HTML con un ternario.
+                // El número del badge es la misma puntuación_autor (1 estrella = 1 XP, 5 = 5 XP)
                 div.innerHTML = `
-                    <div class="flex justify-between items-center mb-2">
-                        <p class="font-bold text-sm text-[#20b3b3]">${nombreAutor}</p>
-                        ${esMio ? `
-                            <button class="btn-borrar text-xs text-white p-2 rounded-xl bg-red-400 hover:bg-red-800 font-bold transition-colors cursor-pointer">
-                                🗑️ Borrar
-                            </button>
-                        ` : ''}
+                    <div class="flex justify-between items-start mb-2 gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <p class="font-bold text-sm text-[#20b3b3] m-0">${nombreAutor}</p>
+                            ${yaPuntuado
+                                ? `<span class="xp-badge">+${puntuacionActual} XP</span>`
+                                : ''}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <!-- Contenedor vacío donde JS insertará las estrellas del comentario -->
+                            <div class="comment-stars-container flex gap-[3px]"></div>
+                            ${esMio ? `
+                                <button class="btn-borrar text-xs text-white p-2 rounded-xl bg-red-400 hover:bg-red-800 font-bold transition-colors cursor-pointer">
+                                    🗑️ Borrar
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
                     <p class="text-gray-700 leading-relaxed">${com.texto}</p>
                 `;
 
+                // Buscamos el div de estrellas que acabamos de crear dentro del comentario
+                const starsContainer = div.querySelector('.comment-stars-container');
+
+                // ── NUEVO: Decidir qué tipo de estrellas pintar según el rol del visitante ──
+                if (esAutorIdea && com.user_id !== ideaAuthorId) {
+                    // CASO 1: El visitante es el autor de la idea Y el comentario es de otra persona
+                    // (no tendría sentido que el autor se puntúe a sí mismo si también comentó)
+                    // → Pintamos estrellas INTERACTIVAS para que pueda puntuar este comentario
+                    renderCommentStarsInteractivas(starsContainer, puntuacionActual, com.id, ideaId, currentUser);
+
+                    // Si aún no ha puntuado este comentario, añadimos un texto de ayuda
+                    if (!yaPuntuado) {
+                        const hint = document.createElement('p');
+                        hint.className = 'text-xs text-gray-400 mt-1';
+                        hint.textContent = 'Valora este comentario para dar XP';
+                        div.appendChild(hint);
+                    }
+
+                } else if (yaPuntuado) {
+                    // CASO 2: El visitante NO es el autor (o es el autor viendo su propio comentario)
+                    // Y el comentario ya tiene puntuación guardada
+                    // → Pintamos estrellas de SOLO LECTURA para mostrar la valoración recibida
+                    renderCommentStarsReadonly(starsContainer, puntuacionActual);
+                }
+                // CASO 3 (implícito): No es el autor Y el comentario no tiene puntuación → sin estrellas
+
                 // Si el comentario es del usuario, añadimos el evento de borrar al botón
                 if (esMio) {
                     div.querySelector('.btn-borrar').addEventListener('click', () => {
-                        // Llamamos a la función de borrar pasando los datos necesarios
-                        borrarComentario(com.id, ideaId, currentUser);
+                        // Pasamos también ideaAuthorId para poder recargar bien los comentarios tras borrar
+                        borrarComentario(com.id, ideaId, currentUser, ideaAuthorId);
                     });
                 }
 
@@ -714,8 +941,9 @@
         }
 
 
-        // ── FUNCIÓN: Borrar un comentario ──
-        async function borrarComentario(comentarioId, ideaId, currentUser) {
+        // ── FUNCIÓN MODIFICADA: Borrar un comentario ──
+        // Ahora recibe ideaAuthorId para pasárselo a cargarComentarios al recargar
+        async function borrarComentario(comentarioId, ideaId, currentUser, ideaAuthorId) {
 
             // Pedimos confirmación al usuario con un diálogo del navegador
             const confirmar = confirm("¿Seguro que quieres borrar este comentario?");
@@ -738,7 +966,9 @@
                 alert("No se pudo borrar el comentario.");
             } else {
                 // Si se borró bien, recargamos la lista para que desaparezca visualmente
-                await cargarComentarios(ideaId, currentUser);
+                // Pasamos ideaAuthorId para que las estrellas de los demás comentarios
+                // se sigan renderizando correctamente después del borrado
+                await cargarComentarios(ideaId, currentUser, ideaAuthorId);
             }
         }
 

@@ -175,16 +175,22 @@
             </section>
             <section class="rk">
                 <div class="list">
+                    <!--
+                        NUEVO: Lista de Actividad dinámica.
+                        Antes estaba hardcodeada con nombres y XP ficticios.
+                        Ahora se carga desde Supabase mediante la función cargarActividad().
+
+                        ¿Cómo funciona el XP?
+                        Cada vez que el autor de una idea valora un comentario con N estrellas,
+                        el comentarista gana N puntos de XP (1 estrella = 1 XP, 5 estrellas = 5 XP).
+                        Eso queda guardado en la columna "puntuacion_autor" de la tabla "comentarios".
+                        La función cargarActividad() suma todos esos puntos por usuario y los ordena.
+
+                        El <ul id="actividad-list"> empieza con "Cargando..." y JS lo reemplaza.
+                    -->
                     <h3 class="h3-list">Actividad </h3>
-                    <ul>
-                        <li>Angel - 100XP</li>
-                        <li>Carlos - 80XP</li>
-                        <li>Maria - 70XP</li>
-                        <li>Cristian - 50XP</li>
-                        <li>Sebastian - 30XP</li>
-                        <li>Hugo - 20XP</li>
-                        <li>Lucia - 10XP</li>
-                        <li>Lisa - 1XP</li>
+                    <ul id="actividad-list">
+                        <li>Cargando...</li>
                     </ul>
                 </div>
                 <div class="list">
@@ -491,7 +497,115 @@
     });
 }
 
-cargarBestProjects();
+    cargarBestProjects();
+
+
+    // ── NUEVA FUNCIÓN: Cargar el ranking de Actividad por XP ──
+    //
+    // ANTES: la lista "Actividad" tenía nombres y puntos escritos a mano en el HTML,
+    //        completamente estáticos y desconectados de la realidad de la plataforma.
+    //
+    // AHORA: se calcula dinámicamente desde Supabase sumando los XP reales de cada usuario.
+    //
+    // ¿De dónde sale el XP?
+    //   En idea-detalle.html, cuando el autor de una idea valora un comentario con estrellas,
+    //   se guarda ese número en la columna "puntuacion_autor" de la tabla "comentarios".
+    //   1 estrella = 1 XP, 5 estrellas = 5 XP. El XP mide la calidad de los comentarios
+    //   según el criterio del autor que los recibe, no solo la cantidad.
+    //
+    // Pasos de la función:
+    //   1. Traemos de Supabase todos los comentarios que ya tienen puntuacion_autor (no NULL).
+    //   2. Agrupamos por user_id y sumamos sus puntuaciones → XP total de cada usuario.
+    //   3. Convertimos el objeto en array, ordenamos de mayor a menor, cogemos el top 8.
+    //   4. Consultamos la tabla "users" para obtener los nombres de esos 8 usuarios.
+    //   5. Pintamos la lista en el HTML.
+    async function cargarActividad() {
+
+        // Buscamos el <ul> en el HTML donde pintaremos el ranking
+        const lista = document.getElementById('actividad-list');
+
+        // Traemos de Supabase únicamente los comentarios que tienen puntuacion_autor asignada
+        // .not('puntuacion_autor', 'is', null) filtra los que tienen NULL (sin valorar todavía)
+        // Solo necesitamos user_id (para agrupar) y puntuacion_autor (para sumar el XP)
+        const { data: comentarios, error } = await _supabase
+            .from('comentarios')
+            .select('user_id, puntuacion_autor')
+            .not('puntuacion_autor', 'is', null); // excluimos los comentarios sin valorar
+
+        // Si hay error de red o la tabla está vacía, mostramos un mensaje y salimos
+        if (error || !comentarios || comentarios.length === 0) {
+            lista.innerHTML = '<li>Sin actividad aún</li>';
+            return;
+        }
+
+        // Creamos un objeto vacío donde la clave será el user_id y el valor su XP acumulado
+        // Ejemplo: { "uuid-abc": 12, "uuid-def": 7 }
+        const xpPorUsuario = {};
+
+        // Recorremos cada comentario valorado y sumamos su puntuación al usuario correspondiente
+        comentarios.forEach(com => {
+
+            // Si este usuario aún no tiene entrada en el objeto, la creamos con 0
+            if (!xpPorUsuario[com.user_id]) xpPorUsuario[com.user_id] = 0;
+
+            // Sumamos los puntos de este comentario al total del usuario
+            xpPorUsuario[com.user_id] += com.puntuacion_autor;
+        });
+
+        // Convertimos el objeto { userId: xp } en un array de objetos { userId, xp }
+        // para poder ordenarlo y recortarlo más fácilmente
+        const ranking = Object.entries(xpPorUsuario)
+            .map(([userId, xp]) => ({ userId, xp }))     // convertimos cada entrada en objeto
+            .sort((a, b) => b.xp - a.xp)                 // ordenamos de más a menos XP
+            .slice(0, 8);                                  // nos quedamos con el top 8
+
+        // Si después de filtrar no queda nadie, mostramos el aviso
+        if (ranking.length === 0) {
+            lista.innerHTML = '<li>Sin actividad aún</li>';
+            return;
+        }
+
+        // Extraemos solo los user_ids del top 8 para consultarlos en la tabla "users"
+        const userIds = ranking.map(r => r.userId);
+
+        // Traemos el nombre y apellido de esos usuarios concretos
+        // .in('id', userIds) es el equivalente SQL de WHERE id IN (...)
+        const { data: users } = await _supabase
+            .from('users')
+            .select('id, nombre, apellido')
+            .in('id', userIds);
+
+        // Creamos un mapa { userId → "Nombre Apellido" } para acceder rápidamente después
+        const nombresMap = {};
+        if (users) {
+            users.forEach(u => {
+                nombresMap[u.id] = `${u.nombre} ${u.apellido}`.trim();
+            });
+        }
+
+        // Vaciamos la lista (que hasta ahora mostraba "Cargando...") antes de rellenarla
+        lista.innerHTML = '';
+
+        // Pintamos cada entrada del ranking
+        ranking.forEach(item => {
+
+            // Obtenemos el nombre del mapa; si por algún motivo no está, ponemos "Usuario"
+            const nombre = nombresMap[item.userId] || 'Usuario';
+
+            // Truncamos el nombre a 18 caracteres para que no desborde el diseño del ranking
+            // Si es más largo añadimos "…" al final
+            const nombreCorto = nombre.length > 18 ? nombre.substring(0, 18) + '…' : nombre;
+
+            // Añadimos el <li> con el nombre y el XP total
+            // El atributo title muestra el nombre completo al pasar el ratón (tooltip)
+            lista.innerHTML += `<li title="${nombre} - ${item.xp} XP">${nombreCorto} - ${item.xp}XP</li>`;
+        });
+    }
+
+    // Llamamos a cargarActividad() nada más ejecutarse el script,
+    // igual que hacemos con cargarBestProjects() y gestionarHeader()
+    cargarActividad();
+
 
     // ── Modo nocturno ──────────────────────────────────────
     const darkToggle = document.getElementById('darkToggle');
