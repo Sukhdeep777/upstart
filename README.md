@@ -52,57 +52,49 @@ Per dur a terme tant el desenvolupament del programari com el desplegament de la
 
 ### 7. Diagrama de Gantt
 
-#### Sprint 1: Disseny i Maquetació Base de l'App (Setmana 1)
-* **Objectiu:** Creació d'una pàgina web simple per a la comprovació inicial del funcionament de l'entorn i preparació del primer desplegament de prova.
-* **Tasca 1 (Dilluns):** * [x] Generació de l'estructura base de la pàgina web.
-    * [x] Configuració de les plataformes de desplegament asíncron i públic (GitHub Pages i Vercel).
-    * [x] Disseny de l'arbre de fitxers i creació de les pàgines inicials en codi HTML i CSS.
-* **Tasca 2 (Dimarts a Divendres):**
-    * [x] Estructuració del lloc web per garantir els requisits mínims de programació i disseny.
-    * [x] Desenvolupament del codi HTML interactiu i fulls d'estil CSS adaptats.
-    * [x] Selecció i optimització d'imatges corporatives i assets de la plataforma.
-    * [x] Definició de l'estructura de navegació global i maquetació de botons d'acció.
+#### Sprint 1: Disseny i Maquetació Base de l'App
+* **Objectiu:** Creació d'una pàgina web simple per a la comprovació inicial de l'entorn i preparació del primer desplegament de prova.
+* **Tasca 1:** * [x] Generació de l'estructura base del lloc web.
+    * [x] Configuració de repositoris i desplegament continu (GitHub Pages i Vercel).
+* **Tasca 2:**
+    * [x] Estructuració del lloc web.
+    * [x] Desenvolupament del codi HTML i CSS interactiu.
 
-#### Sprint 2: Documentació Tècnica i Elaboració de l'Informe (Setmanes 1 i 2)
-* **Objectiu:** Creació i redacció de l'informe acadèmic per documentar el pla d'empresa, l'arquitectura triada i els processos de desenvolupament de l'aplicació web i el servidor.
-* **Tasca 1 (Setmana 1 - Dimecres i Dijous):**
-    * [x] Anàlisi i documentació de l'arquitectura del sistema de xarxa seleccionada.
-    * [x] Definició i selecció del disseny d'interfície inicial.
-* **Tasca 2 (Setmana 2 - Divendres a Dijous):**
-    * [x] Escriptura de l'explicació tècnica del codi font i definició del manual d'estil (paleta de colors).
-    * [x] Descripció detallada de les eines de software i entorns de programació implementats.
-* **Tasca 3 (Setmana 2 - Dimarts a Divendres):**
-    * [x] Especificació de la lògica de JavaScript necessària per orientar la programació de les interaccions.
-    * [x] Creació i estructuració de la presentació final de defensa del projecte.
+#### Sprint 2: Documentació Tècnica i Elaboració de l'Informe
+* **Objectiu:** Creació de l'informe per documentar el projecte i els processos de desenvolupament del servidor i la pàgina web.
+* **Tasca 1:** * [x] Creació i redacció detallada del fitxer README per apartats.
+* **Tasca 2:**
+    * [x] Descripció de les eines de desenvolupament.
+    * [x] Especificació de la lògica JavaScript.
+    * [x] Creació i estructuració de la presentació final del projecte.
 
-#### Sprint 3: Desenvolupament Avançat i Funcionalitats de l'App (Setmana 2)
-* **Objectiu:** Aplicar la lògica de programació avançada i optimitzar la pàgina web de forma professional per dotar-la de característiques interactives.
-* **Tasca 1 (Dilluns i Dimarts):**
-    * [x] Recerca i disseny del mòdul de registre (*Login*) i interconnexió amb la base d'dades.
-    * [x] Implementació de la interactivitat de l'usuari amb el fòrum mitjançant JavaScript dinàmic.
-    * [x] Planificació i estructuració tècnica dels avantatges dels plans de subscripció Premium.
-* **Tasca 2 (Dimecres a Divendres):**
-    * [x] Programació del flux d'entrades de text per permetre als usuaris publicar idees i emetre opinions amb els seus comptes de perfil.
+#### Sprint 3: Desenvolupament Avançat i Funcionalitats de l'App
+* **Objectiu:** Aplicar lògica de programació avançada per dotar la web de característiques interactives professionals.
+* **Tasca 1:** * [x] Disseny del mòdul de registre (*Login*).
+    * [x] Interconnexió amb la base de dades externa a Supabase.
+* **Tasca 2:**
+    * [x] Programació amb JavaScript dinàmic del flux del fòrum (publicació d'idees).
+    * [x] Estructuració tècnica de les avantatges dels plans Premium.
 
-#### Sprint 4: Configuració de l'Entorn de Servidor Físic (Setmana 3)
-* **Objectiu:** Creació, securització i preparació del servidor local integrat sobre una placa de desenvolupament Raspberry Pi.
-* **Tasca 1 (Dilluns):**
-    * [x] Instal·lació de la distribució base Linux (Raspberry Pi OS) i posada en funcionament de la màquina físicament a l'aula.
+#### Sprint 4: Configuració de l'Entorn de Servidor Físic
+* **Objectiu:** Creació i preparació del servidor local integrat de desenvolupament sobre Raspberry Pi.
+* **Tasca 1:** * [x] Instal·lació neta de la distribució base Linux (Raspberry Pi OS).
+    * [x] Posada en funcionament físic de la màquina.
 
-#### Sprint 5: Implementació i Desplegament del Sistema (Setmana 3)
-* **Objectiu:** Implementar l'aplicació web d'UpStart dins del servidor Linux de la Raspberry Pi per a la seva sortida a producció.
-* **Tasca 1 (Dilluns a Dimecres):**
-    * [x] Configuració de l'entorn de producció, proxy invers i desplegament del repositori al servidor local.
-* **Tasca 2 (Dijous i Divendres):**
-    * [x] Auditories de xarxa per verificar el correcte funcionament públic de l'enllaç i certificar que qualsevol usuari extern pot accedir-hi.
+#### Sprint 5: Implementació i Desplegament del Sistema
+* **Objectiu:** Implementar l'aplicació web dins del servidor Linux de la Raspberry Pi per a la seva sortida a producció local.
+* **Tasca 1:**
+    * [x] Millora contínua de la pàgina web.
+    * [x] Poliment de detalls i funcionalitats addicionals en l'entorn de producció local.
 
-#### Sprint 6: Auditories, Control de Qualitat i Revisió Final (Setmana 4)
-* **Objectiu:** Revisar de manera crítica i exhaustiva tot el treball tècnic i teòric realitzat per garantir el lliurament del producte final.
-* **Tasca 1 (Dilluns a Dimecres):**
-    * [x] Control d'errors de la pàgina web i verificació del disseny adaptatiu.
-    * [x] Revisió formal i correcció estilística de la memòria escrita de l'informe.
-    * [x] Validació de la connectivitatde la Raspberry Pi.
-    * [x] Proves integrals de funcionament global del sistema.
+#### Sprint 6: Auditories, Control de Qualitat i Revisió Final
+* **Objectiu:** Revisar de manera crítica i exhaustiva tot el treball realitzat per garantir el lliurament del producte final.
+* **Tasca 1:**
+    * [x] Control d'errors de la web i verificació del disseny.
+    * [x] Validació de la connectivitat de la Raspberry Pi.
+* **Tasca 2:**
+    * [x] Proves integrals del sistema.
+    * [x] Correcció estilística final de la memòria escrita.
 
 ```mermaid
 gantt
