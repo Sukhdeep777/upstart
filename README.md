@@ -142,9 +142,16 @@ gantt
 ## 7. Webgrafía
 
 
-1. Gemini: [Gemini](https://gemini.google.com/?hl=es-ES)
-2. CB insights: [CB-insights](https://www.cbinsights.com/research/report/startup-failure-reasons-top/?utm_campaign=newsletter_general_RU_hs&utm_source=hs_email&utm_medium=email&_hsenc=p2ANqtz-_r5i1mlG2vB4AjvIRlyLdHDMBh7jXhgGp-hR6FvVYuLbf6GPeAGr9e26MzcMezVPBUZd3J)
-3. BBVA : [BBVA](https://www.bbva.com/es/innovacion/por-que-fracasan-las-startups/)
+**Fuentes de información y mercado:**
+1. CB Insights (Estadísticas de startups): [CB-Insights](https://www.cbinsights.com/research/report/startup-failure-reasons-top/)
+2. BBVA (Análisis de fracaso emprendedor): [BBVA](https://www.bbva.com/es/innovacion/por-que-fracasan-las-startups/)
+
+**Herramientas y Recursos de Desarrollo:**
+3. Base de datos y Backend: [Supabase](https://supabase.com/)
+4. Framework CSS: [Tailwind CSS](https://tailwindcss.com/)
+5. Soporte y asistencia de código: [Google Gemini](https://gemini.google.com/?hl=es-ES)
+6. Recursos gráficos e Iconos: [Freepik](https://www.freepik.es/) | [Pixabay](https://pixabay.com/es/)
+7. Herramienta de edición de imagen: [Remove.bg](https://www.remove.bg/)
 
 
 ## 8. Anexos
