@@ -27,28 +27,40 @@ El proyecto ha sido desarrollado en pareja, dividiendo las responsabilidades en 
 La plataforma se dirige específicamente a jóvenes de entre 20 y 35 años que tienen ideas de negocio anotadas pero que están paralizados por el desconocimiento, la inseguridad personal o el miedo al robo de la propiedad intelectual.
 
 ### Funcionamiento y Funcionalidades Principales
-* **Embudo de Registro Ágil:** El usuario accede mediante el navegador y se registra en pocos clics a través de métodos de autenticación seguros, seleccionando su rol dentro de la comunidad.
+* **Registro Ágil:** El usuario accede mediante el navegador y se registra en pocos clics a través de métodos de autenticación seguros, seleccionando su rol dentro de la comunidad.
 * **Publicación de ideas:** Los creadores rellenan un formulario estructurado para poder publicar su idea.
 * **Gamificación Peer-to-Peer:** Los usuarios interactúan y reciben críticas constructivas. El creador valora la utilidad de este *feedback* de 1 a 5 estrellas, haciendo que los mentores y usuarios con mejor criterio suban en el ranking público de reputación.
 * **Modelo de Negocio:** Se aplica una estructura *Freemium*. El acceso y lectura básicos son gratuitos, pero se ofrece un plan Premium (5€ - 15€/mes) que habilita publicaciones ilimitadas, mejor visibilidad del proyecto en el foro y consultas privadas 1-a-1 con expertos.
 
 ## 4. Material del proyecto
-- **Hardware**: Para el hardware sencillamente hemos necesitado unos equipos y conexión a internet para poder desarrollar el proyecto y una Raspberry para desplegarlo.
-- **Software**: Hemos utilizado Visual Studio Code (para toda la parte de código), inteligencias artificiales (para dar soporte al código) y Supabase (para la creación de la base de datos).
-
-## 5. Desarrollo y despliegue
 Para llevar a cabo tanto el desarrollo del software como el despliegue de la infraestructura de red, se ha separado el material requerido en hardware y software:
 
-### 5.1 Hardware
-* **Equipos de desarrollo:** Ordenadores
-* **Servidor local:** Raspberry Pi
+### 4.1 Hardware (Maquinaria)
+* **Equipos de desarrollo:** Ordenadores portátiles con conexión a internet.
+* **Servidor local:** Placa Raspberry Pi para alojar el despliegue del proyecto.
 
-### 5.2 Software
-* **Tecnologías de Aplicación:** Lenguajes estándares del desarrollo web (HTML, CSS y JavaScript).
-* **Entorno de desarrollo integrado:** Visual Studio Code 
-* **Sistema Operativo del Servidor:** *Raspberry Pi OS Lite* ## 6. Planificación
+### 4.2 Software (Programas y Aplicaciones)
+* **Tecnologías de Aplicación:** Lenguajes estándares del desarrollo web (HTML, CSS, JavaScript y Tailwind CSS).
+* **Base de Datos y Backend:** Supabase.
+* **Entorno de desarrollo integrado:** Visual Studio Code.
+* **Sistema Operativo del Servidor:** *Raspberry Pi OS Lite*.
+* **Soporte:** Inteligencias artificiales generativas para resolución de problemas de código.
 
-### 7. Diagrama de Gantt
+## 5. Desarrollo y despliegue
+La página web se ha construido separando la parte visual (frontend) de la gestión de datos (backend):
+* **Frontend:** Hemos utilizado **HTML** y **JavaScript** en toda la web para que sea interactiva (por ejemplo, para el modo oscuro o el sistema de valoración por estrellas). Para los estilos visuales, usamos **CSS normal** en la página de inicio y **Tailwind CSS** en el resto de páginas.
+* **Backend:** Utilizamos **Supabase** para gestionar de forma segura el registro de usuarios, el inicio de sesión (Login) y guardar todas las ideas y comentarios del foro.
+* **Herramientas de apoyo:** Para el apartado gráfico usamos **Design.com** (logo), **Freepik y Pixabay** (iconos y recursos), **Remove.bg** (borrar fondos) y la API de **ui-avatars.com** (generar fotos de perfil automáticamente).
+
+### 5.2 Despliegue del Servidor
+Para que la web sea accesible a los usuarios, dividimos el despliegue en dos fases:
+* **Fase de pruebas:** Al principio, utilizamos plataformas gratuitas como **GitHub Pages y Vercel** para hacer pruebas rápidas de visualización mientras programábamos.
+* **Servidor en Producción (Raspberry Pi):** El despliegue final lo hicimos creando nuestro propio servidor local utilizando la **Raspberry Pi**. 
+* **Configuración:** Instalamos el sistema operativo Linux (*Raspberry Pi OS Lite*) porque consume muy pocos recursos. 
+
+## 6. Planificació
+
+### 6.1 Diagrama de Gantt
 
 #### Sprint 1: Diseño y Maquetación Base de la App
 * **Objetivo:** Creación de una página web simple para la comprobación inicial del entorno y preparación del primer despliegue de prueba.
@@ -121,17 +133,14 @@ gantt
 ```
 
 
-## 8. Webgrafia
-
-1. Para crear el logo de la empresa: [Logo UpStart](https://www.design.com/es-es)
-2. Iconos/Avatares: [Icones](https://www.freepik.es/icono/sincronizar_7344967#fromView=search&page=1&position=28&uuid=d238815c-0fc8-48f8-ba84-fb5af87328bd)
-3. Avatares de los usuarios: [Avatars](https://www.freepik.es/fotos-vectores-gratis/avatar/5#uuid=132681dc-1ea0-4add-9e4b-0d5214929669)
-4. Borrar Fondo: [Remove](https://www.remove.bg/)
-5. Base de datos: [Supabase](https://supabase.com/)
-6. Gemini: [Gemini](https://gemini.google.com/?hl=es-ES)
+## 7. Webgrafia
 
 
-## 9. Annexos
+1. Gemini: [Gemini](https://gemini.google.com/?hl=es-ES)
+2. CB insights: [CB-insights]()
+
+
+## 8. Annexos
 
 <p align  ="center">
   <img src="./imagenes/readme/capt1.png" width="600">
