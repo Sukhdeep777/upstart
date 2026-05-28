@@ -40,27 +40,27 @@ body{
     align-items: end;
 }
 
-.gap{
+.gap{ /*Esta clase nos permite separar diferentes objetos para que haya un espaciado*/
     gap: 10px;
 }
 
-.js{
+.js{ /*Para poder alinear textos*/
     text-align: justify;
 }
 
-.ju-c{
+.ju-c{ /*Para centrar los objetos*/
     justify-content: center;
 }
 
-.b{
+.b{ /*Un color negro mas utilizado para textos, titulos, etc.*/
     color: black;
 }
 
-.bl{
+.bl{ /*Tener una clase con el color principal de la pàgina web*/
     color: #20b3b3;
 }
 
-.bold{
+.bold{ /*Para poder aumentar el grosor de las letras*/
     font-weight: bold;
 }
 
