@@ -47,6 +47,7 @@ Para llevar a cabo tanto el desarrollo del software como el despliegue de la inf
 * **Soporte:** Inteligencias artificiales generativas para resolución de problemas de código.
 
 ## 5. Desarrollo y despliegue
+### 5.1 Desarrollo de la aplicación web
 La página web se ha construido separando la parte visual (frontend) de la gestión de datos (backend):
 * **Frontend:** Hemos utilizado **HTML** y **JavaScript** en toda la web para que sea interactiva (por ejemplo, para el modo oscuro o el sistema de valoración por estrellas). Para los estilos visuales, usamos **CSS normal** en la página de inicio y **Tailwind CSS** en el resto de páginas.
 * **Backend:** Utilizamos **Supabase** para gestionar de forma segura el registro de usuarios, el inicio de sesión (Login) y guardar todas las ideas y comentarios del foro.
@@ -58,10 +59,15 @@ Para que la web sea accesible a los usuarios, dividimos el despliegue en dos fas
 * **Servidor en Producción (Raspberry Pi):** El despliegue final lo hicimos creando nuestro propio servidor local utilizando la **Raspberry Pi**. 
 * **Configuración:** Instalamos el sistema operativo Linux (*Raspberry Pi OS Lite*) porque consume muy pocos recursos. 
 
-## 6. Planificació
+## 6. Planificación
 
-### 6.1 Diagrama de Gantt
+### 6.1 Historias de Usuario
+Para organizar el desarrollo, definimos historias de usuario clave que guiaron nuestro trabajo:
+* *"Como emprendedor, quiero publicar mi idea de negocio ocultando datos sensibles para recibir feedback sin miedo al plagio."*
+* *"Como mentor, quiero poder valorar las ideas y comentar para ganar puntos de reputación en la comunidad."*
+* *"Como usuario Premium, quiero acceder a chats privados con expertos para recibir un análisis detallado de mi proyecto."*
 
+### 6.2 Sprints y Diagrama de Gantt
 #### Sprint 1: Diseño y Maquetación Base de la App
 * **Objetivo:** Creación de una página web simple para la comprobación inicial del entorno y preparación del primer despliegue de prueba.
 * **Tarea 1:** * [x] Generación de la estructura base del sitio web.
@@ -108,7 +114,7 @@ Para que la web sea accesible a los usuarios, dividimos el despliegue en dos fas
 
 ```mermaid
 gantt
-    title Planificació del projecte UPSTART
+    title Planificación del proyecto UPSTART
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
     tickInterval 1week
@@ -133,14 +139,15 @@ gantt
 ```
 
 
-## 7. Webgrafia
+## 7. Webgrafía
 
 
 1. Gemini: [Gemini](https://gemini.google.com/?hl=es-ES)
-2. CB insights: [CB-insights]()
+2. CB insights: [CB-insights](https://www.cbinsights.com/research/report/startup-failure-reasons-top/?utm_campaign=newsletter_general_RU_hs&utm_source=hs_email&utm_medium=email&_hsenc=p2ANqtz-_r5i1mlG2vB4AjvIRlyLdHDMBh7jXhgGp-hR6FvVYuLbf6GPeAGr9e26MzcMezVPBUZd3J)
+3. BBVA : [BBVA](https://www.bbva.com/es/innovacion/por-que-fracasan-las-startups/)
 
 
-## 8. Annexos
+## 8. Anexos
 
 <p align  ="center">
   <img src="./imagenes/readme/capt1.png" width="600">
