@@ -1,100 +1,98 @@
 # UPSTART
 
-## 1. Integrants del projecte
-El projecte ha estat desenvolupat en parella, dividint les responsabilitats en funció de les competències tècniques i d'administració de sistemes de cadascú:
+## 1. Integrantes del proyecto
+El proyecto ha sido desarrollado en pareja, dividiendo las responsabilidades en función de las competencias técnicas y de administración de sistemas de cada uno:
 
-* **Sukhdeep Singh Kaur** 
-    * **Rol:** Responsable Tecnològic i Administrador de Sistemes .
-    * **Responsabilitats:** Arquitectura i programació de l'aplicació web , modelat de la base de dades, seguretat dels descriptors d'idees, configuració del servidor local sobre arquitectura (Raspberry Pi) i automatització de desplegaments mitjançant contenidors.
+* **Sukhdeep Singh Kaur** * **Rol:** Responsable Tecnológico y Administrador de Sistemas.
+    * **Responsabilidades:** Arquitectura y programación de la aplicación web, modelado de la base de datos, seguridad de los descriptores de ideas, configuración del servidor local sobre arquitectura (Raspberry Pi) y automatización de despliegues mediante contenedores.
 * **Jordi Zalkaliani**
-    * **Rol:** Responsable de Negoci, Disseny i Comunitat (Product Owner / Community Manager).
-    * **Responsabilitats:** Disseny de la interfície d'usuari, definició de les històries d'usuari del fòrum, gestió i verificació del panell de mentors, estratègies de màrqueting digital i definició del model financer.
+    * **Rol:** Responsable de Negocio, Diseño y Comunidad (Product Owner / Community Manager).
+    * **Responsabilidades:** Diseño de la interfaz de usuario, definición de las historias de usuario del foro, gestión y verificación del panel de mentores, estrategias de marketing digital y definición del modelo financiero.
 
-## 2. Objectius
+## 2. Objetivos
 
-- Crear un entorn segur per validar idees de negoci sense por al plagi.
+- Crear un entorno seguro para validar ideas de negocio sin miedo al plagio.
 
-- Connectar el talent jove amb l'experiència de mentors consolidats a Espanya.
+- Conectar el talento joven con la experiencia de mentores consolidados en España.
 
-- Fomentar la col·laboració mitjançant un sistema de gamificació (Karma).
+- Fomentar la colaboración mediante un sistema de gamificación (Karma).
 
-- Oferir una alternativa viable i adaptada al mercat local seguint models d'èxit internacionals.
+- Ofrecer una alternativa viable y adaptada al mercado local siguiendo modelos de éxito internacionales.
 
-## 3. Explicació del projecte
+## 3. Explicación del proyecto
 
-**UpStart** és una plataforma web col·laborativa plantejada conceptualment com el "Reddit dels fundadors". El projecte respon a una necessitat real identificada en l'ecosistema emprenedor a Catalunya: la manca de mètodes eficients i entorns de confiança perquè els emprenedors novells puguin validar si la seva idea de start-up pot funcionar abans de gastar recursos econòmics o hores de desenvolupament. Les estadístiques globals confirmen que un 42% de les start-ups fracassen precisament per llançar productes que no cobreixen cap necessitat real del mercat.
+**UpStart** es una plataforma web colaborativa planteada conceptualmente como el "Reddit de los fundadores". El proyecto responde a una necesidad real identificada en el ecosistema emprendedor en Cataluña: la falta de métodos eficientes y entornos de confianza para que los emprendedores noveles puedan validar si su idea de start-up puede funcionar antes de gastar recursos económicos u horas de desarrollo. Las estadísticas globales confirman que un 42% de las start-ups fracasan precisamente por lanzar productos que no cubren ninguna necesidad real del mercado.
 
-### Públic Objectiu
-La plataforma es dirigeix específicament a joves d'entre 20 i 35 anys que tenen idees de negoci anotades però que estan paralitzats pel desconeixement, la inseguretat personal o la por al robatori de la propietat intel·lectual.
+### Público Objetivo
+La plataforma se dirige específicamente a jóvenes de entre 20 y 35 años que tienen ideas de negocio anotadas pero que están paralizados por el desconocimiento, la inseguridad personal o el miedo al robo de la propiedad intelectual.
 
-### Funcionament i Funcionalitats Principals
-* **Embut de Registre Àgil:** L'usuari accedeix mitjançant el navegador i es registra en pocs clics a través de mètodes d'autenticació segurs, seleccionant el seu rol dins de la comunitat.
-* **Publicació de d'idees:** Els creadors omplen un formulari estructurat per poder publicar la seva idea.
-* **Gamificació Peer-to-Peer:** Els usuaris interactuen i reben crítiques constructives. El creador valora la utilitat d'aquest *feedback* d'1 a 5 estrelles, fent que els mentors i usuaris amb millor criteri pugin en el rànquing públic de reputació.
-* **Model de Negoci:** S'aplica una estructura *Freemium*. L'accés i lectura bàsics són gratuïts, però s'ofereix un pla Premium (5€ - 15€/mes) que habilita publicacions illimitades, millor visibilitat del projecte al fòrum i consultes privades 1-a-1 amb experts.
+### Funcionamiento y Funcionalidades Principales
+* **Embudo de Registro Ágil:** El usuario accede mediante el navegador y se registra en pocos clics a través de métodos de autenticación seguros, seleccionando su rol dentro de la comunidad.
+* **Publicación de ideas:** Los creadores rellenan un formulario estructurado para poder publicar su idea.
+* **Gamificación Peer-to-Peer:** Los usuarios interactúan y reciben críticas constructivas. El creador valora la utilidad de este *feedback* de 1 a 5 estrellas, haciendo que los mentores y usuarios con mejor criterio suban en el ranking público de reputación.
+* **Modelo de Negocio:** Se aplica una estructura *Freemium*. El acceso y lectura básicos son gratuitos, pero se ofrece un plan Premium (5€ - 15€/mes) que habilita publicaciones ilimitadas, mejor visibilidad del proyecto en el foro y consultas privadas 1-a-1 con expertos.
 
-## 4. Material del projecte
--**Hardware**: Per al maquinari senzillament hem necessitat uns equips i connexió a internet per poder desenvolupar el projecte i una Raspberry per desplegar-lo.
--**Software**: Hem utilitzat Visual Studio Code (per a tota la part de codi), intel·ligències artificials (per donar suport al codi) i Supabase (per a la creació de la base de dades).
-## 5. Desenvolupament i desplegament
-Per dur a terme tant el desenvolupament del programari com el desplegament de la infraestructura de xarxa, s'ha separat el material requerit en maquinari i programari:
+## 4. Material del proyecto
+- **Hardware**: Para el hardware sencillamente hemos necesitado unos equipos y conexión a internet para poder desarrollar el proyecto y una Raspberry para desplegarlo.
+- **Software**: Hemos utilizado Visual Studio Code (para toda la parte de código), inteligencias artificiales (para dar soporte al código) y Supabase (para la creación de la base de datos).
 
-### 5.1 Maquinari (Hardware)
-* **Equips de desenvolupament:** Ordinadors
-* **Servidor local:** Raspberry PI
+## 5. Desarrollo y despliegue
+Para llevar a cabo tanto el desarrollo del software como el despliegue de la infraestructura de red, se ha separado el material requerido en hardware y software:
 
-### 5.2 Programari (Software)
-* **Tecnologies d'Aplicació:** Llenguatges estàndards del desenvolupament web (HTML, CSS i JavaScript).
-* **Entorn de desenvolupament integrat:** Visual Studio Code 
-* **Sistema Operatiu del Servidor:** *Raspberry Pi OS Lite* 
+### 5.1 Hardware
+* **Equipos de desarrollo:** Ordenadores
+* **Servidor local:** Raspberry Pi
 
-## 6. Planificació
+### 5.2 Software
+* **Tecnologías de Aplicación:** Lenguajes estándares del desarrollo web (HTML, CSS y JavaScript).
+* **Entorno de desarrollo integrado:** Visual Studio Code 
+* **Sistema Operativo del Servidor:** *Raspberry Pi OS Lite* ## 6. Planificación
 
 ### 7. Diagrama de Gantt
 
-#### Sprint 1: Disseny i Maquetació Base de l'App
-* **Objectiu:** Creació d'una pàgina web simple per a la comprovació inicial de l'entorn i preparació del primer desplegament de prova.
-* **Tasca 1:** * [x] Generació de l'estructura base del lloc web.
-    * [x] Configuració de repositoris i desplegament continu (GitHub Pages i Vercel).
-* **Tasca 2:**
-    * [x] Estructuració del lloc web.
-    * [x] Desenvolupament del codi HTML i CSS interactiu.
+#### Sprint 1: Diseño y Maquetación Base de la App
+* **Objetivo:** Creación de una página web simple para la comprobación inicial del entorno y preparación del primer despliegue de prueba.
+* **Tarea 1:** * [x] Generación de la estructura base del sitio web.
+    * [x] Configuración de repositorios y despliegue continuo (GitHub Pages y Vercel).
+* **Tarea 2:**
+    * [x] Estructuración del sitio web.
+    * [x] Desarrollo del código HTML y CSS interactivo.
 
-#### Sprint 2: Documentació Tècnica i Elaboració de l'Informe
-* **Objectiu:** Creació de l'informe per documentar el projecte i els processos de desenvolupament del servidor i la pàgina web.
-* **Tasca 1:** * [x] Creació i redacció detallada del fitxer README per apartats.
-* **Tasca 2:**
-    * [x] Descripció de les eines de desenvolupament.
-    * [x] Especificació de la lògica JavaScript.
-    * [x] Creació i estructuració de la presentació final del projecte.
+#### Sprint 2: Documentación Técnica y Elaboración del Informe
+* **Objetivo:** Creación del informe para documentar el proyecto y los procesos de desarrollo del servidor y la página web.
+* **Tarea 1:** * [x] Creación y redacción detallada del archivo README por apartados.
+* **Tarea 2:**
+    * [x] Descripción de las herramientas de desarrollo.
+    * [x] Especificación de la lógica JavaScript.
+    * [x] Creación y estructuración de la presentación final del proyecto.
 
-#### Sprint 3: Desenvolupament Avançat i Funcionalitats de l'App
-* **Objectiu:** Aplicar lògica de programació avançada per dotar la web de característiques interactives professionals.
-* **Tasca 1:** * [x] Disseny del mòdul de registre (*Login*).
-    * [x] Interconnexió amb la base de dades externa a Supabase.
-* **Tasca 2:**
-    * [x] Programació amb JavaScript dinàmic del flux del fòrum (publicació d'idees).
-    * [x] Estructuració tècnica de les avantatges dels plans Premium.
+#### Sprint 3: Desarrollo Avanzado y Funcionalidades de la App
+* **Objetivo:** Aplicar lógica de programación avanzada para dotar a la web de características interactivas profesionales.
+* **Tarea 1:** * [x] Diseño del módulo de registro (*Login*).
+    * [x] Interconexión con la base de datos externa en Supabase.
+* **Tarea 2:**
+    * [x] Programación con JavaScript dinámico del flujo del foro (publicación de ideas).
+    * [x] Estructuración técnica de las ventajas de los planes Premium.
 
-#### Sprint 4: Configuració de l'Entorn de Servidor Físic
-* **Objectiu:** Creació i preparació del servidor local integrat de desenvolupament sobre Raspberry Pi.
-* **Tasca 1:** * [x] Instal·lació neta de la distribució base Linux (Raspberry Pi OS).
-    * [x] Posada en funcionament físic de la màquina.
+#### Sprint 4: Configuración del Entorno de Servidor Físico
+* **Objetivo:** Creación y preparación del servidor local integrado de desarrollo sobre Raspberry Pi.
+* **Tarea 1:** * [x] Instalación limpia de la distribución base Linux (Raspberry Pi OS).
+    * [x] Puesta en funcionamiento físico de la máquina.
 
-#### Sprint 5: Implementació i Desplegament del Sistema
-* **Objectiu:** Implementar l'aplicació web dins del servidor Linux de la Raspberry Pi per a la seva sortida a producció local.
-* **Tasca 1:**
-    * [x] Millora contínua de la pàgina web.
-    * [x] Poliment de detalls i funcionalitats addicionals en l'entorn de producció local.
+#### Sprint 5: Implementación y Despliegue del Sistema
+* **Objetivo:** Implementar la aplicación web dentro del servidor Linux de la Raspberry Pi para su salida a producción local.
+* **Tarea 1:**
+    * [x] Mejora continua de la página web.
+    * [x] Pulido de detalles y funcionalidades adicionales en el entorno de producción local.
 
-#### Sprint 6: Auditories, Control de Qualitat i Revisió Final
-* **Objectiu:** Revisar de manera crítica i exhaustiva tot el treball realitzat per garantir el lliurament del producte final.
-* **Tasca 1:**
-    * [x] Control d'errors de la web i verificació del disseny.
-    * [x] Validació de la connectivitat de la Raspberry Pi.
-* **Tasca 2:**
-    * [x] Proves integrals del sistema.
-    * [x] Correcció estilística final de la memòria escrita.
+#### Sprint 6: Auditorías, Control de Calidad y Revisión Final
+* **Objetivo:** Revisar de manera crítica y exhaustiva todo el trabajo realizado para garantizar la entrega del producto final.
+* **Tarea 1:**
+    * [x] Control de errores de la web y verificación del diseño.
+    * [x] Validación de la conectividad de la Raspberry Pi.
+* **Tarea 2:**
+    * [x] Pruebas integrales del sistema.
+    * [x] Corrección estilística final de la memoria escrita.
 
 ```mermaid
 gantt
