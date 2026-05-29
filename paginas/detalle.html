@@ -10,58 +10,89 @@
     <link rel="stylesheet" href="../modooscuro.css">
 
     <style>
-        /* ── Estrellas grandes: valoración global de la IDEA (interactivas o solo lectura) ── */
-        .star-btn {
-            cursor: pointer;
-            transition: transform 0.15s;
-            display: inline-block;
-        }
-        .star-btn:hover,
-        .star-btn.hovered,
-        .star-btn.selected {
-            transform: scale(1.2);
-        }
-        .star-btn img,
-        .star-readonly img {
-            width: 32px;
-            height: 32px;
-            display: block;
-        }
-        .star-readonly img {
-            width: 22px;
-            height: 22px;
-        }
+            /* ══════════════════════════════════════════════════
+            ESTRELLAS GRANDES: valoración global de la IDEA
+            ══════════════════════════════════════════════════ */
 
-        /* ── Estrellas pequeñas (mini): valoración de COMENTARIOS individuales ──
-           Son más pequeñas que las de la idea para diferenciarlas visualmente.
-           .comment-star-btn  → versión clicable, solo visible al autor de la idea
-           .comment-star-readonly → versión de solo lectura para el resto de visitantes */
-        .comment-star-btn {
-            cursor: pointer;
-            transition: transform 0.12s;
-            display: inline-block;
-        }
-        .comment-star-btn:hover { transform: scale(1.25); }
-        .comment-star-btn img   { width: 18px; height: 18px; display: block; }
+            /* Clase base para cada estrella clicable (las grandes de valorar la idea) */
+            .star-btn {
+                cursor: pointer;          /* El ratón cambia a manita al pasar por encima */
+                transition: transform 0.15s; /* Animación suave de 0.15 segundos al escalar */
+                display: inline-block;    /* Necesario para que transform funcione en un span */
+            }
 
-        .comment-star-readonly img { width: 16px; height: 16px; display: block; }
+            /* Cuando el ratón está encima, cuando tiene la clase .hovered o cuando está seleccionada */
+            .star-btn:hover,
+            .star-btn.hovered,
+            .star-btn.selected {
+                transform: scale(1.2);    /* Agranda la estrella un 20% para dar feedback visual */
+            }
 
-        /* ── Badge XP ──
-           Pequeña etiqueta que aparece junto al nombre del comentarista cuando
-           el autor de la idea ya ha valorado su comentario.
-           Muestra "+N XP" con el degradado de color principal de la plataforma. */
-        .xp-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: linear-gradient(135deg, #20b3b3, #5dd6d6);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
+            /* Imagen dentro de las estrellas interactivas (grandes) */
+            .star-btn img,
+            /* Imagen dentro de las estrellas de solo lectura (también grandes, para la media) */
+            .star-readonly img {
+                width: 32px;              /* Ancho fijo de 32px para las estrellas grandes */
+                height: 32px;             /* Alto fijo de 32px (cuadradas) */
+                display: block;           /* Elimina el espacio extra que deja inline por defecto */
+            }
+
+            /* Sobreescribimos el tamaño para las estrellas de solo lectura */
+            /* (comparten selector con .star-btn img arriba, así que necesitamos repetirlo) */
+            .star-readonly img {
+                width: 22px;              /* Más pequeñas que las interactivas: 22px */
+                height: 22px;             /* Alto igual al ancho para mantener proporción cuadrada */
+            }
+
+
+            /* ══════════════════════════════════════════════════
+            ESTRELLAS MINI: valoración de comentarios
+            ══════════════════════════════════════════════════ */
+
+            /* Estrella mini CLICABLE — solo visible para el autor de la idea */
+            .comment-star-btn {
+                cursor: pointer;             /* Cursor manita para indicar que se puede clicar */
+                transition: transform 0.12s; /* Animación un poco más rápida que las grandes (0.12s) */
+                display: inline-block;       /* Necesario para que transform funcione */
+            }
+
+            /* Efecto hover de la estrella mini clicable */
+            .comment-star-btn:hover {
+                transform: scale(1.25);      /* Escala algo mayor (1.25 vs 1.2) para compensar el tamaño pequeño */
+            }
+
+            /* Imagen dentro de la estrella mini clicable */
+            .comment-star-btn img {
+                width: 18px;                 /* Más pequeña que las de la idea (32px) */
+                height: 18px;                /* Alto igual al ancho */
+                display: block;              /* Elimina el espacio extra inferior de los inline */
+            }
+
+            /* Imagen dentro de la estrella mini de SOLO LECTURA (visitantes normales) */
+            .comment-star-readonly img {
+                width: 16px;                 /* La más pequeña de todas: 16px */
+                height: 16px;                /* Alto igual al ancho */
+                display: block;              /* Elimina espacio extra inline */
+            }
+
+
+            /* ══════════════════════════════════════════════════
+            BADGE XP
+            ══════════════════════════════════════════════════ */
+
+            /* Etiqueta "+N XP" que aparece junto al nombre cuando el comentario ya fue valorado */
+            .xp-badge {
+                display: inline-flex;        /* Flex en línea para alinear icono y texto horizontalmente */
+                align-items: center;         /* Centra verticalmente el contenido del badge */
+                gap: 4px;                    /* Espacio de 4px entre el "+" y el número */
+                background: linear-gradient(135deg, #20b3b3, #5dd6d6); /* Degradado diagonal con los colores de la marca */
+                color: white;                /* Texto blanco para contrastar con el fondo turquesa */
+                font-size: 11px;             /* Letra muy pequeña, es un badge secundario */
+                font-weight: 800;            /* Extra negrita para que destaque pese al tamaño pequeño */
+                padding: 2px 8px;            /* Poco relleno vertical (2px), más horizontal (8px) */
+                border-radius: 20px;         /* Bordes muy redondeados: forma de píldora */
+                letter-spacing: 0.5px;       /* Pequeño espaciado entre letras para mejor legibilidad */
+            }
     </style>
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif] bg-gray-50">
