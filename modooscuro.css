@@ -71,7 +71,6 @@ body.dark footer {
     color: #e0e0e0;
 }
 
-/* Tarjetas de ideas (páginas Tailwind) */
 body.dark .bg-white {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -122,3 +121,6 @@ body.dark .dark-planes{
     color: white;
 }
 
+body.dark .char-black{
+    color: black;
+}
