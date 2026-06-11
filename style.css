@@ -116,7 +116,7 @@ nav ul a{ /*Que los enlaces no tengan decoración y haya un padding*/
 }
 
 nav ul a:hover{  /*En este hover hacemos que cambie el fondo, se le añada un borde y el color de texto*/
-    background: #469696;
+    background: #0a31e0d2;
     padding:  7px;
     border-radius: 10px;
     color: #fff;
