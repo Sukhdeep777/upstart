@@ -84,6 +84,10 @@ body.dark .text-black {
     color: #e0e0e0;
 }
 
+body.dark .anonim-black {
+    color: #0aaee0d2;
+}
+
 body.dark .text-gray-500 {
     color: #aaa;
 }
@@ -123,4 +127,41 @@ body.dark .dark-planes{
 
 body.dark .char-black{
     color: black;
+}
+
+body.dark .chir-black:hover{
+    background-color: #0aaee0d2 !important;
+}
+
+body.dark .busca-black {
+    border-color: #0aaee0d2;
+}
+
+body.dark .salir-black {
+    border-color: #0aaee0d2;
+    color: #0aaee0d2;
+}
+body.dark .upstart-black {
+    color: #0aaee0d2;
+}
+body.dark .cabeza-black {
+    background-color: #1e1e1e;
+    border-bottom-color: #0aaee0d2;
+}
+
+body.dark .donaahora-black {
+    background-color: #0aaee0d2;
+}
+
+body.dark .ahora-black {
+    background-color: #0aaee0d2;
+}
+body.dark .donaciones-black {
+    border-color: #0aaee0d2;
+    color: #0aaee0d2;
+}
+
+body.dark .donaciones-black:hover {
+    background-color: #0aaee0d2;
+    color: whitesmoke;
 }
