@@ -32,7 +32,7 @@
                     <p><a href="paginas/login.html">Iniciar Sesión</a></p>
                 </div>
                 <div id="user-profile" style="display: none; align-items: center; gap: 10px;">
-                    <img id="user-avatar" src="-" alt="Perfil" style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid #20b3b3;">
+                    <img id="user-avatar" src="-" alt="Perfil" style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid #0a31e0d2;">
                     <button id="logoutButton">  
                         Salir
                     </button>
@@ -415,7 +415,7 @@
             userProfile.style.display = 'flex';
             
             // Corregido: URL limpia sin espacios para que cargue la imagen
-            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=00c9c9&color=fff`; //Aqui agarramos una API donde se genera un avatar con las iniciales de los Nombres
+            userAvatar.src = `https://ui-avatars.com/api/?name=${user.email}&background=0a31e0d2&color=fff`; //Aqui agarramos una API donde se genera un avatar con las iniciales de los Nombres
         } else {
             // Si no hay: Mostrar login, ocultar perfil
             if(loginContainer) loginContainer.style.display = 'block';
