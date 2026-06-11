@@ -85,7 +85,7 @@
                 display: inline-flex;        /* Flex en línea para alinear icono y texto horizontalmente */
                 align-items: center;         /* Centra verticalmente el contenido del badge */
                 gap: 4px;                    /* Espacio de 4px entre el "+" y el número */
-                background: linear-gradient(135deg, #20b3b3, #5dd6d6); /* Degradado diagonal con los colores de la marca */
+                background: linear-gradient(135deg, #0a31e0d2, #0a31e0d2); /* Degradado diagonal con los colores de la marca */
                 color: white;                /* Texto blanco para contrastar con el fondo turquesa */
                 font-size: 11px;             /* Letra muy pequeña, es un badge secundario */
                 font-weight: 800;            /* Extra negrita para que destaque pese al tamaño pequeño */
@@ -96,37 +96,37 @@
     </style>
 </head>
 <body class="font-['Franklin_Gothic_Medium','Arial_Narrow',Arial,sans-serif] bg-gray-50">
-    <header class="flex w-full justify-around items-center border-b-[5px] border-[#20b3b3] bg-white">
+    <header class="flex w-full justify-around items-center border-b-[5px] border-[#0a31e0d2] bg-white">
         <div class="flex items-center">
             <div class="w-[90px] flex items-center">
                 <img src="../imagenes/logo-upstart.png" alt="LOGO UPSTART" class="w-full">
             </div>
-            <h1 class="text-[#20b3b3] text-[32px] font-bold pb-[8px]">UPSTART</h1>
+            <h1 class="text-[#0a31e0d2] text-[32px] font-bold pb-[8px]">UPSTART</h1>
         </div>
         <nav class="w-[60%] font-bold">
             <ul class="flex justify-around list-none m-0 p-0">
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="../index.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">INICIO</a>
+                    <a href="../index.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#0a31e0d2] hover:text-white">INICIO</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">PUBLICA</a>
+                    <a href="upstart.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#0a31e0d2] hover:text-white">PUBLICA</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">DONACIONES</a>
+                    <a href="donaciones.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#0a31e0d2] hover:text-white">DONACIONES</a>
                 </li>
                 <li class="hover:scale-110 transition-all duration-200">
-                    <a href="contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#469696] hover:text-white">CONTACTO</a>
+                    <a href="contacto.html" class="no-underline text-black px-[7px] py-[7px] rounded-[10px] hover:bg-[#0a31e0d2] hover:text-white">CONTACTO</a>
                 </li>
             </ul>
         </nav>
         <div class="lg ml-[10px]">
-            <div class="border-2 border-[#20b3b3] rounded-[20px] hover:bg-[#20b3b3] transition-all duration-200">
-                <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#20b3b3] block hover:text-white">Iniciar Sesión</a>
+            <div class="border-2 border-[#0a31e0d2] rounded-[20px] hover:bg-[#0a31e0d2] transition-all duration-200">
+                <a href="login.html" class="no-underline px-[25px] py-[13px] rounded-[20px] font-bold text-[#0a31e0d2] block hover:text-white">Iniciar Sesión</a>
             </div>
         </div>
         <div id="user-profile" class="hidden items-center gap-3 ml-[10px]" style="display:none;">
-            <img id="user-avatar" src="" alt="Avatar" class="w-[42px] h-[42px] rounded-full border-2 border-[#20b3b3]">
-            <button id="logoutButton" class="cursor-pointer border-2 border-[#20b3b3] text-[#20b3b3] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#20b3b3] hover:text-white transition-all duration-200">
+            <img id="user-avatar" src="" alt="Avatar" class="w-[42px] h-[42px] rounded-full border-2 border-[#0a31e0d2]">
+            <button id="logoutButton" class="cursor-pointer border-2 border-[#0a31e0d2] text-[#0a31e0d2] font-bold px-[18px] py-[10px] rounded-[20px] hover:bg-[#0a31e0d2] hover:text-white transition-all duration-200">
                 Salir
             </button>
             <button id="darkToggle" title="Modo nocturno" class="ml-[10px]">🌙</button>
@@ -139,7 +139,7 @@
         <div class="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
 
             <!-- Franja superior con degradado de marca -->
-            <div class="h-2 w-full bg-gradient-to-r from-[#20b3b3] via-[#5dd6d6] to-[#20b3b3]"></div>
+            <div class="h-2 w-full bg-gradient-to-r from-[#0a31e0d2] via-[#5dd6d6] to-[#0a31e0d2]"></div>
 
             <div class="flex items-stretch gap-0">
 
@@ -152,7 +152,7 @@
                     </div>
                     <div class="mt-8">
                         <a id="idea-enlace" href="#"
-                            class="hidden inline-flex items-center gap-2 bg-[#20b3b3] text-white font-bold px-6 py-3 rounded-2xl hover:bg-[#469696] transition-all duration-200 shadow-md hover:shadow-lg">
+                            class="hidden inline-flex items-center gap-2 bg-[#0a31e0d2] text-white font-bold px-6 py-3 rounded-2xl hover:bg-[#0a31e0d2] transition-all duration-200 shadow-md hover:shadow-lg">
                             Visitar proyecto <span class="text-lg">🔗</span>
                         </a>
                     </div>
@@ -160,7 +160,7 @@
 
                 <!-- Columna derecha: imagen cuadrada -->
                 <div id="idea-imagen-wrapper" class="hidden w-[340px] shrink-0 p-8 flex items-center justify-center">
-                    <div class="w-full aspect-square rounded-2xl overflow-hidden shadow-xl ring-4 ring-[#20b3b3]/20">
+                    <div class="w-full aspect-square rounded-2xl overflow-hidden shadow-xl ring-4 ring-[#0a31e0d2]/20">
                         <img id="idea-imagen" src="" alt="Imagen de la idea" class="w-full h-full object-cover">
                     </div>
                 </div>
@@ -203,16 +203,16 @@
                 si lo es, quitamos "hidden" para que aparezca este mensaje informativo.
                 Así el autor sabe que puede valorar los comentarios que reciba.
             -->
-            <div id="info-autor-rating" class="hidden mb-6 p-4 bg-[#20b3b3]/10 border border-[#20b3b3]/30 rounded-2xl text-sm text-[#20b3b3] font-semibold">
+            <div id="info-autor-rating" class="hidden mb-6 p-4 bg-[#0a31e0d2]/10 border border-[#0a31e0d2]/30 rounded-2xl text-sm text-[#0a31e0d2] font-semibold">
                 ⭐ Eres el autor de esta idea. Puedes valorar los comentarios que recibas — ¡las estrellas se convierten en XP para quienes comentan!
             </div>
 
             <div class="mb-8 flex gap-4 items-start">
                 <textarea id="input-comentario" rows="2"
-                    class="w-full border-2 border-gray-200 rounded-2xl p-4 text-gray-700 resize-none focus:outline-none focus:border-[#20b3b3] transition-colors"
+                    class="w-full border-2 border-gray-200 rounded-2xl p-4 text-gray-700 resize-none focus:outline-none focus:border-[#0a31e0d2] transition-colors"
                     placeholder="Escribe un comentario..."></textarea>
                 <button id="btn-comentar"
-                    class="bg-[#20b3b3] text-white font-bold px-7 py-4 rounded-2xl hover:bg-[#469696] transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap">
+                    class="bg-[#0a31e0d2] text-white font-bold px-7 py-4 rounded-2xl hover:bg-[#0a31e0d2] transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap">
                     Enviar
                 </button>
             </div>
@@ -224,7 +224,7 @@
 
     </div>
 
-    <footer class="bg-[#20b3b3] w-full mt-16">
+    <footer class="bg-[#0a31e0d2] w-full mt-16">
         <div class="w-[90%] mx-auto flex items-start gap-10 pt-16 pb-10 border-b border-white/20">
             <div class="w-[380px] text-justify">
                 <span class="text-[26px] font-extrabold text-white tracking-tight">
