@@ -433,6 +433,7 @@ main section{
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .tm-div:hover{ /*Le ponemos un hover para que verticalmente al pasar el ratón se le quiten -5px haciendo efecto como si elstuviese seleccionando y que vaye pa arriba*/
@@ -508,6 +509,13 @@ main section{
     width: 90%;
     padding: 10px 0px;
     border-radius: 20px;
+}
+
+.equipo__tarjeta{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 20px;
+    display: none;
 }
 
 /* PLANES DE PAGA */
@@ -597,7 +605,7 @@ main section{
 }
 
 .pg-p button:hover{
-    background-color: #1a9292;
+    background-color: #0aaee0d2;
     /* para que el boton suba */
     transform: translateY(-2px);
     /* Se le añade una sombra azul fuerte */
