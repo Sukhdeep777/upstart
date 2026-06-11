@@ -204,7 +204,7 @@ main section{
 }
     /* Aqui creamos cada idea para que este centrado */
 .ide1{
-    border: 1px solid #000;
+    border: 2px solid #e5e7eb;
     max-width: 5000px;
     width: 100%;
     display: flex;
@@ -212,6 +212,14 @@ main section{
     padding: 90px 0;
     border-radius: 20px;
     flex-direction: column;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.ide1:hover{
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
 
     /* Aqui ponemos un gap para que haya separación entre el titulo y las estrellas */
@@ -287,9 +295,17 @@ main section{
     max-width: 49%;
     width: 100%;
     /* Diseño visual: borde sólido, esquinas redondeadas y espacio interno amplio */
-    border: 1px solid #000;
+    border: 2px solid #e5e7eb;
     padding: 60px;
     border-radius: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.ide2:hover{
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
 
 .ide2 h2{
@@ -320,9 +336,17 @@ main section{
 .ide3{
     /* La siguiente idea con casi el mismo estilo */
     width: 49%;
-    border: 1px solid #000;
+    border: 2px solid #e5e7eb;
     padding: 60px;
     border-radius: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+}
+
+.ide3:hover{
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
 
 .ide3 h2{ 
