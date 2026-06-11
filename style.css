@@ -78,7 +78,7 @@ header{
     width: 100%; /* Que ocupe toda la pantalla*/
     justify-content: space-around;  /*Que los elementos esten separados entre si con el mismo espaciado entre ellos*/
     align-items: center; /*Los alineamos al centro para que los 3 elementos esten a la misma altura*/
-    border-bottom: 5px solid #20b3b3 /* Como si fuese un <hr> pero le ponemos un borde abajo para que se vea una separación entre el header y el main*/
+    border-bottom: 5px solid #0a31e0d2 /* Como si fuese un <hr> pero le ponemos un borde abajo para que se vea una separación entre el header y el main*/
 }
 
 .logo{ /*Seleccionamos al div del logo para indicarle un tamaño y alinearlo con el texto*/
@@ -390,7 +390,7 @@ main section{
 }
 
 .h3-list{ /*le ponemos un borde debajo del h3*/
-    border-bottom: 4px solid #20b3b3;
+    border-bottom: 4px solid #0a31e0d2;
     padding-bottom: 5px;
 }
 
@@ -470,7 +470,7 @@ main section{
 }
 
 .pilar{
-    border: 1px solid rgba(32, 179, 179, 0.295);
+    border: 1px solid #0a31e03d;
     box-shadow: 0px 34px 100px -16px rgba(0,0,0,0.1);
     padding: 10px 20px;
     width: 32%;
@@ -482,7 +482,7 @@ main section{
 
 .pilar:hover {
   transform: translateY(-10px); /* Movimiento suave al pasar el ratón */
-  border-color: #20b3b3; /* Resalta el borde al hacer hover */
+  border-color: #0a31e0d2; /* Resalta el borde al hacer hover */
 }
 
 .pilar p{ /*Color negro del texto*/
@@ -491,6 +491,7 @@ main section{
 
 .pilar h3{
     font-size: 22px;
+    color: #0a31e0d2;
 }
 
 
@@ -585,7 +586,7 @@ main section{
     cursor: pointer;
     padding: 10px 22px;
     border-radius: 12px;
-    background-color: #20b3b3;
+    background-color: #0a31e0d2;
     color: white;
     font-weight: 600;
     /* Sombra en la parte vertical zona de abajo */
@@ -604,7 +605,7 @@ main section{
 }
 
 .recomendado{  /*Para crear la etiqueta de Recomendado para atraer a los usuarios*/
-background-color: #20b3b3;
+background-color: #0a31e0d2;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -623,7 +624,7 @@ background-color: #20b3b3;
 /* FOOTER */
 
 footer {
-    background: #20b3b3;
+    background: #0a31e0d2;
     width: 100%;
     margin-top: 60px;
 }
