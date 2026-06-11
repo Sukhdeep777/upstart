@@ -92,7 +92,7 @@ header{
 }
 
 h1{ /*Color principal hacia el titulo o al nombre de la plataforma*/
-    color: #20b3b3;
+    color: #0a31e0d2;
 }
 
 nav{ /*Al nav donde esta el menu, ponemos que ocupe el 60% del espacio*/
@@ -136,13 +136,12 @@ nav ul a:hover{  /*En este hover hacemos que cambie el fondo, se le añada un bo
 }
 
 .lg{ /*Aqui donde le ponemos un borde y un radio al botón del Log In*/
-    border: 2px solid #20b3b3;
+    border: 2px solid #0a31e0d2;
     border-radius: 20px;
 }
 
 .lg a{ /*y un color de texto hacia la etiqueta <a>*/
-    color:#20b3b3;
-
+    color:#0a31e0d2;
 }
 
 /*Aqui pondrmeos una transicion al pasar el ratón con un hover para que cambie el fondo y el color de texto.*/
@@ -153,7 +152,7 @@ nav ul a:hover{  /*En este hover hacemos que cambie el fondo, se le añada un bo
 }
 
 .lg:hover{
-    background: #20b3b3; 
+    background: #0a31e0d2; 
 }
 
 /* En esta parte seleccionamos el id del div para poder salir de la cesión */
