@@ -199,9 +199,6 @@
                         <li>Cargando...</li>
                     </ul>
                 </div>
-                <div class="img-anuncio">
-                    <img src="imagenes/anuncio.png" alt="Anuncio de un Cafe">
-                </div>
             </section>
         </div>
         <div class="base">
@@ -439,7 +436,8 @@
     // 1. Traemos todas las valoraciones de la base de datos
     const { data: vals, error } = await _supabase
         .from('valoraciones')
-        .select('idea_id, puntuacion');
+        .select('idea_id, puntuacion')
+        .limit(1000);
 
     // Si hay error o no hay valoraciones, salimos
     if (error || !vals || vals.length === 0) {
@@ -469,10 +467,10 @@
 
     // 4. Ordenamos de mayor a menor media y nos quedamos con el top 8
     mediasArray.sort((a, b) => b.media - a.media);
-    const top8 = mediasArray.slice(0, 8);
+    const top20 = mediasArray.slice(0, 20);
 
     // 5. Traemos los títulos de esas ideas concretas desde la tabla ideas
-    const ids = top8.map(item => item.idea_id);
+    const ids = top20.map(item => item.idea_id);
     const { data: ideas } = await _supabase
         .from('ideas')
         .select('id, title')
@@ -490,7 +488,7 @@
     const lista = document.getElementById('best-projects-list');
     const MAX = 25;
     lista.innerHTML = '';
-    top8.forEach(item => {
+    top20.forEach(item => {
         const titulo = titulosMap[item.idea_id] || 'Idea desconocida';
         const tituloCorto = titulo.length > MAX ? titulo.substring(0, MAX) + '…' : titulo;
         lista.innerHTML += `<li title="${titulo}">${tituloCorto} - ${item.media}★</li>`;
@@ -530,8 +528,9 @@
         const { data: comentarios, error } = await _supabase
             .from('comentarios')
             .select('user_id, puntuacion_autor')
-            .not('puntuacion_autor', 'is', null); // excluimos los comentarios sin valorar
-
+            .not('puntuacion_autor', 'is', null) // excluimos los comentarios sin valorar
+            .limit(1000);
+            
         // Si hay error de red o la tabla está vacía, mostramos un mensaje y salimos
         if (error || !comentarios || comentarios.length === 0) {
             lista.innerHTML = '<li>Sin actividad aún</li>';
@@ -557,7 +556,7 @@
         const ranking = Object.entries(xpPorUsuario)
             .map(([userId, xp]) => ({ userId, xp }))     // convertimos cada entrada en objeto
             .sort((a, b) => b.xp - a.xp)                 // ordenamos de más a menos XP
-            .slice(0, 8);                                  // nos quedamos con el top 8
+            .slice(0, 20);                                  // nos quedamos con el top 8
 
         // Si después de filtrar no queda nadie, mostramos el aviso
         if (ranking.length === 0) {
